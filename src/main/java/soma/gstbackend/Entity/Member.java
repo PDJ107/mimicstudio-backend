@@ -20,17 +20,10 @@ public class Member {
 
     private String account;
     private String password;
-
-    @Column(name = "phone_number")
     private String phoneNumber;
     private String email;
 
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @Column(name = "is_deleted")
     private Boolean isDeleted;
 }

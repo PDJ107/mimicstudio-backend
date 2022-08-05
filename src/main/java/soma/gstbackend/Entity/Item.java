@@ -23,7 +23,6 @@ public class Item {
     @Enumerated(EnumType.STRING)
     private ItemStatus status;
 
-    @Column(name = "s3_key")
     private String s3Key;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,16 +32,10 @@ public class Item {
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     private List<View> views = new ArrayList<>();
 
-    @Column(name = "is_public")
     private Boolean isPublic;
 
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @Column(name = "is_deleted")
     private Boolean isDeleted;
 
     public void setMember(Member member) {

@@ -24,13 +24,8 @@ public class View {
 
     private String endpoint;
 
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @Column(name = "is_deleted")
     private Boolean isDeleted;
 
     public void setItem(Item item) {
