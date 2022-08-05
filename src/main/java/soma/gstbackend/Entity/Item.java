@@ -4,8 +4,11 @@ import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "ITEM")
 @Getter
 public class Item {
 
@@ -13,20 +16,45 @@ public class Item {
     @Column(name = "item_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Enumerated(EnumType.STRING)
     private ItemStatus status;
 
+    @Column(name = "s3_key")
     private String s3Key;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category;
 
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+    private List<View> views = new ArrayList<>();
+
+    @Column(name = "is_public")
     private Boolean isPublic;
 
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
-    private LocalDateTime deletedAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Column(name = "is_deleted")
     private Boolean isDeleted;
 
+    public void setMember(Member member) {
+        this.member = member;
+        member.getItems().add(this);
+    }
+
+    public void setCategory(Category category) {
+        if(category != null) {
+            this.category.getItems().remove(this);
+        }
+        this.category = category;
+        category.getItems().add(this);
+    }
 }
