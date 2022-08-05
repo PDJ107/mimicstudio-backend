@@ -1,4 +1,4 @@
-package soma.gstbackend.Entity;
+package soma.gstbackend.entity;
 
 import lombok.Getter;
 
@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "ITEM")
 @Getter
-public class Item {
+public class Item extends CustomEntity {
 
     @Id @GeneratedValue
     @Column(name = "item_id")
@@ -34,9 +34,14 @@ public class Item {
 
     private Boolean isPublic;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private Boolean isDeleted;
+    protected Item() {
+    }
+
+    public Item(ItemStatus status, String s3Key, Boolean isPublic) {
+        this.status = status;
+        this.s3Key = s3Key;
+        this.isPublic = isPublic;
+    }
 
     public void setMember(Member member) {
         this.member = member;
@@ -44,7 +49,7 @@ public class Item {
     }
 
     public void setCategory(Category category) {
-        if(category != null) {
+        if(this.category != null) {
             this.category.getItems().remove(this);
         }
         this.category = category;

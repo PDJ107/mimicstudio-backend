@@ -1,4 +1,4 @@
-package soma.gstbackend.Entity;
+package soma.gstbackend.entity;
 
 public enum ItemStatus {
     enqueue, generating, generated

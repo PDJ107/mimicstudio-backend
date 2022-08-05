@@ -1,4 +1,4 @@
-package soma.gstbackend.Entity;
+package soma.gstbackend.entity;
 
 import lombok.Getter;
 
@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "MEMBER")
 @Getter
-public class Member {
+public class Member extends CustomEntity {
     @Id @GeneratedValue
     @Column(name = "member_id")
     private Long id;
@@ -22,8 +22,4 @@ public class Member {
     private String password;
     private String phoneNumber;
     private String email;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private Boolean isDeleted;
 }

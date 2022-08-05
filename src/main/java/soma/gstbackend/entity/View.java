@@ -1,4 +1,4 @@
-package soma.gstbackend.Entity;
+package soma.gstbackend.entity;
 
 import lombok.Getter;
 
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "VIEW")
 @Getter
-public class View {
+public class View extends CustomEntity {
 
     @Id @GeneratedValue
     @Column(name = "view_id")
@@ -23,10 +23,6 @@ public class View {
     private ViewType type;
 
     private String endpoint;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private Boolean isDeleted;
 
     public void setItem(Item item) {
         this.item = item;

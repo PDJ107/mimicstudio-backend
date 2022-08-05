@@ -1,6 +1,7 @@
-package soma.gstbackend.Entity;
+package soma.gstbackend.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,6 +26,13 @@ public class Category {
 
     @OneToMany(mappedBy = "parent")
     private List<Category> child = new ArrayList<>();
+
+    protected Category() {
+    }
+
+    public Category(Long id) {
+        this.id = id;
+    }
 
     public void setParent(Category parent) {
         this.parent = parent;
