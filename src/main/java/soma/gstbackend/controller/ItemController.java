@@ -21,7 +21,7 @@ public class ItemController {
     private final CategoryService categoryService;
 
     @PostMapping("/3d-items")
-    public ResponseEntity create(@Valid ItemRequestDto itemRequestDto) {
+    public ResponseEntity create(@Valid ItemRequestDto itemRequestDto) throws Exception {
         Category category = categoryService.findCategory(itemRequestDto.categoryId);
         itemService.join(itemRequestDto.toEntity(category));
         return ResponseEntity.accepted().build();

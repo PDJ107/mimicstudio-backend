@@ -25,8 +25,12 @@ public class ItemServiceTest {
 
     @Autowired CategoryService categoryService;
 
+    static {
+        System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
+    }
+
     @Test
-    @Rollback(false)
+    //@Rollback(false)
     public void 아이템_등록() throws Exception {
         // given
         Long categoryId = 0L;
