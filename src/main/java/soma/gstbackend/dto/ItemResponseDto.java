@@ -1,11 +1,13 @@
 package soma.gstbackend.dto;
 
+import lombok.AllArgsConstructor;
 import soma.gstbackend.entity.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 public class ItemResponseDto {
 
     public Long id;
@@ -17,23 +19,6 @@ public class ItemResponseDto {
     public LocalDateTime updatedAt;
 
     public ItemResponseDto() {
-    }
-
-    public ItemResponseDto(Long id,
-                           ItemStatus status,
-                           Category category,
-                           List<View> views,
-                           Boolean isPublic,
-                           LocalDateTime createdAt,
-                           LocalDateTime updatedAt) {
-
-        this.id = id;
-        this.status = status;
-        this.category = category;
-        this.views = views;
-        this.isPublic = isPublic;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public ItemResponseDto from(Item item) {

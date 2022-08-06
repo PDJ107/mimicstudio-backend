@@ -1,11 +1,13 @@
 package soma.gstbackend.dto;
 
+import lombok.AllArgsConstructor;
 import soma.gstbackend.entity.Category;
 import soma.gstbackend.entity.Item;
 import soma.gstbackend.entity.ItemStatus;
 
 import javax.validation.constraints.NotNull;
 
+@AllArgsConstructor
 public class ItemRequestDto {
     @NotNull(message = "s3 key 값이 Null 입니다.")
     public final String s3Key;
@@ -15,12 +17,6 @@ public class ItemRequestDto {
 
     @NotNull(message = "Category ID가 없습니다.")
     public final Long categoryId;
-
-    public ItemRequestDto(String s3Key, Boolean isPublic, Long categoryId) {
-        this.s3Key = s3Key;
-        this.isPublic = isPublic;
-        this.categoryId = categoryId;
-    }
 
     public Item toEntity(Category category) {
         Item item = new Item(ItemStatus.enqueue, s3Key, isPublic);
