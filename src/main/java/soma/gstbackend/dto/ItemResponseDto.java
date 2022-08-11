@@ -12,7 +12,7 @@ public class ItemResponseDto {
 
     public Long id;
     public ItemStatus status;
-    public Category category;
+    public String categoryName;
     public List<View> views;
     public Boolean isPublic;
     public LocalDateTime createdAt;
@@ -25,7 +25,7 @@ public class ItemResponseDto {
         return new ItemResponseDto(
                 item.getId(),
                 item.getStatus(),
-                item.getCategory(),
+                item.getCategory().getName(),
                 item.getViews(),
                 item.getIsPublic(),
                 item.getCreatedAt(),
