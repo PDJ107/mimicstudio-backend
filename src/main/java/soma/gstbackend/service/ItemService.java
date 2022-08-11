@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soma.gstbackend.entity.Item;
+import soma.gstbackend.exception.ErrorCode;
+import soma.gstbackend.exception.ItemException;
 import soma.gstbackend.repository.ItemRepository;
 import soma.gstbackend.util.ItemMessageForm;
 import soma.gstbackend.util.MessageForm;
@@ -23,13 +25,22 @@ public class ItemService {
         itemRepository.save(item);
 
         // SQS 메시지 등록
-        MessageForm messageForm = new ItemMessageForm(item.getId(), item.getS3Key());
+        MessageForm messageForm;
+        try {
+            messageForm = new ItemMessageForm(item.getId(), item.getS3Key());
+        } catch(Exception e) {
+            throw new ItemException(ErrorCode.SQS_Transfer_Failed);
+        }
         messageProcessor.send(messageForm);
     }
 
     @Transactional(readOnly = true)
-    public Item findItem(Long itemId) {
-        return itemRepository.findOne(itemId);
+    public Item findItem(Long itemId) throws Exception {
+        Item item = itemRepository.findOne(itemId);
+        if(item == null) {
+            throw new ItemException(ErrorCode.Item_Not_Found);
+        }
+        return item;
     }
 
     @Transactional(readOnly = true)
@@ -37,7 +48,11 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
-    public void removeItem(Long itemId) {
+    public void removeItem(Long itemId) throws Exception {
+        Item item = itemRepository.findOne(itemId);
+        if(item == null) {
+            throw new ItemException(ErrorCode.Item_Not_Found);
+        }
         itemRepository.remove(itemId);
     }
 }
