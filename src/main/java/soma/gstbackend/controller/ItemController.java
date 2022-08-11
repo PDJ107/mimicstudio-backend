@@ -21,14 +21,14 @@ public class ItemController {
     private final CategoryService categoryService;
 
     @PostMapping("/3d-items")
-    public ResponseEntity create(@Valid ItemRequestDto itemRequestDto) throws Exception {
+    public ResponseEntity create(@RequestBody @Valid ItemRequestDto itemRequestDto) throws Exception {
         Category category = categoryService.findCategory(itemRequestDto.categoryId);
         itemService.join(itemRequestDto.toEntity(category));
         return ResponseEntity.accepted().build();
     }
 
     @GetMapping("/3d-items/{id}")
-    public ResponseEntity<ItemResponseDto> read(@PathVariable Long id) {
+    public ResponseEntity<ItemResponseDto> read(@PathVariable Long id) throws Exception {
         Item item = itemService.findItem(id);
         return ResponseEntity.ok().body(new ItemResponseDto().from(item));
     }
@@ -40,7 +40,7 @@ public class ItemController {
     }
 
     @DeleteMapping("/3d-items/{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
+    public ResponseEntity delete(@PathVariable Long id) throws Exception {
         itemService.removeItem(id);
         return ResponseEntity.noContent().build();
     }
