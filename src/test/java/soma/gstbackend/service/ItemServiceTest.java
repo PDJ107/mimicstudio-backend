@@ -1,22 +1,27 @@
 package soma.gstbackend.service;
 
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import soma.gstbackend.dto.ItemRequestDto;
 import soma.gstbackend.entity.Category;
 import soma.gstbackend.entity.Item;
 
+import javax.persistence.EntityManager;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@WebMvcTest(ItemService.class)
+@SpringBootTest
 @Transactional
-@Disabled
+//@Disabled
 public class ItemServiceTest {
 
     @Autowired ItemService itemService;
+    @Autowired EntityManager em;
     @Autowired CategoryService categoryService;
 
 
@@ -26,21 +31,21 @@ public class ItemServiceTest {
 
     @Test
     //@Rollback(false)
-    public void 아이템_등록() throws Exception {
+    @DisplayName("아이템 & 카테고리 등록")
+    public void create() throws Exception {
         // given
         Long categoryId = 0L;
+        Category category = new Category(categoryId, "test-category");
         ItemRequestDto itemRequestDto = new ItemRequestDto("/0/1234444", false, categoryId);
-        Category category = categoryService.findCategory(itemRequestDto.categoryId);
-
-        //em.merge(category);
         Item item = itemRequestDto.toEntity(category);
 
         // when
+        categoryService.join(category);
         itemService.join(item);
 
         // then
-        assertTrue(itemRequestDto.categoryId == categoryId);
-        assertTrue(item.getCategory().getId() == categoryId);
+        assertTrue(itemService.findItem(item.getId()).equals(item));
+        assertTrue(categoryService.findCategory(categoryId).equals(category));
     }
 
 }
