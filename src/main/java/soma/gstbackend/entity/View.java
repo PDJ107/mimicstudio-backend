@@ -3,7 +3,6 @@ package soma.gstbackend.entity;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "view")
