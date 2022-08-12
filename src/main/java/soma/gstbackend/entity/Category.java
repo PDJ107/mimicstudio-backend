@@ -30,8 +30,9 @@ public class Category {
     protected Category() {
     }
 
-    public Category(Long id) {
+    public Category(Long id, String name) {
         this.id = id;
+        this.name = name;
     }
 
     public void setParent(Category parent) {
