@@ -1,25 +1,24 @@
 package soma.gstbackend.service;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.transaction.annotation.Transactional;
 import soma.gstbackend.dto.ItemRequestDto;
 import soma.gstbackend.entity.Category;
 import soma.gstbackend.entity.Item;
 
-import javax.persistence.EntityManager;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
+@WebMvcTest(ItemService.class)
 @Transactional
+@Disabled
 public class ItemServiceTest {
 
     @Autowired ItemService itemService;
-    @Autowired EntityManager em;
-
     @Autowired CategoryService categoryService;
+
 
     static {
         System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
