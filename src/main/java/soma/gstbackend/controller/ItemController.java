@@ -40,7 +40,7 @@ public class ItemController {
     }
 
     @DeleteMapping("/3d-items/{id}")
-    public ResponseEntity delete(@PathVariable Long id) throws Exception {
+    public ResponseEntity remove(@PathVariable Long id) throws Exception {
         itemService.removeItem(id);
         return ResponseEntity.noContent().build();
     }
