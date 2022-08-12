@@ -1,12 +1,15 @@
 package soma.gstbackend.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "view_type")
-@Getter
+@Getter @Builder
+@AllArgsConstructor
 public class ViewType {
 
     @Id @GeneratedValue
@@ -17,4 +20,7 @@ public class ViewType {
 //    private View view;
 
     private String type;
+
+    protected ViewType() {
+    }
 }

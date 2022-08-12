@@ -1,6 +1,7 @@
 package soma.gstbackend.entity;
 
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "item")
-@Getter
+@Getter @SuperBuilder
 public class Item extends CustomEntity {
 
     @Id @GeneratedValue

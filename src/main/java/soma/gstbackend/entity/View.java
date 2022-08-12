@@ -1,12 +1,13 @@
 package soma.gstbackend.entity;
 
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "view")
-@Getter
+@Getter @SuperBuilder
 public class View extends CustomEntity {
 
     @Id @GeneratedValue
@@ -22,6 +23,9 @@ public class View extends CustomEntity {
     private ViewType type;
 
     private String endpoint;
+
+    protected View() {
+    }
 
     public void setItem(Item item) {
         this.item = item;
