@@ -12,7 +12,7 @@ import java.util.List;
 @Getter @SuperBuilder
 public class Item extends CustomEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
     private Long id;
 

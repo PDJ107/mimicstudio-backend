@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter @SuperBuilder
 public class View extends CustomEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "view_id")
     private Long id;
 

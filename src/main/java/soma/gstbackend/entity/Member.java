@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "member")
 @Getter @SuperBuilder
 public class Member extends CustomEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 

@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class ViewType {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "type_id")
     private Long id;
 
