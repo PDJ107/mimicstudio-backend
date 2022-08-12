@@ -2,11 +2,23 @@ plugins {
     id 'org.springframework.boot' version '2.7.2'
     id 'io.spring.dependency-management' version '1.0.12.RELEASE'
     id 'java'
+    id 'org.asciidoctor.convert' version '1.5.9.2'
 }
 
 group = 'soma'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+
+asciidoctor {
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from ('$/html5') {
+        into 'static/docs'
+    }
+}
 
 configurations {
     compileOnly {
@@ -47,6 +59,8 @@ dependencies {
 
     // AWS SQS
     implementation 'org.springframework.cloud:spring-cloud-starter-aws-messaging'
+
+    testImplementation('org.springframework.restdocs:spring-restdocs-mockmvc')
 }
 
 dependencyManagement {
