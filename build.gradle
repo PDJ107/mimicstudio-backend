@@ -2,20 +2,36 @@ plugins {
     id 'org.springframework.boot' version '2.7.2'
     id 'io.spring.dependency-management' version '1.0.12.RELEASE'
     id 'java'
-    id 'org.asciidoctor.convert' version '1.5.9.2'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'soma'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+ext {
+    set('springCloudVersion', "Hoxton.SR10")
+    snippetsDir = file('build/generated-snippets')
+}
+
+test {
+    outputs.dir snippetsDir
+}
+
 asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
     dependsOn test
 }
 
+//asciidoctor.doFirst {
+//    delete file('src/main/resources/static/docs')
+//}
+//
+
 bootJar {
     dependsOn asciidoctor
-    from ('$/html5') {
+    from ("${asciidoctor.outputDir}") {
         into 'static/docs'
     }
 }
@@ -24,23 +40,14 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt
 }
 
 repositories {
     mavenCentral()
 }
 
-ext {
-    set('springCloudVersion', "Hoxton.SR10")
-}
-
 dependencies {
-    implementation ('org.springframework.boot:spring-boot-starter-web') {
-        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
-    }
-    implementation ('org.springframework.boot:spring-boot-starter-undertow') {
-        exclude group: "io.undertow", module: "undertow-websockets-jsr"
-    }
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     //implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -50,17 +57,32 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    // JUnit4 추가
+
+    // tomcat 제거
+    implementation ('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+
+    // undertow 추가
+    implementation ('org.springframework.boot:spring-boot-starter-undertow') {
+        exclude group: "io.undertow", module: "undertow-websockets-jsr"
+    }
+
+//    // JUnit4 추가
 //    testImplementation("org.junit.vintage:junit-vintage-engine") {
 //        exclude group: "org.hamcrest", module: "hamcrest-core"
 //    }
+
     // JPA 쿼리 로그
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
 
     // AWS SQS
     implementation 'org.springframework.cloud:spring-cloud-starter-aws-messaging'
 
-    testImplementation('org.springframework.restdocs:spring-restdocs-mockmvc')
+    // Sprint REST Docs
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
 }
 
 dependencyManagement {
