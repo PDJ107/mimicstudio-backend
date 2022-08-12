@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "category")
 @Getter
 public class Category {
-    @Id @GeneratedValue
+    @Id
     @Column(name = "category_id")
     private Long id;
 

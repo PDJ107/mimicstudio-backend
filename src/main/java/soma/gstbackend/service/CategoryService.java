@@ -15,6 +15,10 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    public void join(Category category) {
+        categoryRepository.save(category);
+    }
+
     public Category findCategory(Long categoryId) throws Exception{
         Category category = categoryRepository.findOne(categoryId);
         if(category == null) {

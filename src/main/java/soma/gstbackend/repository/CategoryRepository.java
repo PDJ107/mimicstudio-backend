@@ -12,6 +12,10 @@ public class CategoryRepository {
 
     private final EntityManager em;
 
+    public void save(Category category) {
+        em.persist(category);
+    }
+
     public Category findOne(Long id) {
         return em.find(Category.class, id);
     }
