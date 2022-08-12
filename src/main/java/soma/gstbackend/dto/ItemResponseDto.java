@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 public class ItemResponseDto {
 
     public Long id;
+    public Long member_id;
     public ItemStatus status;
     public String categoryName;
     public List<View> views;
@@ -24,6 +25,7 @@ public class ItemResponseDto {
     public ItemResponseDto from(Item item) {
         return new ItemResponseDto(
                 item.getId(),
+                item.getMember().getId(),
                 item.getStatus(),
                 item.getCategory().getName(),
                 item.getViews(),
