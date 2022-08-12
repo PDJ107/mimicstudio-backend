@@ -10,14 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 import soma.gstbackend.dto.ItemRequestDto;
 import soma.gstbackend.entity.Category;
 import soma.gstbackend.entity.Item;
+import soma.gstbackend.entity.ItemStatus;
+import soma.gstbackend.entity.Member;
 
 import javax.persistence.EntityManager;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
-//@Disabled
+@Disabled
 public class ItemServiceTest {
 
     @Autowired ItemService itemService;
@@ -34,10 +38,14 @@ public class ItemServiceTest {
     @DisplayName("아이템 & 카테고리 등록")
     public void create() throws Exception {
         // given
-        Long categoryId = 0L;
-        Category category = new Category(categoryId, "test-category");
-        ItemRequestDto itemRequestDto = new ItemRequestDto("/0/1234444", false, categoryId);
-        Item item = itemRequestDto.toEntity(category);
+        Category category = new Category(0L, "test-category");
+        Member member = Member.builder().id(123L).build();
+
+        Item item = Item.builder()
+                .id(2L).category(category).member(member).status(ItemStatus.generated).isPublic(false)
+                .createdAt(LocalDateTime.of(2022, 8, 12, 12, 34, 56))
+                .updatedAt(LocalDateTime.of(2022, 8, 12, 12, 34, 56))
+                .build();
 
         // when
         categoryService.join(category);
@@ -45,7 +53,7 @@ public class ItemServiceTest {
 
         // then
         assertTrue(itemService.findItem(item.getId()).equals(item));
-        assertTrue(categoryService.findCategory(categoryId).equals(category));
+        assertTrue(categoryService.findCategory(0L).equals(category));
     }
 
 }
