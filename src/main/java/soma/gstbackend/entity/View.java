@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "VIEW")
+@Table(name = "view")
 @Getter
 public class View extends CustomEntity {
 

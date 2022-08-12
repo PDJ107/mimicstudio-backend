@@ -5,7 +5,7 @@ import lombok.Getter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "VIEWTYPE")
+@Table(name = "view_type")
 @Getter
 public class ViewType {
 

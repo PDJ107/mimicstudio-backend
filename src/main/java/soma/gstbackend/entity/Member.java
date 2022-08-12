@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "MEMBER")
+@Table(name = "member")
 @Getter
 public class Member extends CustomEntity {
     @Id @GeneratedValue
