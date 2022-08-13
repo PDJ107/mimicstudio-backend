@@ -8,6 +8,8 @@ import soma.gstbackend.exception.CategoryException;
 import soma.gstbackend.exception.ErrorCode;
 import soma.gstbackend.repository.CategoryRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -19,6 +21,7 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
+    @Transactional(readOnly = true)
     public Category findCategory(Long categoryId) throws Exception{
         Category category = categoryRepository.findOne(categoryId);
         if(category == null) {
@@ -26,4 +29,7 @@ public class CategoryService {
         }
         return category;
     }
+
+    @Transactional(readOnly = true)
+    public List<Category> findCategories() { return categoryRepository.findAll(); }
 }
