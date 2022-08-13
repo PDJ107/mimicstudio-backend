@@ -42,7 +42,7 @@ class ItemControllerTest {
     @DisplayName("3D 아이템 생성")
     void create() throws Exception {
         // given
-        Category category = new Category(0L, "Test-Category");
+        Category category = Category.builder().id(0L).name("Test-Category").build();
         given(categoryService.findCategory(0L))
                 .willReturn(category);
 
@@ -72,7 +72,7 @@ class ItemControllerTest {
     @DisplayName("3D 아이템 1개 조회")
     void read() throws Exception {
         // given
-        Category category = new Category(0L, "test-category");
+        Category category = Category.builder().id(0L).name("Test-Category").build();
         Member member = Member.builder().id(123L).build();
 
         Item item = Item.builder()
@@ -111,7 +111,7 @@ class ItemControllerTest {
     @DisplayName("3D 아이템 모두 조회")
     void readAll() throws Exception {
         // given
-        Category category = new Category(0L, "test-category");
+        Category category = Category.builder().id(0L).name("Test-Category").build();
         Member member = Member.builder().id(123L).build();
 
         Item item1 = Item.builder()
