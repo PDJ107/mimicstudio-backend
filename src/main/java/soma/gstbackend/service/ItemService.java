@@ -28,10 +28,10 @@ public class ItemService {
         MessageForm messageForm;
         try {
             messageForm = new ItemMessageForm(item.getId(), item.getS3Key());
+            messageProcessor.send(messageForm);
         } catch(Exception e) {
             throw new ItemException(ErrorCode.SQS_Transfer_Failed);
         }
-        messageProcessor.send(messageForm);
     }
 
     @Transactional(readOnly = true)
