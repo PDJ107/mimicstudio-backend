@@ -1,5 +1,6 @@
 package soma.gstbackend.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
@@ -24,6 +25,7 @@ public class CustomEntity {
     @Column(updatable = false)
     private LocalDateTime updatedAt;
 
+    @Builder.Default
     private Boolean isDeleted = false;
 
     protected CustomEntity() {

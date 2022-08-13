@@ -1,5 +1,6 @@
 package soma.gstbackend.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
@@ -15,6 +16,7 @@ public class Category {
     @Column(name = "category_id")
     private Long id;
 
+    @Builder.Default
     @OneToMany(mappedBy = "category")
     private List<Item> items = new ArrayList<>();
 
@@ -24,15 +26,11 @@ public class Category {
     @JoinColumn(name = "parent_id")
     private Category parent;
 
+    @Builder.Default
     @OneToMany(mappedBy = "parent")
     private List<Category> child = new ArrayList<>();
 
     protected Category() {
-    }
-
-    public Category(Long id, String name) {
-        this.id = id;
-        this.name = name;
     }
 
     public void setParent(Category parent) {

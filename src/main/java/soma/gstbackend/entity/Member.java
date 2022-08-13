@@ -1,5 +1,6 @@
 package soma.gstbackend.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
@@ -15,6 +16,7 @@ public class Member extends CustomEntity {
     @Column(name = "member_id")
     private Long id;
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Item> items = new ArrayList<>();
 

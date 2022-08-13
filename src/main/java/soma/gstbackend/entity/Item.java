@@ -1,5 +1,6 @@
 package soma.gstbackend.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
@@ -29,6 +30,7 @@ public class Item extends CustomEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Builder.Default
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     private List<View> views = new ArrayList<>();
 
