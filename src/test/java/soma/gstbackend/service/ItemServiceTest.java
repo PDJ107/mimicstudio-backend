@@ -1,93 +1,108 @@
 package soma.gstbackend.service;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import soma.gstbackend.dto.ItemRequestDto;
 import soma.gstbackend.entity.Category;
 import soma.gstbackend.entity.Item;
 import soma.gstbackend.entity.ItemStatus;
 import soma.gstbackend.entity.Member;
+import soma.gstbackend.exception.CategoryException;
 
-import javax.persistence.EntityManager;
+import java.util.List;
 
-import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
 public class ItemServiceTest {
 
     @Autowired ItemService itemService;
-    @Autowired EntityManager em;
     @Autowired CategoryService categoryService;
     @Autowired MemberService memberService;
 
-    private static Member testMember1, testMember2;
-    private static Category testCategory1, testCategory2;
+//    static {
+//        System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
+//    }
 
-    static {
-        System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
+    private Member getTestMember(String account, String password, String email) {
+        Member testMember = Member.builder()
+                .account(account).password(password).email(email).build();
+        memberService.join(testMember);
+        return testMember;
     }
 
-    @BeforeAll
-    static void setTestVariable() {
-        testMember1 = Member.builder()
-                .account("abcd").password("12345678").email("test@gmail.com").isDeleted(false).build();
-        testMember2 = Member.builder()
-                .account("qewr").password("9876543").email("qewr@naver.com").isDeleted(false).build();
-        testCategory1 = Category.builder().id(88888L).name("test-category1").build();
-        testCategory1 = Category.builder().id(99999L).name("test-category2").build();
+    private Category getTestCategory(Long id, String name) throws Exception {
+        Category category;
+        try {
+            category = categoryService.findCategory(id);
+        } catch (CategoryException e) {
+            Category testCategory = Category.builder().id(id).name(name).build();
+            categoryService.join(testCategory);
+            return testCategory;
+        }
+        return category;
+    }
+
+    private Item getTestItem(Member member, Category category, ItemStatus status, String s3key, boolean isPublic) throws Exception{
+        Item item = Item.createItem(member, category, status, s3key, isPublic);
+        itemService.join(item);
+        return item;
     }
 
     @Test
     @DisplayName("아이템 등록")
     void create() throws Exception {
         // given
-        memberService.join(testMember1);
-        categoryService.join(testCategory1);
-
-        Item item = Item.builder()
-                .status(ItemStatus.generated).isPublic(false)
-                .build();
-        item.setCategory(testCategory1);
-        item.setMember(testMember1);
+        Member testMember = getTestMember("abcd", "12345678", "test@gamil.com");
+        Category testCategory = getTestCategory(99999L, "test-category");
+        //String s3key = testMember.getId() + "/" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        Item item = Item.createItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", false);
 
         // when
         itemService.join(item);
 
         // then
         assertTrue(itemService.findItem(item.getId()).equals(item));
-        assertTrue(categoryService.findCategory(testCategory1.getId()).equals(testCategory1));
+        assertTrue(categoryService.findCategory(testCategory.getId()).equals(testCategory));
     }
 
     @Test
     @DisplayName("아이템 조회")
     public void findItem() throws Exception {
         // given
-        if(testMember1.getId() == null) memberService.join(testMember1);
-        if(testCategory1.getId() == null) categoryService.join(testCategory1);
+        Member testMember = getTestMember("abcd", "12345678", "test@gamil.com");
+        Category testCategory = getTestCategory(99999L, "test-category");
+        //String s3key = testMember.getId() + "/" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        Item testItem = getTestItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", false);
 
         // when
+        Item item = itemService.findItem(testItem.getId());
 
         // then
-
+        assertTrue(item.equals(testItem));
     }
 
     @Test
     @DisplayName("아이템 모두 조회")
     public void findItems() throws Exception {
         // given
+        Member testMember = getTestMember("abcd", "12345678", "test@gamil.com");
+        Category testCategory = getTestCategory(99999L, "test-category");
+        //String s3key = testMember.getId() + "/" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        Item testItem = getTestItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", false);
+        Item testItem2 = getTestItem(testMember, testCategory, ItemStatus.generating, "/0/20220805123456", false);
+        Item testItem3 = getTestItem(testMember, testCategory, ItemStatus.enqueue, "/0/20220805123456", false);
 
         // when
+        List<Item> items = itemService.findItems();
 
         // then
+        assertEquals(items.size(), 3);
+        assertTrue(items.contains(testItem));
+        assertTrue(items.contains(testItem2));
+        assertTrue(items.contains(testItem3));
 
     }
 
@@ -95,10 +110,21 @@ public class ItemServiceTest {
     @DisplayName("아이템 삭제")
     public void removeItem() throws Exception {
         // given
+        Member testMember = getTestMember("abcd", "12345678", "test@gamil.com");
+        Category testCategory = getTestCategory(99999L, "test-category");
+        //String s3key = testMember.getId() + "/" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        Item testItem = getTestItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", false);
+        Item testItem2 = getTestItem(testMember, testCategory, ItemStatus.generating, "/0/20220805123456", false);
+        Item testItem3 = getTestItem(testMember, testCategory, ItemStatus.enqueue, "/0/20220805123456", false);
 
         // when
+        itemService.removeItem(testItem.getId());
+        itemService.removeItem(testItem2.getId());
+        List<Item> items = itemService.findItems();
 
         // then
-
+        assertFalse(items.contains(testItem));
+        assertFalse(items.contains(testItem2));
+        assertTrue(items.contains(testItem3));
     }
 }
