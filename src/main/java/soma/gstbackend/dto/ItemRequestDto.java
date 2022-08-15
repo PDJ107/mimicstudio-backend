@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import soma.gstbackend.entity.Category;
 import soma.gstbackend.entity.Item;
 import soma.gstbackend.entity.ItemStatus;
+import soma.gstbackend.entity.Member;
 
 import javax.validation.constraints.NotNull;
 
@@ -18,9 +19,8 @@ public class ItemRequestDto {
     @NotNull(message = "Category ID가 없습니다.")
     public final Long categoryId;
 
-    public Item toEntity(Category category) {
-        Item item = new Item(ItemStatus.enqueue, s3Key, isPublic);
-        item.setCategory(category);
+    public Item toEntity(Member member, Category category) {
+        Item item = Item.createItem(member, category, ItemStatus.enqueue, s3Key, isPublic);
         return item;
     }
 }

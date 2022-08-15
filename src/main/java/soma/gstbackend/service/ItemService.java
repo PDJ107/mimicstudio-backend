@@ -23,10 +23,6 @@ public class ItemService {
 
     public void join(Item item) throws Exception {
         itemRepository.save(item);
-
-        // SQS 메시지 등록
-        MessageForm messageForm = new ItemMessageForm(item.getId(), item.getS3Key());
-        messageProcessor.send(messageForm);
     }
 
     @Transactional(readOnly = true)

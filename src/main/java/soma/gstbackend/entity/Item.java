@@ -3,6 +3,7 @@ package soma.gstbackend.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
+import net.bytebuddy.implementation.bind.annotation.Super;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -39,12 +40,6 @@ public class Item extends CustomEntity {
     protected Item() {
     }
 
-    public Item(ItemStatus status, String s3Key, Boolean isPublic) {
-        this.status = status;
-        this.s3Key = s3Key;
-        this.isPublic = isPublic;
-    }
-
     public void setMember(Member member) {
         this.member = member;
         member.getItems().add(this);
@@ -56,5 +51,15 @@ public class Item extends CustomEntity {
         }
         this.category = category;
         category.getItems().add(this);
+    }
+
+    public static Item createItem(Member member, Category category, ItemStatus status, String s3Key, Boolean isPublic) {
+        Item item = new Item();
+        item.setMember(member);
+        item.setCategory(category);
+        item.status = status;
+        item.s3Key = s3Key;
+        item.isPublic = isPublic;
+        return item;
     }
 }
