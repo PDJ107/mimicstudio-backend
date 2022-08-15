@@ -32,6 +32,6 @@ public class ItemRepository {
     }
 
     public Boolean isDeleted(Long id) {
-        return em.find(Item.class, id).getIsDeleted() == true;
+        return em.find(Item.class, id).isDeleted() == true;
     }
 }

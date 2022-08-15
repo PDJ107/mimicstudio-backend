@@ -27,6 +27,6 @@ public class MemberRepository {
     }
 
     public Boolean isDeleted(Long id) {
-        return em.find(Member.class, id).getIsDeleted() == true;
+        return em.find(Member.class, id).isDeleted() == true;
     }
 }
