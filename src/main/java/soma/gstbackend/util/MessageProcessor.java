@@ -12,6 +12,8 @@ import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import soma.gstbackend.exception.ErrorCode;
+import soma.gstbackend.exception.ItemException;
 
 @Component
 @RequiredArgsConstructor
@@ -32,7 +34,11 @@ public class MessageProcessor {
                 objectMapper.writeValueAsString(form))
                 .withMessageGroupId(messageGroupId);
 
-        amazonSQS.sendMessage(request);
+        try {
+            amazonSQS.sendMessage(request);
+        } catch(Exception e) {
+            throw new ItemException(ErrorCode.SQS_Transfer_Failed);
+        }
     }
 
 //    @SqsListener(value = queueName)

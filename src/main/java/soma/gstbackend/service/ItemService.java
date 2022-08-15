@@ -25,13 +25,8 @@ public class ItemService {
         itemRepository.save(item);
 
         // SQS 메시지 등록
-        MessageForm messageForm;
-        try {
-            messageForm = new ItemMessageForm(item.getId(), item.getS3Key());
-            messageProcessor.send(messageForm);
-        } catch(Exception e) {
-            throw new ItemException(ErrorCode.SQS_Transfer_Failed);
-        }
+        MessageForm messageForm = new ItemMessageForm(item.getId(), item.getS3Key());
+        messageProcessor.send(messageForm);
     }
 
     @Transactional(readOnly = true)
