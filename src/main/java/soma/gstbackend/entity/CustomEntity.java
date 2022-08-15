@@ -26,12 +26,12 @@ public class CustomEntity {
     private LocalDateTime updatedAt;
 
     @Builder.Default
-    private Boolean isDeleted = false;
+    private boolean isDeleted = false;
 
     protected CustomEntity() {
     }
 
-    public void setDeleted(Boolean deleted) {
+    public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
 }
