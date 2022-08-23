@@ -16,6 +16,8 @@ import soma.gstbackend.dto.ItemRequestDto;
 import soma.gstbackend.entity.*;
 import soma.gstbackend.service.CategoryService;
 import soma.gstbackend.service.ItemService;
+import soma.gstbackend.service.MemberService;
+import soma.gstbackend.util.MessageProcessor;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,15 +38,22 @@ class ItemControllerTest {
     @Autowired ObjectMapper objectMapper;
 
     @MockBean ItemService itemService;
+    @MockBean MemberService memberService;
     @MockBean CategoryService categoryService;
+    @MockBean MessageProcessor messageProcessor;
 
     @Test
     @DisplayName("3D 아이템 생성")
     void create() throws Exception {
         // given
         Category category = Category.builder().id(0L).name("Test-Category").build();
+        Member testMember = Member.builder()
+                .account("test-member").password("test").email("test@test.com").build();
+
         given(categoryService.findCategory(0L))
                 .willReturn(category);
+        given(memberService.findMember(45L))
+                .willReturn(testMember);
 
         // when
         ItemRequestDto request = new ItemRequestDto("/0/20220812123456", false, 0L);
