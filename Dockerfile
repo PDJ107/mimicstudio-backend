@@ -1,11 +1,15 @@
-FROM adoptopenjdk/openjdk11:alpine-jre
+FROM openjdk:11-jdk as builder
 
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle .
+COPY settings.gradle .
+COPY src src
 RUN chmod +x ./gradlew
-
 RUN ./gradlew build
 
-WORKDIR /root
+FROM adoptopenjdk/openjdk11:alpine-jre
+COPY --from=builder build/libs/*-SNAPSHOT.jar app.jar
 
-COPY build/libs/GST-BACKEND-0.0.1-SNAPSHOT.jar app.jar
-
-CMD java -jar app.jar
+EXPOSE 8080
+ENTRYPOINT [" java", "-jar", "app.jar"]
