@@ -34,15 +34,9 @@ public class ItemServiceTest {
     }
 
     private Category getTestCategory(Long id, String name) throws Exception {
-        Category category;
-        try {
-            category = categoryService.findCategory(id);
-        } catch (CategoryException e) {
-            Category testCategory = Category.builder().id(id).name(name).build();
-            categoryService.join(testCategory);
-            return testCategory;
-        }
-        return category;
+        Category testCategory = Category.builder().id(id).name(name).build();
+        categoryService.join(testCategory);
+        return testCategory;
     }
 
     private Item getTestItem(Member member, Category category, ItemStatus status, String s3key, boolean isPublic) throws Exception{
@@ -90,6 +84,9 @@ public class ItemServiceTest {
         // given
         Member testMember = getTestMember("abcd", "12345678", "test@gamil.com");
         Category testCategory = getTestCategory(99999L, "test-category");
+
+        int currItemNum = itemService.findItems().size();
+
         //String s3key = testMember.getId() + "/" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         Item testItem = getTestItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", false);
         Item testItem2 = getTestItem(testMember, testCategory, ItemStatus.generating, "/0/20220805123456", false);
@@ -99,7 +96,7 @@ public class ItemServiceTest {
         List<Item> items = itemService.findItems();
 
         // then
-        assertEquals(items.size(), 3);
+        assertEquals(items.size()-currItemNum, 3);
         assertTrue(items.contains(testItem));
         assertTrue(items.contains(testItem2));
         assertTrue(items.contains(testItem3));
