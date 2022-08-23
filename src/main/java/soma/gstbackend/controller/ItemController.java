@@ -31,7 +31,8 @@ public class ItemController {
     public ResponseEntity create(@RequestBody @Valid ItemRequestDto itemRequestDto) throws Exception {
 
         Category category = categoryService.findCategory(itemRequestDto.categoryId);
-        Member member = memberService.findMember(99999L); // test member id - 99999L
+        Member member = memberService.findMember(26L); // test member id - 0L
+
         Item item = itemRequestDto.toEntity(member, category);
 
         // 아이템 등록
