@@ -9,6 +9,25 @@
 :operation-curl-request-title: Example request
 :operation-http-response-title: Example response
 
+[[server_info]]
+== Server Info
+현재 배포중인 서버 도메인 정보입니다.
+
+|===
+| Name | Domain | Docs | Descript
+
+| Dev Server
+| https://dev.leaguewin.ml
+| https://dev.leaguewin.ml/docs
+| 3D 아이템, 유저 관련 API
+
+| Video Server
+| https://dev.leaguewin.ml/video
+| https://dev.leaguewin.ml/video/docs
+| Video 업로드 및 사진 추출 서버
+
+|===
+
 [[overview_http_verbs]]
 == HTTP verbs
 

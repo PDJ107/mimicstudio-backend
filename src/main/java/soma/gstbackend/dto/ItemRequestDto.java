@@ -19,8 +19,14 @@ public class ItemRequestDto {
     @NotNull(message = "Category ID가 없습니다.")
     public final Long categoryId;
 
+    @NotNull(message = "title이 없습니다.")
+    public final String title;
+
+    @NotNull(message = "descript가 없습니다.")
+    public final String descript;
+
     public Item toEntity(Member member, Category category) {
-        Item item = Item.createItem(member, category, ItemStatus.enqueue, s3Key, isPublic);
+        Item item = Item.createItem(member, category, ItemStatus.enqueue, s3Key, isPublic, title, descript);
         return item;
     }
 }

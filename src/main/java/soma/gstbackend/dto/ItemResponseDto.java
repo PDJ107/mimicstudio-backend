@@ -16,6 +16,8 @@ public class ItemResponseDto {
     public String categoryName;
     public List<View> views;
     public Boolean isPublic;
+    public String title;
+    public String descript;
     public LocalDateTime createdAt;
     public LocalDateTime updatedAt;
 
@@ -30,6 +32,8 @@ public class ItemResponseDto {
                 item.getCategory().getName(),
                 item.getViews(),
                 item.getIsPublic(),
+                item.getTitle(),
+                item.getDescript(),
                 item.getCreatedAt(),
                 item.getUpdatedAt()
         );

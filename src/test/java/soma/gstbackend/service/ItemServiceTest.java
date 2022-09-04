@@ -40,7 +40,7 @@ public class ItemServiceTest {
     }
 
     private Item getTestItem(Member member, Category category, ItemStatus status, String s3key, boolean isPublic) throws Exception{
-        Item item = Item.createItem(member, category, status, s3key, isPublic);
+        Item item = Item.createItem(member, category, status, s3key, isPublic, "testTitle", "testDescript");
         itemService.join(item);
         return item;
     }
@@ -52,7 +52,7 @@ public class ItemServiceTest {
         Member testMember = getTestMember("abcd", "12345678", "test@gamil.com");
         Category testCategory = getTestCategory(99999L, "test-category");
         //String s3key = testMember.getId() + "/" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        Item item = Item.createItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", false);
+        Item item = Item.createItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", false, "testTitle", "testDescript");
 
         // when
         itemService.join(item);

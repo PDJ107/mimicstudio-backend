@@ -56,7 +56,7 @@ class ItemControllerTest {
                 .willReturn(testMember);
 
         // when
-        ItemRequestDto request = new ItemRequestDto("/0/20220812123456", false, 0L);
+        ItemRequestDto request = new ItemRequestDto("/0/20220812123456", false, 0L, "testTitle", "testDescript");
         ResultActions result = this.mockMvc.perform(
                 post("/3d-items/")
                         .content(objectMapper.writeValueAsString(request))
@@ -72,7 +72,9 @@ class ItemControllerTest {
                         requestFields(
                                 fieldWithPath("s3Key").description("이미지가 저장된 s3 디렉토리 key"),
                                 fieldWithPath("isPublic").description("3D 아이템 공개 여부"),
-                                fieldWithPath("categoryId").description("현재 DB 상에 존재하는 Category ID")
+                                fieldWithPath("categoryId").description("현재 DB 상에 존재하는 Category ID"),
+                                fieldWithPath("title").description("3D 아이템 제목"),
+                                fieldWithPath("descript").description("3D 아이템 설명")
                         )
                 ));
     }
@@ -88,6 +90,8 @@ class ItemControllerTest {
                 .id(2L).category(category).member(member).status(ItemStatus.enqueue).isPublic(false)
                 .createdAt(LocalDateTime.of(2022, 8, 15, 12, 34, 56))
                 .updatedAt(LocalDateTime.of(2022, 8, 15, 12, 34, 56))
+                .title("testTitle")
+                .descript("testDescript")
                 .build();
 
         given(itemService.findItem(2L))
@@ -110,6 +114,8 @@ class ItemControllerTest {
                                 fieldWithPath("categoryName").description("3D 아이템이 속한 카테고리 이름"),
                                 fieldWithPath("views").description("현재 3D 아이템의 뷰"),
                                 fieldWithPath("isPublic").description("3D 아이템 공개 여부"),
+                                fieldWithPath("title").description("3D 아이템 제목"),
+                                fieldWithPath("descript").description("3D 아이템 설명"),
                                 fieldWithPath("createdAt").description("생성일시"),
                                 fieldWithPath("updatedAt").description("수정일시")
                         )
@@ -127,12 +133,16 @@ class ItemControllerTest {
                 .id(2L).category(category).member(member).status(ItemStatus.generated).isPublic(false)
                 .createdAt(LocalDateTime.of(2022, 8, 12, 12, 34, 56))
                 .updatedAt(LocalDateTime.of(2022, 8, 12, 12, 34, 56))
+                .title("testTitle")
+                .descript("testDescript")
                 .build();
 
         Item item2 = Item.builder()
                 .id(3L).category(category).member(member).status(ItemStatus.generating).isPublic(true)
                 .createdAt(LocalDateTime.of(2022, 8, 20, 12, 34, 56))
                 .updatedAt(LocalDateTime.of(2022, 8, 20, 12, 34, 56))
+                .title("testTitle")
+                .descript("testDescript")
                 .build();
 
         List<Item> items = List.of(item1, item2);
@@ -157,6 +167,8 @@ class ItemControllerTest {
                                 fieldWithPath("[].categoryName").description("3D 아이템이 속한 카테고리 이름"),
                                 fieldWithPath("[].views").description("현재 3D 아이템의 뷰"),
                                 fieldWithPath("[].isPublic").description("3D 아이템 공개 여부"),
+                                fieldWithPath("[].title").description("3D 아이템 제목"),
+                                fieldWithPath("[].descript").description("3D 아이템 설명"),
                                 fieldWithPath("[].createdAt").description("생성일시"),
                                 fieldWithPath("[].updatedAt").description("수정일시")
                         )

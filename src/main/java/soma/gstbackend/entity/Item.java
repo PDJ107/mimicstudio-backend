@@ -36,6 +36,10 @@ public class Item extends CustomEntity {
 
     private Boolean isPublic;
 
+    private String title;
+
+    private String descript;
+
     protected Item() {
     }
 
@@ -52,13 +56,15 @@ public class Item extends CustomEntity {
         category.getItems().add(this);
     }
 
-    public static Item createItem(Member member, Category category, ItemStatus status, String s3Key, Boolean isPublic) {
+    public static Item createItem(Member member, Category category, ItemStatus status, String s3Key, Boolean isPublic, String title, String descript) {
         Item item = new Item();
         item.setMember(member);
         item.setCategory(category);
         item.status = status;
         item.s3Key = s3Key;
         item.isPublic = isPublic;
+        item.title = title;
+        item.descript = descript;
         return item;
     }
 }
