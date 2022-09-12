@@ -31,8 +31,12 @@ public class MemberRepository {
     }
 
     public Member findByAccount(String account) {
-        return em.createQuery("select m from Member m where m.account = :account", Member.class)
-                .setParameter("account", account)
-                .getSingleResult();
+        try {
+            return em.createQuery("select m from Member m where m.account = :account", Member.class)
+                    .setParameter("account", account)
+                    .getSingleResult();
+        } catch(Exception e) {
+            return null;
+        }
     }
 }
