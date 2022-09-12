@@ -77,6 +77,37 @@ use of HTTP status codes.
 |===
 
 [[resources_items]]
+== /members
+
+회원 관련 API 입니다.
+
+[[resources_members_signup]]
+=== 회원가입
+
+`POST` 요청을 사용해 새로운 회원을 등록합니다.
+`access_token`, `refresh_token` 을 반환합니다.
+
+operation::members-signup[snippets='request-fields,http-request,http-response']
+
+[[resources_members_login]]
+=== 로그인
+
+`POST` 요청으로 회원가입된 계정에 로그인합니다.
+`access_token`, `refresh_token` 을 반환합니다.
+
+operation::members-login[snippets='request-fields,http-request,http-response']
+
+[[resources_members_signup]]
+=== 내 정보 확인
+
+`GET` 요청으로 로그인된 내 정보를 확인합니다.
+`Authorization` 헤더를 `Bearer access_token` 로 설정해야합니다.
+
+operation::members-myinfo[snippets='request-fields,http-request,http-response']
+
+
+
+[[resources_items]]
 == /3d-items
 
 3D 아이템 관련 API 입니다.
