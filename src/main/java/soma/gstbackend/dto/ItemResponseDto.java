@@ -24,7 +24,7 @@ public class ItemResponseDto {
     public ItemResponseDto() {
     }
 
-    public ItemResponseDto from(Item item) {
+    public static ItemResponseDto from(Item item) {
         return new ItemResponseDto(
                 item.getId(),
                 item.getMember().getId(),

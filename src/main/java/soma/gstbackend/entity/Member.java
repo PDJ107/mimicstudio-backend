@@ -27,4 +27,8 @@ public class Member extends CustomEntity {
 
     protected Member() {
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

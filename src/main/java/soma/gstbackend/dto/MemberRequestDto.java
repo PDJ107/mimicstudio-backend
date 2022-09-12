@@ -1,18 +1,9 @@
 package soma.gstbackend.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import soma.gstbackend.entity.Category;
-import soma.gstbackend.entity.Item;
-import soma.gstbackend.entity.ItemStatus;
 import soma.gstbackend.entity.Member;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @AllArgsConstructor
 public class MemberRequestDto {

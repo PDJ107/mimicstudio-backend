@@ -11,6 +11,7 @@ import soma.gstbackend.entity.Member;
 import soma.gstbackend.exception.CategoryException;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,10 +27,10 @@ public class ItemServiceTest {
 //        System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
 //    }
 
-    private Member getTestMember(String account, String password, String email) {
+    private Member getTestMember(String account, String password, String email) throws Exception {
         Member testMember = Member.builder()
                 .account(account).password(password).email(email).build();
-        memberService.join(testMember);
+        Map<String, Object> tokens = memberService.join(testMember);
         return testMember;
     }
 

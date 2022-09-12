@@ -7,7 +7,19 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @Getter
 public enum ErrorCode {
-    Member_Not_Found("MEMBER_01", "존재하지 않는 회원입니다.", HttpStatus.NOT_FOUND),
+    Member_Not_Found("USER_01", "존재하지 않는 회원입니다.", HttpStatus.NOT_FOUND),
+    User_Invalid_Request("USER_02", "account 또는 password가 틀렸습니다.", HttpStatus.BAD_REQUEST),
+    Account_Already_Exists("USER_03", "이미 존재하는 Account 입니다.", HttpStatus.BAD_REQUEST),
+    Account_Is_Null("USER_08", "account가 Null입니다.", HttpStatus.BAD_REQUEST),
+    Password_Is_Null("USER_09", "password가 Null입니다.", HttpStatus.BAD_REQUEST),
+    User_Id_Is_Null("USER_10", "User id가 Null입니다.", HttpStatus.BAD_REQUEST),
+
+    Token_Is_Null("TOKEN_01", "토큰이 Null 입니다.", HttpStatus.UNAUTHORIZED),
+    Expired_Token("TOKEN_02", "토큰이 만료됐습니다.", HttpStatus.UNAUTHORIZED),
+    Invalid_Token("TOKEN_03", "토큰이 잘못됐습니다.", HttpStatus.UNAUTHORIZED),
+    Invalid_Token_Bearer("TOKEN_04", "토큰이 Bearer로 시작하지 않습니다.", HttpStatus.UNAUTHORIZED),
+    Invalid_Token_User_Id("TOKEN_05", "토큰의 User Id에 해당하는 유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    Logged_Out_Token("TOKEN_06", "로그아웃된 토큰입니다.", HttpStatus.UNAUTHORIZED),
 
     Item_Not_Found("ITEM_01", "존재하지 않는 3D 아이템 입니다.", HttpStatus.NOT_FOUND),
 
