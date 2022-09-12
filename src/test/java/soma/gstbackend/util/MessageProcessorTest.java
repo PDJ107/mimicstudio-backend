@@ -3,8 +3,8 @@ package soma.gstbackend.util;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
+import soma.gstbackend.util.form.ItemMessageForm;
+import soma.gstbackend.util.form.MessageForm;
 
 @SpringBootTest
 class MessageProcessorTest {

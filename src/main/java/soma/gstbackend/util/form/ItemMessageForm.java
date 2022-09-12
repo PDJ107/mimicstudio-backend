@@ -1,4 +1,4 @@
-package soma.gstbackend.util;
+package soma.gstbackend.util.form;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

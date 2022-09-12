@@ -11,8 +11,8 @@ import soma.gstbackend.entity.Member;
 import soma.gstbackend.service.CategoryService;
 import soma.gstbackend.service.ItemService;
 import soma.gstbackend.service.MemberService;
-import soma.gstbackend.util.ItemMessageForm;
-import soma.gstbackend.util.MessageForm;
+import soma.gstbackend.util.form.ItemMessageForm;
+import soma.gstbackend.util.form.MessageForm;
 import soma.gstbackend.util.MessageProcessor;
 
 import javax.validation.Valid;
