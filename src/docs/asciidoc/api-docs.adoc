@@ -101,9 +101,9 @@ operation::members-login[snippets='request-fields,http-request,http-response']
 === 내 정보 확인
 
 `GET` 요청으로 로그인된 내 정보를 확인합니다.
-`Authorization` 헤더를 `Bearer access_token` 로 설정해야합니다.
+`Authorization` 헤더를 `Bearer access_token` 으로 설정해야합니다.
 
-operation::members-myinfo[snippets='request-fields,http-request,http-response']
+operation::members-myinfo[snippets='http-request,http-response']
 
 
 
