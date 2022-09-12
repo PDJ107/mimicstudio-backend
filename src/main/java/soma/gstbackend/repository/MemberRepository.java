@@ -29,4 +29,10 @@ public class MemberRepository {
     public Boolean isDeleted(Long id) {
         return em.find(Member.class, id).isDeleted() == true;
     }
+
+    public Member findByAccount(String account) {
+        return em.createQuery("select m from Member m where m.account = :account", Member.class)
+                .setParameter("account", account)
+                .getSingleResult();
+    }
 }
