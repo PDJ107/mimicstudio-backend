@@ -1,17 +1,20 @@
 package soma.gstbackend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import soma.gstbackend.dto.ItemRequestDto;
 import soma.gstbackend.entity.*;
 import soma.gstbackend.service.CategoryService;
@@ -26,12 +29,14 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ItemController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @AutoConfigureRestDocs
+@AutoConfigureMockMvc(addFilters = false)
 class ItemControllerTest {
 
     @Autowired MockMvc mockMvc;
@@ -41,6 +46,14 @@ class ItemControllerTest {
     @MockBean MemberService memberService;
     @MockBean CategoryService categoryService;
     @MockBean MessageProcessor messageProcessor;
+
+//    @Before
+//    public void setUp() throws Exception {
+//        mockMvc = MockMvcBuilders
+//                .webAppContextSetup(webApplicationContext)
+//                .apply(springSecurity())
+//                .build();
+//    }
 
     @Test
     @DisplayName("3D 아이템 생성")
