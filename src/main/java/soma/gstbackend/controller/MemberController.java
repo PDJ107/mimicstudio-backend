@@ -4,11 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soma.gstbackend.annotation.Auth;
-import soma.gstbackend.dto.MemberRequestDto;
-import soma.gstbackend.dto.MemberResponseDto;
-import soma.gstbackend.entity.Member;
+import soma.gstbackend.dto.member.LoginDTO;
+import soma.gstbackend.dto.member.RequestDTO;
 import soma.gstbackend.service.MemberService;
-import soma.gstbackend.util.JwtUtil;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -21,14 +19,14 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity signUp(@RequestBody @Valid MemberRequestDto memberRequestDto) throws Exception {
-        Map<String, Object> tokens = memberService.join(memberRequestDto.toEntity());
+    public ResponseEntity signUp(@RequestBody @Valid RequestDTO request) throws Exception {
+        Map<String, Object> tokens = memberService.join(request.toEntity());
         return ResponseEntity.ok().body(tokens);
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid MemberRequestDto memberRequestDto) throws Exception {
-        Map<String, Object> tokens = memberService.login(memberRequestDto.toEntity());
+    public ResponseEntity login(@RequestBody @Valid LoginDTO request) throws Exception {
+        Map<String, Object> tokens = memberService.login(request.toEntity());
         return ResponseEntity.ok().body(tokens);
     }
 

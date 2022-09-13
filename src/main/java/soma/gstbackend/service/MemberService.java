@@ -1,15 +1,12 @@
 package soma.gstbackend.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import soma.gstbackend.dto.MemberResponseDto;
+import soma.gstbackend.dto.member.ResponseDTO;
 import soma.gstbackend.entity.Member;
 import soma.gstbackend.exception.ErrorCode;
 import soma.gstbackend.exception.MemberException;
@@ -58,12 +55,12 @@ public class MemberService {
         return jwtUtil.getTokens(userData.getId());
     }
 
-    public MemberResponseDto getInfo() throws Exception {
+    public ResponseDTO getInfo() throws Exception {
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                         .getRequest();
         Long id = jwtUtil.getIdFromToken(request.getHeader("Authorization"));
-        return MemberResponseDto.from(findMember(id));
+        return ResponseDTO.from(findMember(id));
     }
 
     @Transactional(readOnly = true)

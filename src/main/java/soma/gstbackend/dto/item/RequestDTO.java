@@ -1,4 +1,4 @@
-package soma.gstbackend.dto;
+package soma.gstbackend.dto.item;
 
 import lombok.AllArgsConstructor;
 import soma.gstbackend.entity.Category;
@@ -9,7 +9,7 @@ import soma.gstbackend.entity.Member;
 import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
-public class ItemRequestDto {
+public class RequestDTO {
     @NotNull(message = "s3 key 값이 Null 입니다.")
     public final String s3Key;
 

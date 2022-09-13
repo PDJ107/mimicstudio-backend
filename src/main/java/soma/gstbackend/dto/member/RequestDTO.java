@@ -1,4 +1,4 @@
-package soma.gstbackend.dto;
+package soma.gstbackend.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @Builder
-public class MemberRequestDto {
+public class RequestDTO {
     @NotNull(message = "account 값이 Null 입니다.")
     public final String account;
 

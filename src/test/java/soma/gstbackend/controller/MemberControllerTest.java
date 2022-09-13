@@ -12,15 +12,14 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import soma.gstbackend.dto.MemberRequestDto;
-import soma.gstbackend.dto.MemberResponseDto;
-import soma.gstbackend.entity.Member;
+import soma.gstbackend.dto.member.LoginDTO;
+import soma.gstbackend.dto.member.RequestDTO;
+import soma.gstbackend.dto.member.ResponseDTO;
 import soma.gstbackend.service.MemberService;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -47,7 +46,7 @@ class MemberControllerTest {
     @DisplayName("회원가입")
     void signUp() throws Exception {
         //given
-        MemberRequestDto request = new MemberRequestDto("test-member", "test-password", "010-1234-5678", "test@test.com");
+        RequestDTO request = new RequestDTO("test-member", "test-password", "010-1234-5678", "test@test.com");
 
         Map<String, Object> tokens = new HashMap<>();
         tokens.put("access_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2Mjk4ODcwMX0.L8OlWRqnlsZTzUDAi8RhkiCqdGRmigjjRTlnFVYcBMo");
@@ -86,7 +85,7 @@ class MemberControllerTest {
     @DisplayName("로그인")
     void login() throws Exception {
         //given
-        MemberRequestDto request = MemberRequestDto.builder()
+        LoginDTO request = LoginDTO.builder()
                 .account("test-member")
                 .password("test-password")
                 .build();
@@ -109,18 +108,11 @@ class MemberControllerTest {
         //then
         result.andExpect(status().isOk())
                 .andDo(document("members-login",
-                        preprocessRequest(
-                                modifyParameters()
-                                        .remove("phoneNumber")
-                                        .remove("email"),
-                                prettyPrint()
-                        ),
+                        preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("account").description("계정 이름"),
-                                fieldWithPath("password").description("계정 비밀번호"),
-                                fieldWithPath("phoneNumber").ignored(),
-                                fieldWithPath("email").ignored()
+                                fieldWithPath("password").description("계정 비밀번호")
                         ),
                         responseFields(
                                 fieldWithPath("access_token").description("액세스 토큰"),
@@ -133,7 +125,7 @@ class MemberControllerTest {
     @DisplayName("내 정보")
     void myInfo() throws Exception {
         //given
-        MemberResponseDto response = new MemberResponseDto("test-member", "010-1234-5678", "test@test.com");
+        ResponseDTO response = new ResponseDTO("test-member", "010-1234-5678", "test@test.com");
         String testToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2Mjk4ODcwMX0.L8OlWRqnlsZTzUDAi8RhkiCqdGRmigjjRTlnFVYcBMo";
 
         given(memberService.getInfo())

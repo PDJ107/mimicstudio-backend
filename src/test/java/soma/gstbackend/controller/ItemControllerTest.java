@@ -12,7 +12,7 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import soma.gstbackend.dto.ItemRequestDto;
+import soma.gstbackend.dto.item.RequestDTO;
 import soma.gstbackend.entity.*;
 import soma.gstbackend.service.CategoryService;
 import soma.gstbackend.service.ItemService;
@@ -65,7 +65,7 @@ class ItemControllerTest {
                 .willReturn(testMember);
 
         // when
-        ItemRequestDto request = new ItemRequestDto("/0/20220812123456", false, 0L, "testTitle", "testDescript");
+        RequestDTO request = new RequestDTO("/0/20220812123456", false, 0L, "testTitle", "testDescript");
         ResultActions result = this.mockMvc.perform(
                 post("/3d-items/")
                         .content(objectMapper.writeValueAsString(request))

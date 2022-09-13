@@ -1,4 +1,4 @@
-package soma.gstbackend.dto;
+package soma.gstbackend.dto.item;
 
 import lombok.AllArgsConstructor;
 import soma.gstbackend.entity.*;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class ItemResponseDto {
+public class ResponseDTO {
 
     public Long id;
     public Long member_id;
@@ -21,11 +21,11 @@ public class ItemResponseDto {
     public LocalDateTime createdAt;
     public LocalDateTime updatedAt;
 
-    public ItemResponseDto() {
+    public ResponseDTO() {
     }
 
-    public static ItemResponseDto from(Item item) {
-        return new ItemResponseDto(
+    public static ResponseDTO from(Item item) {
+        return new ResponseDTO(
                 item.getId(),
                 item.getMember().getId(),
                 item.getStatus(),
@@ -39,7 +39,7 @@ public class ItemResponseDto {
         );
     }
 
-    public List<ItemResponseDto> fromList(List<Item> items) {
+    public List<ResponseDTO> fromList(List<Item> items) {
         return items.stream().map(item -> from(item)).collect(Collectors.toList());
     }
 }

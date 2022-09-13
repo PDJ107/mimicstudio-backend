@@ -3,8 +3,8 @@ package soma.gstbackend.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import soma.gstbackend.dto.ItemRequestDto;
-import soma.gstbackend.dto.ItemResponseDto;
+import soma.gstbackend.dto.item.RequestDTO;
+import soma.gstbackend.dto.item.ResponseDTO;
 import soma.gstbackend.entity.Category;
 import soma.gstbackend.entity.Item;
 import soma.gstbackend.entity.Member;
@@ -28,12 +28,12 @@ public class ItemController {
     private final MessageProcessor messageProcessor;
 
     @PostMapping("/3d-items")
-    public ResponseEntity create(@RequestBody @Valid ItemRequestDto itemRequestDto) throws Exception {
+    public ResponseEntity create(@RequestBody @Valid RequestDTO request) throws Exception {
 
-        Category category = categoryService.findCategory(itemRequestDto.categoryId);
+        Category category = categoryService.findCategory(request.categoryId);
         Member member = memberService.findMember(45L); // test member id - 45L
 
-        Item item = itemRequestDto.toEntity(member, category);
+        Item item = request.toEntity(member, category);
 
         // 아이템 등록
         itemService.join(item);
@@ -46,15 +46,15 @@ public class ItemController {
     }
 
     @GetMapping("/3d-items/{id}")
-    public ResponseEntity<ItemResponseDto> read(@PathVariable Long id) throws Exception {
+    public ResponseEntity<ResponseDTO> read(@PathVariable Long id) throws Exception {
         Item item = itemService.findItem(id);
-        return ResponseEntity.ok().body(new ItemResponseDto().from(item));
+        return ResponseEntity.ok().body(new ResponseDTO().from(item));
     }
 
     @GetMapping("/3d-items")
-    public ResponseEntity<List<ItemResponseDto>> readAll() {
+    public ResponseEntity<List<ResponseDTO>> readAll() {
         List<Item> items = itemService.findItems();
-        return ResponseEntity.ok().body(new ItemResponseDto().fromList(items));
+        return ResponseEntity.ok().body(new ResponseDTO().fromList(items));
     }
 
     @DeleteMapping("/3d-items/{id}")
