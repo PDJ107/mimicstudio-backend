@@ -8,7 +8,6 @@ import soma.gstbackend.entity.Category;
 import soma.gstbackend.entity.Item;
 import soma.gstbackend.entity.ItemStatus;
 import soma.gstbackend.entity.Member;
-import soma.gstbackend.exception.CategoryException;
 
 import java.util.List;
 import java.util.Map;
