@@ -23,6 +23,8 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
@@ -107,7 +109,12 @@ class MemberControllerTest {
         //then
         result.andExpect(status().isOk())
                 .andDo(document("members-login",
-                        preprocessRequest(prettyPrint()),
+                        preprocessRequest(
+                                modifyParameters()
+                                        .remove("phoneNumber")
+                                        .remove("email"),
+                                prettyPrint()
+                        ),
                         preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("account").description("계정 이름"),
@@ -143,6 +150,9 @@ class MemberControllerTest {
                 .andDo(document("members-myinfo",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
+                        requestHeaders(
+                                headerWithName("Authorization").description("Bearer + 액세스 토큰")
+                        ),
                         responseFields(
                                 fieldWithPath("account").description("계정 이름"),
                                 fieldWithPath("phoneNumber").description("전화번호"),

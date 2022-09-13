@@ -87,7 +87,7 @@ use of HTTP status codes.
 `POST` 요청을 사용해 새로운 회원을 등록합니다.
 `access_token`, `refresh_token` 을 반환합니다.
 
-operation::members-signup[snippets='request-fields,http-request,http-response']
+operation::members-signup[snippets='request-fields,http-request,response-fields,http-response']
 
 [[resources_members_login]]
 === 로그인
@@ -95,7 +95,7 @@ operation::members-signup[snippets='request-fields,http-request,http-response']
 `POST` 요청으로 회원가입된 계정에 로그인합니다.
 `access_token`, `refresh_token` 을 반환합니다.
 
-operation::members-login[snippets='request-fields,http-request,http-response']
+operation::members-login[snippets='request-fields,http-request,response-fields,http-response']
 
 [[resources_members_signup]]
 === 내 정보 확인
@@ -103,7 +103,7 @@ operation::members-login[snippets='request-fields,http-request,http-response']
 `GET` 요청으로 로그인된 내 정보를 확인합니다.
 `Authorization` 헤더를 `Bearer access_token` 으로 설정해야합니다.
 
-operation::members-myinfo[snippets='http-request,http-response']
+operation::members-myinfo[snippets='request-headers,http-request,response-fields,http-response']
 
 
 
@@ -123,7 +123,7 @@ operation::item-create[snippets='request-fields,http-request,http-response']
 
 `GET` 요청으로 item_id를 받아 특정 3D 아이템 정보를 조회합니다.
 
-operation::item-findOne[snippets='response-fields,http-request,http-response']
+operation::item-findOne[snippets='http-request,response-fields,http-response']
 
 [[resources_items_list]]
 === 3D 아이템 조회 (All)
@@ -131,7 +131,7 @@ operation::item-findOne[snippets='response-fields,http-request,http-response']
 `GET` 요청으로 모든 3D 아이템 정보를 조회합니다.
 추후 페이지네이션, 검색, 조건 등을 구현할 예정입니다.
 
-operation::item-findAll[snippets='response-fields,http-request,http-response']
+operation::item-findAll[snippets='http-request,response-fields,http-response']
 
 
 
