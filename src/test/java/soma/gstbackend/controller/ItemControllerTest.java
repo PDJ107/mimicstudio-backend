@@ -24,10 +24,11 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static soma.gstbackend.ApiDocumentUtils.getDocumentRequest;
+import static soma.gstbackend.ApiDocumentUtils.getDocumentResponse;
 
 @WebMvcTest(ItemController.class)
 @MockBean(JpaMetamodelMappingContext.class)
@@ -76,8 +77,8 @@ class ItemControllerTest {
         // then
         result.andExpect(status().isAccepted())
                 .andDo(document("item-create",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
+                        getDocumentRequest(),
+                        getDocumentResponse(),
                         requestFields(
                                 fieldWithPath("s3Key").description("이미지가 저장된 s3 디렉토리 key"),
                                 fieldWithPath("isPublic").description("3D 아이템 공개 여부"),
@@ -114,8 +115,8 @@ class ItemControllerTest {
         // then
         result.andExpect(status().isOk())
                 .andDo(document("item-findOne",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
+                        getDocumentRequest(),
+                        getDocumentResponse(),
                         responseFields(
                                 fieldWithPath("id").description("3D 아이템 ID"),
                                 fieldWithPath("member_id").description("회원 ID"),
@@ -167,8 +168,8 @@ class ItemControllerTest {
         // then
         result.andExpect(status().isOk())
                 .andDo(document("item-findAll",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
+                        getDocumentRequest(),
+                        getDocumentResponse(),
                         responseFields(
                                 fieldWithPath("[].id").description("3D 아이템의 ID"),
                                 fieldWithPath("[].member_id").description("회원 ID"),
@@ -197,8 +198,8 @@ class ItemControllerTest {
         // then
         result.andExpect(status().isNoContent())
                 .andDo(document("item-remove",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())
+                        getDocumentRequest(),
+                        getDocumentResponse()
                 ));
     }
 }

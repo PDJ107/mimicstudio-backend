@@ -25,11 +25,11 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static soma.gstbackend.ApiDocumentUtils.getDocumentRequest;
+import static soma.gstbackend.ApiDocumentUtils.getDocumentResponse;
 
 @WebMvcTest(MemberController.class)
 @MockBean(JpaMetamodelMappingContext.class)
@@ -66,8 +66,8 @@ class MemberControllerTest {
         //then
         result.andExpect(status().isOk())
                 .andDo(document("members-signup",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
+                        getDocumentRequest(),
+                        getDocumentResponse(),
                         requestFields(
                                 fieldWithPath("account").description("계정 이름"),
                                 fieldWithPath("password").description("계정 비밀번호"),
@@ -108,8 +108,8 @@ class MemberControllerTest {
         //then
         result.andExpect(status().isOk())
                 .andDo(document("members-login",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
+                        getDocumentRequest(),
+                        getDocumentResponse(),
                         requestFields(
                                 fieldWithPath("account").description("계정 이름"),
                                 fieldWithPath("password").description("계정 비밀번호")
@@ -140,8 +140,8 @@ class MemberControllerTest {
         //then
         result.andExpect(status().isOk())
                 .andDo(document("members-myinfo",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
+                        getDocumentRequest(),
+                        getDocumentResponse(),
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer + 액세스 토큰")
                         ),
