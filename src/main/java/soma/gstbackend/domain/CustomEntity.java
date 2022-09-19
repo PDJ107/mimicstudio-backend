@@ -1,4 +1,4 @@
-package soma.gstbackend.entity;
+package soma.gstbackend.domain;
 
 import lombok.Builder;
 import lombok.Getter;

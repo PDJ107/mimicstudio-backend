@@ -2,7 +2,7 @@ package soma.gstbackend.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import soma.gstbackend.entity.Member;
+import soma.gstbackend.domain.Member;
 
 import javax.validation.constraints.NotNull;
 

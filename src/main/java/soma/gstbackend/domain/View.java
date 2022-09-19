@@ -1,4 +1,4 @@
-package soma.gstbackend.entity;
+package soma.gstbackend.domain;
 
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;

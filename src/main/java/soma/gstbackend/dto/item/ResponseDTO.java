@@ -1,7 +1,7 @@
 package soma.gstbackend.dto.item;
 
 import lombok.AllArgsConstructor;
-import soma.gstbackend.entity.*;
+import soma.gstbackend.domain.*;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -2,8 +2,7 @@ package soma.gstbackend.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import soma.gstbackend.entity.Category;
-import soma.gstbackend.entity.Item;
+import soma.gstbackend.domain.Category;
 
 import javax.persistence.EntityManager;
 import java.util.List;

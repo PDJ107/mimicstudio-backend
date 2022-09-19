@@ -4,10 +4,10 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import soma.gstbackend.entity.Category;
-import soma.gstbackend.entity.Item;
-import soma.gstbackend.entity.ItemStatus;
-import soma.gstbackend.entity.Member;
+import soma.gstbackend.domain.Category;
+import soma.gstbackend.domain.Item;
+import soma.gstbackend.domain.ItemStatus;
+import soma.gstbackend.domain.Member;
 
 import java.util.List;
 import java.util.Map;

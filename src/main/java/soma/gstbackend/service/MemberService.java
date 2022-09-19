@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import soma.gstbackend.dto.member.ResponseDTO;
-import soma.gstbackend.entity.Member;
+import soma.gstbackend.domain.Member;
 import soma.gstbackend.exception.ErrorCode;
 import soma.gstbackend.exception.MemberException;
 import soma.gstbackend.repository.MemberRepository;

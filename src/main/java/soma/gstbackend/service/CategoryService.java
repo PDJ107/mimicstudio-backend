@@ -3,7 +3,7 @@ package soma.gstbackend.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import soma.gstbackend.entity.Category;
+import soma.gstbackend.domain.Category;
 import soma.gstbackend.exception.CategoryException;
 import soma.gstbackend.exception.ErrorCode;
 import soma.gstbackend.repository.CategoryRepository;

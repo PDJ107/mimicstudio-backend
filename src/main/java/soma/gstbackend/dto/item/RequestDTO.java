@@ -1,10 +1,10 @@
 package soma.gstbackend.dto.item;
 
 import lombok.AllArgsConstructor;
-import soma.gstbackend.entity.Category;
-import soma.gstbackend.entity.Item;
-import soma.gstbackend.entity.ItemStatus;
-import soma.gstbackend.entity.Member;
+import soma.gstbackend.domain.Category;
+import soma.gstbackend.domain.Item;
+import soma.gstbackend.domain.ItemStatus;
+import soma.gstbackend.domain.Member;
 
 import javax.validation.constraints.NotNull;
 

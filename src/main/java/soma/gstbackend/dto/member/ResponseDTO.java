@@ -1,7 +1,7 @@
 package soma.gstbackend.dto.member;
 
 import lombok.AllArgsConstructor;
-import soma.gstbackend.entity.Member;
+import soma.gstbackend.domain.Member;
 
 @AllArgsConstructor
 public class ResponseDTO {

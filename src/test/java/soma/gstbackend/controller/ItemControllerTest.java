@@ -13,7 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import soma.gstbackend.dto.item.RequestDTO;
-import soma.gstbackend.entity.*;
+import soma.gstbackend.domain.*;
 import soma.gstbackend.service.CategoryService;
 import soma.gstbackend.service.ItemService;
 import soma.gstbackend.service.MemberService;
