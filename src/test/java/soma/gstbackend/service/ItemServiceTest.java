@@ -3,11 +3,10 @@ package soma.gstbackend.service;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
-import soma.gstbackend.domain.Category;
-import soma.gstbackend.domain.Item;
-import soma.gstbackend.domain.ItemStatus;
-import soma.gstbackend.domain.Member;
+import soma.gstbackend.domain.*;
 
 import java.util.List;
 import java.util.Map;
@@ -85,7 +84,10 @@ public class ItemServiceTest {
         Member testMember = getTestMember("abcd", "12345678", "test@gamil.com");
         Category testCategory = getTestCategory(99999L, "test-category");
 
-        int currItemNum = itemService.findItems().size();
+        ItemSearch search = ItemSearch.builder().build();
+        Pageable pageable = PageRequest.of(0, 10);
+
+        int currItemNum = itemService.findItems(search, pageable).getContent().size();
 
         //String s3key = testMember.getId() + "/" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         Item testItem = getTestItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", false);
@@ -93,7 +95,7 @@ public class ItemServiceTest {
         Item testItem3 = getTestItem(testMember, testCategory, ItemStatus.enqueue, "/0/20220805123456", false);
 
         // when
-        List<Item> items = itemService.findItems();
+        List<Item> items = itemService.findItems(search, pageable).getContent();
 
         // then
         assertEquals(items.size()-currItemNum, 3);
@@ -114,10 +116,13 @@ public class ItemServiceTest {
         Item testItem2 = getTestItem(testMember, testCategory, ItemStatus.generating, "/0/20220805123456", false);
         Item testItem3 = getTestItem(testMember, testCategory, ItemStatus.enqueue, "/0/20220805123456", false);
 
+        ItemSearch search = ItemSearch.builder().build();
+        Pageable pageable = PageRequest.of(0, 10);
+
         // when
         itemService.removeItem(testItem.getId());
         itemService.removeItem(testItem2.getId());
-        List<Item> items = itemService.findItems();
+        List<Item> items = itemService.findItems(search, pageable).getContent();
 
         // then
         assertFalse(items.contains(testItem));
