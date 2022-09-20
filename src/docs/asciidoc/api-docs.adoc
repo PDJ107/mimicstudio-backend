@@ -126,14 +126,17 @@ operation::item-create[snippets='request-fields,http-request,http-response']
 operation::item-findOne[snippets='http-request,response-fields,http-response']
 
 [[resources_items_list]]
-=== 3D 아이템 조회 (All)
+=== 3D 아이템 조회 (Search and Pagination)
 
-`GET` 요청으로 모든 3D 아이템 정보를 조회합니다.
-추후 페이지네이션, 검색, 조건 등을 구현할 예정입니다.
+`GET` 요청으로 특정 조건의 3D 아이템 정보를 조회합니다.
 
+operation::item-pagination1[snippets='request-fields']
 operation::item-findAll[snippets='http-request,response-fields,http-response']
 
-
+==== 페이지네이션 1
+operation::item-pagination1[snippets='http-request,http-response']
+==== 페이지네이션 2
+operation::item-pagination2[snippets='http-request,http-response']
 
 [[resources_items_remove]]
 === 3D 아이템 삭제
