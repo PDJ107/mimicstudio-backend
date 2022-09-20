@@ -1,13 +1,17 @@
 package soma.gstbackend.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import soma.gstbackend.dto.item.RequestDTO;
-import soma.gstbackend.dto.item.ResponseDTO;
+import soma.gstbackend.domain.ItemSearch;
+import soma.gstbackend.dto.item.ItemRequest;
+import soma.gstbackend.dto.item.ItemResponse;
 import soma.gstbackend.domain.Category;
 import soma.gstbackend.domain.Item;
 import soma.gstbackend.domain.Member;
+import soma.gstbackend.dto.page.PageResponse;
 import soma.gstbackend.service.CategoryService;
 import soma.gstbackend.service.ItemService;
 import soma.gstbackend.service.MemberService;
@@ -16,7 +20,7 @@ import soma.gstbackend.util.form.MessageForm;
 import soma.gstbackend.util.MessageProcessor;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +32,7 @@ public class ItemController {
     private final MessageProcessor messageProcessor;
 
     @PostMapping("/3d-items")
-    public ResponseEntity create(@RequestBody @Valid RequestDTO request) throws Exception {
+    public ResponseEntity create(@RequestBody @Valid ItemRequest request) throws Exception {
 
         Category category = categoryService.findCategory(request.categoryId);
         Member member = memberService.findMember(45L); // test member id - 45L
@@ -46,15 +50,19 @@ public class ItemController {
     }
 
     @GetMapping("/3d-items/{id}")
-    public ResponseEntity<ResponseDTO> read(@PathVariable Long id) throws Exception {
+    public ResponseEntity<ItemResponse> read(@PathVariable Long id) throws Exception {
         Item item = itemService.findItem(id);
-        return ResponseEntity.ok().body(new ResponseDTO().from(item));
+        return ResponseEntity.ok().body(new ItemResponse().from(item));
     }
 
     @GetMapping("/3d-items")
-    public ResponseEntity<List<ResponseDTO>> readAll() {
-        List<Item> items = itemService.findItems();
-        return ResponseEntity.ok().body(new ResponseDTO().fromList(items));
+    public ResponseEntity<PageResponse> search(
+            @RequestBody ItemSearch search,
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size
+            ) {
+        Page<Item> itemPage = itemService.findItems(search, PageRequest.of(page, size));
+        return ResponseEntity.ok().body(ItemResponse.fromPage(itemPage));
     }
 
     @DeleteMapping("/3d-items/{id}")

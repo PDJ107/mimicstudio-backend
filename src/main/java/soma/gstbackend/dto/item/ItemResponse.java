@@ -4,13 +4,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import soma.gstbackend.domain.*;
+import soma.gstbackend.dto.page.PageResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class ResponseDTO {
+public class ItemResponse {
 
     public Long id;
     public Long member_id;
@@ -23,11 +24,11 @@ public class ResponseDTO {
     public LocalDateTime createdAt;
     public LocalDateTime updatedAt;
 
-    public ResponseDTO() {
+    public ItemResponse() {
     }
 
-    public static ResponseDTO from(Item item) {
-        return new ResponseDTO(
+    public static ItemResponse from(Item item) {
+        return new ItemResponse(
                 item.getId(),
                 item.getMember().getId(),
                 item.getStatus(),
@@ -41,16 +42,21 @@ public class ResponseDTO {
         );
     }
 
-    public Page<ResponseDTO> fromPage(Page<Item> page) {
-        List<Item> itemList = page.getContent();
-        return new PageImpl<>(
-                new ResponseDTO().fromList(itemList),
+    public static PageResponse fromPage(Page<Item> page) {
+        List<ItemResponse> contents = fromList(page.getContent());
+        return new PageResponse<ItemResponse>(
+                contents,
                 page.getPageable(),
-                page.getTotalPages()
+                page.isLast(),
+                page.isFirst(),
+                page.isEmpty(),
+                page.getTotalPages(),
+                page.getTotalElements(),
+                page.getNumberOfElements()
         );
     }
 
-    public List<ResponseDTO> fromList(List<Item> items) {
+    public static List<ItemResponse> fromList(List<Item> items) {
         return items.stream().map(item -> from(item)).collect(Collectors.toList());
     }
 }

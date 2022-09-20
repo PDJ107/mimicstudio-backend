@@ -1,9 +1,12 @@
 package soma.gstbackend.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soma.gstbackend.domain.Item;
+import soma.gstbackend.domain.ItemSearch;
 import soma.gstbackend.exception.ErrorCode;
 import soma.gstbackend.exception.ItemException;
 import soma.gstbackend.repository.ItemRepository;
@@ -33,8 +36,8 @@ public class ItemService {
     }
 
     @Transactional(readOnly = true)
-    public List<Item> findItems() {
-        return itemRepository.findAll();
+    public Page<Item> findItems(ItemSearch search, Pageable pageable) {
+        return itemRepository.findAll(search, pageable);
     }
 
     public void removeItem(Long itemId) throws Exception {
