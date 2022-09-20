@@ -135,7 +135,6 @@ class ItemControllerTest {
                 getDocumentRequest(),
                 getDocumentResponse(),
                 requestFields(
-                        fieldWithPath("memberName").description("account 이름으로 검색"),
                         fieldWithPath("itemTitle").description("3D 아이템 제목으로 검색"),
                         fieldWithPath("categoryName").description("카테고리 이름으로 검색")
                 ),
@@ -193,7 +192,7 @@ class ItemControllerTest {
 
         List<Item> items = generateItemList(2, category, member);
 
-        ItemSearch search = new ItemSearch(null, null, null);
+        ItemSearch search = new ItemSearch(null, null);
         Pageable pageable = PageRequest.of(0, 10);
 
         given(itemService.findItems(any(), any()))
@@ -220,7 +219,7 @@ class ItemControllerTest {
 
         List<Item> items = generateItemList(5, category, member);
 
-        ItemSearch search = new ItemSearch(null, null, null);
+        ItemSearch search = new ItemSearch(null, null);
         Pageable pageable1 = PageRequest.of(0, 3);
         Pageable pageable2 = PageRequest.of(1, 3);
 

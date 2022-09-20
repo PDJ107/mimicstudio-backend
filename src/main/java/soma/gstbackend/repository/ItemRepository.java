@@ -63,10 +63,10 @@ public class ItemRepository {
     public Page<Item> findAll(ItemSearch search, Pageable pageable) {
 
         QItem item = QItem.item;
-        QMember member = QMember.member;
+        //QMember member = QMember.member;
 
         List<Item> result =  query.select(item)
-                .leftJoin(item.member, member)
+                //.leftJoin(item.member, member)
                 .from(item)
                 .where(
                         titleLike(search.getItemTitle()),
@@ -78,7 +78,7 @@ public class ItemRepository {
                 .fetch();
 
         JPAQuery<Item> countQuery = query.select(item)
-                .leftJoin(item.member, member)
+                //.leftJoin(item.member, member)
                 .from(item)
                 .where(
                         titleLike(search.getItemTitle()),

@@ -8,7 +8,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class ItemSearch {
-    private String memberName;
+    //private String memberName;
     private String itemTitle;
     private String categoryName;
 }
