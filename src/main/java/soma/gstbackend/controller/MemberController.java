@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soma.gstbackend.annotation.Auth;
 import soma.gstbackend.dto.member.LoginDTO;
-import soma.gstbackend.dto.member.RequestDTO;
+import soma.gstbackend.dto.member.MemberRequest;
 import soma.gstbackend.service.MemberService;
 
 import javax.validation.Valid;
@@ -19,7 +19,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity signUp(@RequestBody @Valid RequestDTO request) throws Exception {
+    public ResponseEntity signUp(@RequestBody @Valid MemberRequest request) throws Exception {
         Map<String, Object> tokens = memberService.join(request.toEntity());
         return ResponseEntity.ok().body(tokens);
     }

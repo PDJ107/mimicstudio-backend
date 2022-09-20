@@ -13,8 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import soma.gstbackend.dto.member.LoginDTO;
-import soma.gstbackend.dto.member.RequestDTO;
-import soma.gstbackend.dto.member.ResponseDTO;
+import soma.gstbackend.dto.member.MemberRequest;
+import soma.gstbackend.dto.member.MemberResponse;
 import soma.gstbackend.service.MemberService;
 
 import java.util.HashMap;
@@ -46,7 +46,7 @@ class MemberControllerTest {
     @DisplayName("회원가입")
     void signUp() throws Exception {
         //given
-        RequestDTO request = new RequestDTO("test-member", "test-password", "010-1234-5678", "test@test.com");
+        MemberRequest request = new MemberRequest("test-member", "test-password", "010-1234-5678", "test@test.com");
 
         Map<String, Object> tokens = new HashMap<>();
         tokens.put("access_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2Mjk4ODcwMX0.L8OlWRqnlsZTzUDAi8RhkiCqdGRmigjjRTlnFVYcBMo");
@@ -125,7 +125,7 @@ class MemberControllerTest {
     @DisplayName("내 정보")
     void myInfo() throws Exception {
         //given
-        ResponseDTO response = new ResponseDTO("test-member", "010-1234-5678", "test@test.com");
+        MemberResponse response = new MemberResponse("test-member", "010-1234-5678", "test@test.com");
         String testToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2Mjk4ODcwMX0.L8OlWRqnlsZTzUDAi8RhkiCqdGRmigjjRTlnFVYcBMo";
 
         given(memberService.getInfo())

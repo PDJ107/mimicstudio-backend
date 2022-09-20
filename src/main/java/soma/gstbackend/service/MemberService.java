@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import soma.gstbackend.dto.member.ResponseDTO;
+import soma.gstbackend.dto.member.MemberResponse;
 import soma.gstbackend.domain.Member;
 import soma.gstbackend.exception.ErrorCode;
 import soma.gstbackend.exception.MemberException;
@@ -55,12 +55,12 @@ public class MemberService {
         return jwtUtil.getTokens(userData.getId());
     }
 
-    public ResponseDTO getInfo() throws Exception {
+    public MemberResponse getInfo() throws Exception {
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                         .getRequest();
         Long id = jwtUtil.getIdFromToken(request.getHeader("Authorization"));
-        return ResponseDTO.from(findMember(id));
+        return MemberResponse.from(findMember(id));
     }
 
     @Transactional(readOnly = true)
