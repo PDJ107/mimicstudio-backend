@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @Builder
-public class RequestDTO {
+public class MemberRequest {
     @NotNull(message = "account 값이 Null 입니다.")
     public final String account;
 

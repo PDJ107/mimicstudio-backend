@@ -4,14 +4,14 @@ import lombok.AllArgsConstructor;
 import soma.gstbackend.domain.Member;
 
 @AllArgsConstructor
-public class ResponseDTO {
+public class MemberResponse {
 
     public String account;
     public String phoneNumber;
     public String email;
 
-    public static ResponseDTO from(Member member) {
-        return new ResponseDTO(
+    public static MemberResponse from(Member member) {
+        return new MemberResponse(
                 member.getAccount(),
                 member.getPhoneNumber(),
                 member.getEmail()

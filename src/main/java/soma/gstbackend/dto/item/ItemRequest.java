@@ -9,7 +9,7 @@ import soma.gstbackend.domain.Member;
 import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
-public class RequestDTO {
+public class ItemRequest {
     @NotNull(message = "s3 key 값이 Null 입니다.")
     public final String s3Key;
 

@@ -1,6 +1,8 @@
 package soma.gstbackend.dto.item;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import soma.gstbackend.domain.*;
 
 import java.time.LocalDateTime;
@@ -36,6 +38,15 @@ public class ResponseDTO {
                 item.getDescript(),
                 item.getCreatedAt(),
                 item.getUpdatedAt()
+        );
+    }
+
+    public Page<ResponseDTO> fromPage(Page<Item> page) {
+        List<Item> itemList = page.getContent();
+        return new PageImpl<>(
+                new ResponseDTO().fromList(itemList),
+                page.getPageable(),
+                page.getTotalPages()
         );
     }
 
