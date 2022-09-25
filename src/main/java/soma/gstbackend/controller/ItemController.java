@@ -57,7 +57,7 @@ public class ItemController {
 
     @GetMapping("/3d-items")
     public ResponseEntity<PageResponse> search(
-            @RequestBody ItemSearch search,
+            @RequestBody(required = false) ItemSearch search,
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "size", required = false, defaultValue = "10") int size
             ) {
