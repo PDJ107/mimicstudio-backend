@@ -33,6 +33,11 @@ public class MemberService {
             throw new MemberException(ErrorCode.Account_Already_Exists);
         }
 
+        // email 중복 체크
+        if(memberRepository.findByEmail(member.getEmail()) != null) {
+            throw new MemberException(ErrorCode.Email_Already_Exists);
+        }
+
         // 비밀번호 암호화
         String password = encoder.encode(member.getPassword());
         member.setPassword(password);

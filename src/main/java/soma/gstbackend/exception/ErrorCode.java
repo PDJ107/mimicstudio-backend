@@ -10,9 +10,10 @@ public enum ErrorCode {
     Member_Not_Found("USER_01", "존재하지 않는 회원입니다.", HttpStatus.NOT_FOUND),
     User_Invalid_Request("USER_02", "account 또는 password가 틀렸습니다.", HttpStatus.BAD_REQUEST),
     Account_Already_Exists("USER_03", "이미 존재하는 Account 입니다.", HttpStatus.BAD_REQUEST),
-    Account_Is_Null("USER_08", "account가 Null입니다.", HttpStatus.BAD_REQUEST),
-    Password_Is_Null("USER_09", "password가 Null입니다.", HttpStatus.BAD_REQUEST),
-    User_Id_Is_Null("USER_10", "User id가 Null입니다.", HttpStatus.BAD_REQUEST),
+    Account_Is_Null("USER_04", "account가 Null입니다.", HttpStatus.BAD_REQUEST),
+    Password_Is_Null("USER_05", "password가 Null입니다.", HttpStatus.BAD_REQUEST),
+    User_Id_Is_Null("USER_06", "User id가 Null입니다.", HttpStatus.BAD_REQUEST),
+    Email_Already_Exists("USER_07", "이미 존재하는 Email 입니다.", HttpStatus.BAD_REQUEST),
 
     Token_Is_Null("TOKEN_01", "토큰이 Null 입니다.", HttpStatus.UNAUTHORIZED),
     Expired_Token("TOKEN_02", "토큰이 만료됐습니다.", HttpStatus.UNAUTHORIZED),

@@ -37,4 +37,14 @@ public class MemberRepository {
             return null;
         }
     }
+
+    public Member findByEmail(String email) {
+        try {
+            return em.createQuery("select m from Member m where m.email = :email", Member.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch(Exception e) {
+            return null;
+        }
+    }
 }

@@ -16,6 +16,8 @@ public class MemberRequest {
     public final String password;
 
     public final String phoneNumber;
+
+    @NotNull(message = "email 값이 Null 입니다.")
     public final String email;
 
     public Member toEntity() {
