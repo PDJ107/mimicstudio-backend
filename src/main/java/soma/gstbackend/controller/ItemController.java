@@ -20,7 +20,6 @@ import soma.gstbackend.util.form.MessageForm;
 import soma.gstbackend.util.MessageProcessor;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,8 +42,8 @@ public class ItemController {
         itemService.join(item);
 
         // SQS 메시지 전송
-        MessageForm messageForm = new ItemMessageForm(item.getId(), item.getS3Key());
-        messageProcessor.send(messageForm);
+        //MessageForm messageForm = new ItemMessageForm(item.getId(), item.getS3Key());
+        //messageProcessor.send(messageForm);
 
         return ResponseEntity.accepted().build();
     }
