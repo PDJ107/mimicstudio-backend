@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
@@ -132,10 +133,18 @@ class MemberControllerTest {
     @DisplayName("토큰 재발급")
     public void refresh() throws Exception {
         // given
+        String testAccessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2Mjk4ODcwMX0.L8OlWRqnlsZTzUDAi8RhkiCqdGRmigjjRTlnFVYcBMo";
+        String testRefreshToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2MzA3MTUwMX0.3rtD3AFDSXO5cVKO4ooPbesEALe1DJ1d5OzgjJt-Z7A";
+
+
         doNothing().when(jwtUtil).validateRefreshToken(any());
+
+        given(jwtUtil.getAccessToken(any(), anyInt()))
+                .willReturn(testAccessToken);
+
         Cookie cookie = new Cookie(
                 "refreshToken",
-                "refreshToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2MzA3MTUwMX0.3rtD3AFDSXO5cVKO4ooPbesEALe1DJ1d5OzgjJt-Z7A; Path=/; Secure; HttpOnly; Expires=Mon, 03 Oct 2022 14:17:33 GMT;"
+                "refreshToken=" + testRefreshToken + "; Path=/; Secure; HttpOnly; Expires=Mon, 03 Oct 2022 14:17:33 GMT;"
         );
 
         // when
