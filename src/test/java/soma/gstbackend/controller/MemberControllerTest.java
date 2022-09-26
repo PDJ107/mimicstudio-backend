@@ -144,7 +144,7 @@ class MemberControllerTest {
 
         Cookie cookie = new Cookie(
                 "refreshToken",
-                "refreshToken=" + testRefreshToken + "; Path=/; Secure; HttpOnly; Expires=Mon, 03 Oct 2022 14:17:33 GMT;"
+                testRefreshToken + "; Path=/; Secure; HttpOnly; Expires=Mon, 03 Oct 2022 14:17:33 GMT;"
         );
 
         // when
