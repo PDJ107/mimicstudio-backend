@@ -105,7 +105,7 @@ operation::members-login[snippets='request-fields,http-request,response-headers,
 
 operation::members-refresh[snippets='http-request,response-fields,http-response']
 
-[[resources_members_signup]]
+[[resources_members_myinfo]]
 === 내 정보 확인
 
 `GET` 요청으로 로그인된 내 정보를 확인합니다.
