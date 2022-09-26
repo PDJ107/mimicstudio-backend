@@ -58,13 +58,13 @@ public class JwtUtil {
     public Map<String, Object> getTokens(Long memberId) {
         Map<String, Object> tokens = new HashMap<>();
 
-        tokens.put("access_token", getAccessToken(memberId, 1));
-        tokens.put("refresh_token", getAccessToken(memberId, 24));
+        tokens.put("accessToken", getAccessToken(memberId, 1));
+        tokens.put("refreshToken", getAccessToken(memberId, 24));
 
         return tokens;
     }
 
-    public void isValid(String token) throws Exception {
+    public void validateToken(String token) throws Exception {
         if ( token == null) {
             throw new AuthException(ErrorCode.Token_Is_Null);
         } else if (!token.startsWith("Bearer ")){
@@ -81,12 +81,14 @@ public class JwtUtil {
         }
     }
 
+    public void validateRefreshToken(String token) throws Exception {
+        validateToken(token);
+
+        // refresh validate logic...
+    }
+
     public Long getIdFromToken(String token) throws Exception {
-        try {
-            isValid(token);
-        } catch (Exception e) {
-            throw e;
-        }
+        validateToken(token);
         token = token.substring(7); // "Bearer " 제거
         Claims claims = Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(token).getBody();
         return claims.get("id", Long.class);

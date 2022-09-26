@@ -16,14 +16,16 @@ import soma.gstbackend.dto.member.LoginDTO;
 import soma.gstbackend.dto.member.MemberRequest;
 import soma.gstbackend.dto.member.MemberResponse;
 import soma.gstbackend.service.MemberService;
+import soma.gstbackend.util.JwtUtil;
 
+import javax.servlet.http.Cookie;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -41,6 +43,7 @@ class MemberControllerTest {
     @Autowired ObjectMapper objectMapper;
 
     @MockBean MemberService memberService;
+    @MockBean JwtUtil jwtUtil;
 
     @Test
     @DisplayName("회원가입")
@@ -48,12 +51,12 @@ class MemberControllerTest {
         //given
         MemberRequest request = new MemberRequest("test-member", "test-password", "010-1234-5678", "test@test.com");
 
-        Map<String, Object> tokens = new HashMap<>();
-        tokens.put("access_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2Mjk4ODcwMX0.L8OlWRqnlsZTzUDAi8RhkiCqdGRmigjjRTlnFVYcBMo");
-        tokens.put("refresh_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2MzA3MTUwMX0.3rtD3AFDSXO5cVKO4ooPbesEALe1DJ1d5OzgjJt-Z7A");
+        Map<String, Object> responseToken = new HashMap<>();
+        responseToken.put("accessToken", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2Mjk4ODcwMX0.L8OlWRqnlsZTzUDAi8RhkiCqdGRmigjjRTlnFVYcBMo");
+        responseToken.put("refreshToken", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2MzA3MTUwMX0.3rtD3AFDSXO5cVKO4ooPbesEALe1DJ1d5OzgjJt-Z7A");
 
         given(memberService.join(any()))
-                .willReturn(tokens);
+                .willReturn(responseToken);
 
         //when
         ResultActions result = this.mockMvc.perform(
@@ -74,9 +77,11 @@ class MemberControllerTest {
                                 fieldWithPath("phoneNumber").description("전화번호"),
                                 fieldWithPath("email").description("이메일")
                         ),
+                        responseHeaders(
+                                headerWithName("Set-Cookie").description("리프레쉬 토큰 쿠키로 등록")
+                        ),
                         responseFields(
-                                fieldWithPath("access_token").description("액세스 토큰"),
-                                fieldWithPath("refresh_token").description("리프레쉬 토큰")
+                                fieldWithPath("accessToken").description("액세스 토큰")
                         )
                 ));
     }
@@ -86,16 +91,16 @@ class MemberControllerTest {
     void login() throws Exception {
         //given
         LoginDTO request = LoginDTO.builder()
-                .account("test-member")
+                .email("test-email@test.com")
                 .password("test-password")
                 .build();
 
-        Map<String, Object> tokens = new HashMap<>();
-        tokens.put("access_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2Mjk4ODcwMX0.L8OlWRqnlsZTzUDAi8RhkiCqdGRmigjjRTlnFVYcBMo");
-        tokens.put("refresh_token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2MzA3MTUwMX0.3rtD3AFDSXO5cVKO4ooPbesEALe1DJ1d5OzgjJt-Z7A");
+        Map<String, Object> responseToken = new HashMap<>();
+        responseToken.put("accessToken", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2Mjk4ODcwMX0.L8OlWRqnlsZTzUDAi8RhkiCqdGRmigjjRTlnFVYcBMo");
+        responseToken.put("refreshToken", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2MzA3MTUwMX0.3rtD3AFDSXO5cVKO4ooPbesEALe1DJ1d5OzgjJt-Z7A");
 
         given(memberService.login(any()))
-                .willReturn(tokens);
+                .willReturn(responseToken);
 
         //when
         ResultActions result = this.mockMvc.perform(
@@ -111,12 +116,41 @@ class MemberControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
-                                fieldWithPath("account").description("계정 이름"),
+                                fieldWithPath("email").description("이메일"),
                                 fieldWithPath("password").description("계정 비밀번호")
                         ),
+                        responseHeaders(
+                                headerWithName("Set-Cookie").description("리프레쉬 토큰 쿠키로 등록")
+                        ),
                         responseFields(
-                                fieldWithPath("access_token").description("액세스 토큰"),
-                                fieldWithPath("refresh_token").description("리프레쉬 토큰")
+                                fieldWithPath("accessToken").description("액세스 토큰")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("토큰 재발급")
+    public void refresh() throws Exception {
+        // given
+        doNothing().when(jwtUtil).validateRefreshToken(any());
+        Cookie cookie = new Cookie(
+                "refreshToken",
+                "refreshToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2MzA3MTUwMX0.3rtD3AFDSXO5cVKO4ooPbesEALe1DJ1d5OzgjJt-Z7A; Path=/; Secure; HttpOnly; Expires=Mon, 03 Oct 2022 14:17:33 GMT;"
+        );
+
+        // when
+        ResultActions result = this.mockMvc.perform(
+                post("/members/refresh")
+                        .cookie(cookie)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(document("members-refresh",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        responseFields(
+                                fieldWithPath("accessToken").description("액세스 토큰")
                         )
                 ));
     }

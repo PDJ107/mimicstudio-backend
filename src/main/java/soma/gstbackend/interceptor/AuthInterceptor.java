@@ -2,7 +2,7 @@ package soma.gstbackend.interceptor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 import soma.gstbackend.annotation.Auth;
 import soma.gstbackend.util.JwtUtil;
 
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
-public class AuthInterceptor extends HandlerInterceptorAdapter {
+public class AuthInterceptor implements HandlerInterceptor {
     private final JwtUtil jwtUtil;
 
     @Override
@@ -24,7 +24,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             return true;
         } else {
             try {
-                jwtUtil.isValid(request.getHeader("Authorization"));
+                jwtUtil.validateToken(request.getHeader("Authorization"));
                 return true;
             } catch (Exception e) {
                 throw e;
