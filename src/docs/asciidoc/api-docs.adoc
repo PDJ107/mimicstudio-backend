@@ -85,17 +85,25 @@ use of HTTP status codes.
 === 회원가입
 
 `POST` 요청을 사용해 새로운 회원을 등록합니다.
-`access_token`, `refresh_token` 을 반환합니다.
+`accessToken` 을 반환하고 `refreshToken` 을 쿠키로 등록합니다.
 
-operation::members-signup[snippets='request-fields,http-request,response-fields,http-response']
+operation::members-signup[snippets='request-fields,http-request,response-headers,response-fields,http-response']
 
 [[resources_members_login]]
 === 로그인
 
 `POST` 요청으로 회원가입된 계정에 로그인합니다.
-`access_token`, `refresh_token` 을 반환합니다.
+`accessToken` 을 반환하고 `refreshToken` 을 쿠키로 등록합니다.
 
-operation::members-login[snippets='request-fields,http-request,response-fields,http-response']
+operation::members-login[snippets='request-fields,http-request,response-headers,response-fields,http-response']
+
+[[resources_members_refresh]]
+=== 액세스 토큰 재발급
+액세스 토큰이 만료된 경우 리프레쉬 토큰을 사용해 재발급 받을 수 있습니다.
+리프레쉬 토큰이 쿠키로 등록되어 있어야 합니다.
+리프레쉬 토큰까지 만료된 경우 다시 로그인 해야 합니다.
+
+operation::members-refresh[snippets='http-request,response-fields,http-response']
 
 [[resources_members_signup]]
 === 내 정보 확인
