@@ -47,7 +47,7 @@ public class MemberService {
     }
 
     public Map<String, Object> login(Member member) throws Exception {
-        Member userData = memberRepository.findByAccount(member.getAccount());
+        Member userData = memberRepository.findByEmail(member.getEmail());
         if(userData == null) {
             throw new MemberException(ErrorCode.User_Invalid_Request);
         }
