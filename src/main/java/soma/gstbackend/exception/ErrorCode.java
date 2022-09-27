@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
     Member_Not_Found("USER_01", "존재하지 않는 회원입니다.", HttpStatus.NOT_FOUND),
-    User_Invalid_Request("USER_02", "account 또는 password가 틀렸습니다.", HttpStatus.BAD_REQUEST),
+    User_Invalid_Request("USER_02", "email 또는 password가 틀렸습니다.", HttpStatus.BAD_REQUEST),
     Account_Already_Exists("USER_03", "이미 존재하는 Account 입니다.", HttpStatus.BAD_REQUEST),
     Account_Is_Null("USER_04", "account가 Null입니다.", HttpStatus.BAD_REQUEST),
     Password_Is_Null("USER_05", "password가 Null입니다.", HttpStatus.BAD_REQUEST),
