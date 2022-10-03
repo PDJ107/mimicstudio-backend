@@ -14,8 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import soma.gstbackend.domain.Member;
 import soma.gstbackend.dto.member.LoginDTO;
+import soma.gstbackend.dto.member.MemberModifyRequest;
 import soma.gstbackend.dto.member.MemberRequest;
-import soma.gstbackend.dto.member.MemberResponse;
 import soma.gstbackend.service.MemberService;
 import soma.gstbackend.util.JwtUtil;
 
@@ -23,7 +23,6 @@ import javax.servlet.http.Cookie;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
@@ -130,6 +129,96 @@ class MemberControllerTest {
                                 fieldWithPath("accessToken").description("액세스 토큰")
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("email 중복체크")
+    public void check_email() throws Exception {
+        // given
+        Map<String, Object> request = new HashMap<>();
+        request.put("email", "test@test.com");
+
+        given(memberService.checkEmail(any()))
+                .willReturn(true);
+        // when
+        ResultActions result = this.mockMvc.perform(
+                post("/members/check-email")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(document("members-check-email",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestFields(
+                                fieldWithPath("email").description("중복 체크할 email")
+                        ),
+                        responseFields(
+                                fieldWithPath("isExist").description("중복 여부 (중복이면 true)")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("account 중복체크")
+    public void check_account() throws Exception {
+        // given
+        Map<String, Object> request = new HashMap<>();
+        request.put("account", "testAccount");
+
+        given(memberService.checkAccount(any()))
+                .willReturn(true);
+        // when
+        ResultActions result = this.mockMvc.perform(
+                post("/members/check-account")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(document("members-check-account",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestFields(
+                                fieldWithPath("account").description("중복 체크할 account")
+                        ),
+                        responseFields(
+                                fieldWithPath("isExist").description("중복 여부 (중복이면 true)")
+                        )
+                ));
+    }
+
+    @Test
+    public void modify() throws Exception {
+        // given
+        MemberModifyRequest request = new MemberModifyRequest("test-account", "010-1234-5678", "test@test.com");
+
+        doNothing().when(memberService).modify(any(), any());
+
+        // when
+        ResultActions result = this.mockMvc.perform(
+                put("/members")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(document("members-modify",
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestFields(
+                        fieldWithPath("account").description("수정할 account 이름"),
+                        fieldWithPath("email").description("수정할 email"),
+                        fieldWithPath("phoneNumber").description("수정할 전화번호")
+                )
+        ));
     }
 
     @Test

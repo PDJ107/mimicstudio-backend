@@ -5,11 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soma.gstbackend.annotation.Auth;
-import soma.gstbackend.dto.SimpleResponse;
-import soma.gstbackend.dto.member.LoginDTO;
-import soma.gstbackend.dto.member.MemberModifyRequest;
-import soma.gstbackend.dto.member.MemberRequest;
-import soma.gstbackend.dto.member.MemberResponse;
+import soma.gstbackend.dto.member.*;
 import soma.gstbackend.service.MemberService;
 import soma.gstbackend.util.JwtUtil;
 
@@ -88,12 +84,12 @@ public class MemberController {
     }
 
     @PostMapping("/check-email")
-    public ResponseEntity checkEmail(@RequestBody String email) {
-        return ResponseEntity.ok().body(new SimpleResponse("isExist", memberService.checkEmail(email)));
+    public ResponseEntity checkEmail(@RequestBody String email) throws Exception {
+        return ResponseEntity.ok().body(new MemberCheckResponse(memberService.checkEmail(email)));
     }
 
     @PostMapping("/check-account")
-    public ResponseEntity checkAccount(@RequestBody String account) {
-        return ResponseEntity.ok().body(new SimpleResponse("isExist", memberService.checkAccount(account)));
+    public ResponseEntity checkAccount(@RequestBody String account) throws Exception {
+        return ResponseEntity.ok().body(new MemberCheckResponse(memberService.checkAccount(account)));
     }
 }
