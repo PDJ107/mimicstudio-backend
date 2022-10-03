@@ -31,4 +31,16 @@ public class Member extends CustomEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

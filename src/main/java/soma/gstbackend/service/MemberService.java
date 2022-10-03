@@ -4,17 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import soma.gstbackend.dto.SimpleResponse;
-import soma.gstbackend.dto.member.MemberResponse;
 import soma.gstbackend.domain.Member;
 import soma.gstbackend.exception.ErrorCode;
 import soma.gstbackend.exception.MemberException;
 import soma.gstbackend.repository.MemberRepository;
 import soma.gstbackend.util.JwtUtil;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Service
@@ -45,6 +40,24 @@ public class MemberService {
 
         memberRepository.save(member);
         return jwtUtil.getTokens(member.getId());
+    }
+
+    public void modify(Long id, Member memberInfo) {
+        Member member = memberRepository.findOne(id);
+
+        // email 중복 체크
+        if(!member.getEmail().equals(memberInfo.getEmail()) && memberRepository.findByEmail(memberInfo.getEmail()) != null) {
+            throw new MemberException(ErrorCode.Email_Already_Exists);
+        }
+
+        // account 중복 체크
+        if(!member.getAccount().equals(memberInfo.getAccount()) && memberRepository.findByAccount(memberInfo.getAccount()) != null) {
+            throw new MemberException(ErrorCode.Account_Already_Exists);
+        }
+
+        member.setAccount(memberInfo.getAccount());
+        member.setEmail(memberInfo.getEmail());
+        member.setPhoneNumber(memberInfo.getPhoneNumber());
     }
 
     @Transactional(readOnly = true)

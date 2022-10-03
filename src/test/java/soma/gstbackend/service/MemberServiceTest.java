@@ -71,6 +71,17 @@ class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("정보 수정")
+    public void modify() throws Exception {
+        // given
+
+        // when
+
+        // then
+
+    }
+
+    @Test
     @DisplayName("내 정보")
     void getInfo() throws Exception {
         // given

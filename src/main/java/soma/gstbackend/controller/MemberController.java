@@ -4,11 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import soma.gstbackend.annotation.Auth;
 import soma.gstbackend.dto.SimpleResponse;
 import soma.gstbackend.dto.member.LoginDTO;
+import soma.gstbackend.dto.member.MemberModifyRequest;
 import soma.gstbackend.dto.member.MemberRequest;
 import soma.gstbackend.dto.member.MemberResponse;
 import soma.gstbackend.service.MemberService;
@@ -59,6 +58,14 @@ public class MemberController {
                 .body(token);
     }
 
+    @Auth
+    @PutMapping
+    public ResponseEntity modifyInfo(HttpServletRequest request, @RequestBody MemberModifyRequest memberModifyRequest) throws Exception {
+        Long id = jwtUtil.getIdFromToken(request.getHeader("Authorization"));
+        memberService.modify(id, memberModifyRequest.toEntity());
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/refresh")
     public ResponseEntity tokenRefresh(@CookieValue String refreshToken) throws Exception {
 
@@ -74,10 +81,7 @@ public class MemberController {
 
     @Auth
     @GetMapping("/info")
-    public ResponseEntity myInfo() throws Exception {
-        HttpServletRequest request =
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                        .getRequest();
+    public ResponseEntity myInfo(HttpServletRequest request) throws Exception {
         Long id = jwtUtil.getIdFromToken(request.getHeader("Authorization"));
         MemberResponse response = MemberResponse.from(memberService.getInfo(id));
         return ResponseEntity.ok().body(response);
