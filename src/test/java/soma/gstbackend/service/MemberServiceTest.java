@@ -62,9 +62,8 @@ class MemberServiceTest {
                 .email(testEmail).password("12345678").build();
 
         // when
-        Map<String, Object> tokens;
-        tokens =  memberService.join(testMember);
-        tokens = memberService.login(testMember2);
+        memberService.join(testMember);
+        memberService.login(testMember2);
 
         // then
         // nothing
@@ -74,11 +73,16 @@ class MemberServiceTest {
     @DisplayName("정보 수정")
     public void modify() throws Exception {
         // given
-
+        Member testMember = Member.builder()
+                .account(testAccount).email(testEmail).password("12345678").build();
+        Member modifyInfo = Member.builder()
+                .account(testAccount).email(testEmail).phoneNumber("01012345678").build();
         // when
+        memberService.join(testMember);
+        memberService.modify(testMember.getId(), modifyInfo);
 
         // then
-
+        assertEquals(testMember.getPhoneNumber(), "01012345678");
     }
 
     @Test
