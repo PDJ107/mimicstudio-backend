@@ -12,6 +12,7 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import soma.gstbackend.domain.Member;
 import soma.gstbackend.dto.member.LoginDTO;
 import soma.gstbackend.dto.member.MemberRequest;
 import soma.gstbackend.dto.member.MemberResponse;
@@ -22,6 +23,7 @@ import javax.servlet.http.Cookie;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
@@ -30,6 +32,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static soma.gstbackend.ApiDocumentUtils.getDocumentRequest;
 import static soma.gstbackend.ApiDocumentUtils.getDocumentResponse;
@@ -168,11 +171,13 @@ class MemberControllerTest {
     @DisplayName("내 정보")
     void myInfo() throws Exception {
         //given
-        MemberResponse response = new MemberResponse("test-member", "010-1234-5678", "test@test.com");
+        Member testMember = Member.builder()
+                .account("test-member").phoneNumber("010-1234-5678").email("test@test.com").build();
+
         String testToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODgsImV4cCI6MTY2Mjk4ODcwMX0.L8OlWRqnlsZTzUDAi8RhkiCqdGRmigjjRTlnFVYcBMo";
 
-        given(memberService.getInfo())
-                .willReturn(response);
+        given(memberService.getInfo(any()))
+                .willReturn(testMember);
 
         //when
         ResultActions result = this.mockMvc.perform(
@@ -182,6 +187,7 @@ class MemberControllerTest {
 
         //then
         result.andExpect(status().isOk())
+                .andExpect(jsonPath("password").doesNotExist())
                 .andDo(document("members-myinfo",
                         getDocumentRequest(),
                         getDocumentResponse(),

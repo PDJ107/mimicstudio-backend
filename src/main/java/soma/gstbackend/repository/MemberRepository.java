@@ -17,7 +17,13 @@ public class MemberRepository {
     }
 
     public Member findOne(Long id) {
-        return em.find(Member.class, id);
+        try {
+            return em.createQuery("select m from Member m where m.id = :id and m.isDeleted = false", Member.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch(Exception e) {
+            return null;
+        }
     }
 
     public void remove(Long id) {
@@ -30,7 +36,7 @@ public class MemberRepository {
 
     public Member findByAccount(String account) {
         try {
-            return em.createQuery("select m from Member m where m.account = :account", Member.class)
+            return em.createQuery("select m from Member m where m.account = :account and m.isDeleted = false", Member.class)
                     .setParameter("account", account)
                     .getSingleResult();
         } catch(Exception e) {
@@ -40,7 +46,7 @@ public class MemberRepository {
 
     public Member findByEmail(String email) {
         try {
-            return em.createQuery("select m from Member m where m.email = :email", Member.class)
+            return em.createQuery("select m from Member m where m.email = :email and m.isDeleted = false", Member.class)
                     .setParameter("email", email)
                     .getSingleResult();
         } catch(Exception e) {

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import soma.gstbackend.dto.SimpleResponse;
 import soma.gstbackend.dto.member.MemberResponse;
 import soma.gstbackend.domain.Member;
 import soma.gstbackend.exception.ErrorCode;
@@ -46,6 +47,7 @@ public class MemberService {
         return jwtUtil.getTokens(member.getId());
     }
 
+    @Transactional(readOnly = true)
     public Map<String, Object> login(Member member) throws Exception {
         Member userData = memberRepository.findByEmail(member.getEmail());
         if(userData == null) {
@@ -60,12 +62,9 @@ public class MemberService {
         return jwtUtil.getTokens(userData.getId());
     }
 
-    public MemberResponse getInfo() throws Exception {
-        HttpServletRequest request =
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                        .getRequest();
-        Long id = jwtUtil.getIdFromToken(request.getHeader("Authorization"));
-        return MemberResponse.from(findMember(id));
+    @Transactional(readOnly = true)
+    public Member getInfo(Long id) throws Exception {
+        return findMember(id);
     }
 
     @Transactional(readOnly = true)
@@ -76,5 +75,15 @@ public class MemberService {
             throw new MemberException(ErrorCode.Member_Not_Found);
         }
         memberRepository.remove(memberId);
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean checkEmail(String email) {
+        return memberRepository.findByEmail(email) != null;
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean checkAccount(String account) {
+        return memberRepository.findByAccount(account) != null;
     }
 }

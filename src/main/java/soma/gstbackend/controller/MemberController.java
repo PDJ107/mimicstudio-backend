@@ -4,12 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import soma.gstbackend.annotation.Auth;
+import soma.gstbackend.dto.SimpleResponse;
 import soma.gstbackend.dto.member.LoginDTO;
 import soma.gstbackend.dto.member.MemberRequest;
+import soma.gstbackend.dto.member.MemberResponse;
 import soma.gstbackend.service.MemberService;
 import soma.gstbackend.util.JwtUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +75,21 @@ public class MemberController {
     @Auth
     @GetMapping("/info")
     public ResponseEntity myInfo() throws Exception {
-        return ResponseEntity.ok().body(memberService.getInfo());
+        HttpServletRequest request =
+                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                        .getRequest();
+        Long id = jwtUtil.getIdFromToken(request.getHeader("Authorization"));
+        MemberResponse response = MemberResponse.from(memberService.getInfo(id));
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/check-email")
+    public ResponseEntity checkEmail(@RequestBody String email) {
+        return ResponseEntity.ok().body(new SimpleResponse("isExist", memberService.checkEmail(email)));
+    }
+
+    @PostMapping("/check-account")
+    public ResponseEntity checkAccount(@RequestBody String account) {
+        return ResponseEntity.ok().body(new SimpleResponse("isExist", memberService.checkAccount(account)));
     }
 }
