@@ -92,10 +92,30 @@ operation::members-signup[snippets='request-fields,http-request,response-headers
 [[resources_members_login]]
 === 로그인
 
-`POST` 요청으로 회원가입된 계정에 로그인합니다.
+`POST` 요청으로 회원 가입된 계정에 로그인합니다.
 `accessToken` 을 반환하고 `refreshToken` 을 쿠키로 등록합니다.
 
 operation::members-login[snippets='request-fields,http-request,response-headers,response-fields,http-response']
+
+[[resources_members_modify]]
+=== 정보 수정
+`PUT` 요청으로 회원 정보를 수정합니다.
+
+operation::members-modify[snippets='request-fields,http-request,http-response']
+
+[[resources_members_check_email]]
+=== Email 검증
+이메일이 중복되었는지 체크합니다.
+
+operation::members-check-email[snippets='request-fields,http-request,response-fields,http-response']
+
+
+[[resources_members_check_account]]
+=== Account 검증
+계정 이름(Account)이 중복되었는지 체크합니다.
+
+operation::members-check-account[snippets='request-fields,http-request,response-fields,http-response']
+
 
 [[resources_members_refresh]]
 === 액세스 토큰 재발급
