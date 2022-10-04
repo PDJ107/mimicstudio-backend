@@ -56,7 +56,7 @@ public class MemberController {
 
     @Auth
     @PutMapping
-    public ResponseEntity modifyInfo(HttpServletRequest request, @RequestBody MemberModifyRequest memberModifyRequest) throws Exception {
+    public ResponseEntity modifyInfo(HttpServletRequest request, @RequestBody @Valid MemberModifyRequest memberModifyRequest) throws Exception {
         Long id = jwtUtil.getIdFromToken(request.getHeader("Authorization"));
         memberService.modify(id, memberModifyRequest.toEntity());
         return ResponseEntity.ok().build();
