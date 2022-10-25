@@ -20,6 +20,10 @@ public class Member extends CustomEntity {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Item> items = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     private String account;
     private String password;
     private String phoneNumber;
@@ -42,5 +46,11 @@ public class Member extends CustomEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    // 로그인 업데이트
+    public Member update(String account) {
+        this.account = account;
+        return this;
     }
 }

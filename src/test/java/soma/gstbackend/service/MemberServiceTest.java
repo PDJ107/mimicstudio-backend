@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import soma.gstbackend.domain.Member;
+import soma.gstbackend.domain.Role;
 import soma.gstbackend.util.JwtUtil;
 
 import java.util.Map;
@@ -43,7 +44,7 @@ class MemberServiceTest {
     void join() throws Exception {
         // given
         Member testMember = Member.builder()
-                .account(testAccount).email(testEmail).password("12345678").build();
+                .account(testAccount).email(testEmail).password("12345678").role(Role.GUEST).build();
 
         // when
         Map<String, Object> tokens =  memberService.join(testMember);
@@ -57,7 +58,7 @@ class MemberServiceTest {
     void login() throws Exception {
         // given
         Member testMember = Member.builder()
-                .account(testAccount).email(testEmail).password("12345678").build();
+                .account(testAccount).email(testEmail).password("12345678").role(Role.GUEST).build();
         Member testMember2 = Member.builder()
                 .email(testEmail).password("12345678").build();
 
@@ -74,7 +75,7 @@ class MemberServiceTest {
     public void modify() throws Exception {
         // given
         Member testMember = Member.builder()
-                .account(testAccount).email(testEmail).password("12345678").build();
+                .account(testAccount).email(testEmail).password("12345678").role(Role.GUEST).build();
         Member modifyInfo = Member.builder()
                 .account(testAccount).email(testEmail).phoneNumber("01012345678").build();
         // when
@@ -90,7 +91,7 @@ class MemberServiceTest {
     void getInfo() throws Exception {
         // given
         Member testMember = Member.builder()
-                .account(testAccount).email(testEmail).phoneNumber("010-1234-5678").password("12345678").build();
+                .account(testAccount).email(testEmail).phoneNumber("010-1234-5678").password("12345678").role(Role.GUEST).build();
 
         // when
         Map<String, Object> tokens = memberService.join(testMember);
@@ -108,7 +109,7 @@ class MemberServiceTest {
     void findMember() throws Exception{
         // given
         Member testMember = Member.builder()
-                .account(testAccount).email(testEmail).phoneNumber("010-1234-5678").password("12345678").build();
+                .account(testAccount).email(testEmail).phoneNumber("010-1234-5678").password("12345678").role(Role.GUEST).build();
 
         // when
         Map<String, Object> tokens = memberService.join(testMember);
@@ -123,7 +124,7 @@ class MemberServiceTest {
     void removeMember() throws Exception{
         // given
         Member testMember = Member.builder()
-                .account(testAccount).email(testEmail).phoneNumber("010-1234-5678").password("12345678").build();
+                .account(testAccount).email(testEmail).phoneNumber("010-1234-5678").password("12345678").role(Role.GUEST).build();
 
         // when
         Map<String, Object> tokens = memberService.join(testMember);
@@ -141,7 +142,7 @@ class MemberServiceTest {
     void checkEmail() throws Exception {
         // given
         Member testMember = Member.builder()
-                .account(testAccount).email(testEmail).phoneNumber("010-1234-5678").password("12345678").build();
+                .account(testAccount).email(testEmail).phoneNumber("010-1234-5678").password("12345678").role(Role.GUEST).build();
 
         // when
         Boolean result = memberService.checkEmail(testEmail);
@@ -158,7 +159,7 @@ class MemberServiceTest {
     void checkAccount() throws Exception {
         // given
         Member testMember = Member.builder()
-                .account(testAccount).email(testEmail).phoneNumber("010-1234-5678").password("12345678").build();
+                .account(testAccount).email(testEmail).phoneNumber("010-1234-5678").password("12345678").role(Role.GUEST).build();
 
         // when
         Boolean result = memberService.checkAccount(testAccount);

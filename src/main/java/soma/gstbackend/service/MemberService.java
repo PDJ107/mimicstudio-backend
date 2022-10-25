@@ -11,6 +11,7 @@ import soma.gstbackend.repository.MemberRepository;
 import soma.gstbackend.util.JwtUtil;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,12 +26,13 @@ public class MemberService {
 
     public Map<String, Object> join(Member member) throws Exception {
         // account 중복 체크
-        if(memberRepository.findByAccount(member.getAccount()) != null) {
+        //if(memberRepository.findByAccount(member.getAccount()) != null) {
+        if(checkAccount(member.getAccount())) {
             throw new MemberException(ErrorCode.Account_Already_Exists);
         }
 
         // email 중복 체크
-        if(memberRepository.findByEmail(member.getEmail()) != null) {
+        if(checkEmail(member.getEmail())) {
             throw new MemberException(ErrorCode.Email_Already_Exists);
         }
 
@@ -46,12 +48,12 @@ public class MemberService {
         Member member = memberRepository.findOne(id);
 
         // email 중복 체크
-        if(!member.getEmail().equals(memberInfo.getEmail()) && memberRepository.findByEmail(memberInfo.getEmail()) != null) {
+        if(!member.getEmail().equals(memberInfo.getEmail()) && checkEmail(memberInfo.getEmail())) {
             throw new MemberException(ErrorCode.Email_Already_Exists);
         }
 
         // account 중복 체크
-        if(!member.getAccount().equals(memberInfo.getAccount()) && memberRepository.findByAccount(memberInfo.getAccount()) != null) {
+        if(!member.getAccount().equals(memberInfo.getAccount()) && checkAccount(memberInfo.getAccount())) {
             throw new MemberException(ErrorCode.Account_Already_Exists);
         }
 
@@ -62,17 +64,18 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public Map<String, Object> login(Member member) throws Exception {
-        Member userData = memberRepository.findByEmail(member.getEmail());
-        if(userData == null) {
+        Optional<Member> userData = memberRepository.findByEmail(member.getEmail());
+        if(userData.isEmpty()) {
             throw new MemberException(ErrorCode.User_Invalid_Request);
         }
+        Member user = userData.get();
 
         // 비밀번호 비교
-        if(!encoder.matches(member.getPassword(), userData.getPassword())) {
+        if(!encoder.matches(member.getPassword(), user.getPassword())) {
             throw new MemberException(ErrorCode.User_Invalid_Request);
         }
 
-        return jwtUtil.getTokens(userData.getId());
+        return jwtUtil.getTokens(user.getId());
     }
 
     @Transactional(readOnly = true)
@@ -92,7 +95,7 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public Boolean checkEmail(String email) {
-        return memberRepository.findByEmail(email) != null;
+        return memberRepository.findByEmail(email).isPresent();
     }
 
     @Transactional(readOnly = true)

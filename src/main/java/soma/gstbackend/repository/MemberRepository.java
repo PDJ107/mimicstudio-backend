@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 import soma.gstbackend.domain.Member;
 
 import javax.persistence.EntityManager;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -44,13 +46,10 @@ public class MemberRepository {
         }
     }
 
-    public Member findByEmail(String email) {
-        try {
-            return em.createQuery("select m from Member m where m.email = :email and m.isDeleted = false", Member.class)
-                    .setParameter("email", email)
-                    .getSingleResult();
-        } catch(Exception e) {
-            return null;
-        }
+    public Optional<Member> findByEmail(String email) {
+        List<Member> members =  em.createQuery("select m from Member m where m.email = :email and m.isDeleted = false", Member.class)
+                .setParameter("email", email)
+                .getResultList();
+        return members.stream().findAny();
     }
 }
