@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import soma.gstbackend.dto.token.TokenDTO;
 import soma.gstbackend.exception.AuthException;
 import soma.gstbackend.exception.ErrorCode;
 
@@ -55,13 +56,12 @@ public class JwtUtil {
         return token;
     }
 
-    public Map<String, Object> getTokens(Long memberId) {
-        Map<String, Object> tokens = new HashMap<>();
+    public TokenDTO getTokens(Long memberId) {
 
-        tokens.put("accessToken", getAccessToken(memberId, 1));
-        tokens.put("refreshToken", getAccessToken(memberId, 24));
+        String accessToken = getAccessToken(memberId, 1);
+        String refreshToken = getAccessToken(memberId, 24);
 
-        return tokens;
+        return new TokenDTO(accessToken, refreshToken);
     }
 
     public void validateToken(String token) throws Exception {

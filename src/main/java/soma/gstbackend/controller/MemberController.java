@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soma.gstbackend.annotation.Auth;
 import soma.gstbackend.dto.member.*;
+import soma.gstbackend.dto.token.TokenDTO;
 import soma.gstbackend.service.MemberService;
 import soma.gstbackend.util.JwtUtil;
 
@@ -24,34 +25,32 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity signUp(@RequestBody @Valid MemberRequest request) throws Exception {
-        Map<String, Object> responseToken = memberService.join(request.toEntity());
+        TokenDTO tokens = memberService.join(request.toEntity());
 
         HttpHeaders headers = new HttpHeaders();
 
-        String refreshToken = responseToken.get("refreshToken").toString();
-        responseToken.remove("refreshToken");
+        String refreshToken = tokens.getRefreshToken();
         headers.add("Set-Cookie", "refreshToken=" + refreshToken
                 + "; Max-Age=604800; Path=/; Secure; HttpOnly");
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(responseToken);
+                .body(tokens.getAccessToken());
     }
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid LoginDTO request) throws Exception {
-        Map<String, Object> token = memberService.login(request.toEntity());
+        TokenDTO tokens = memberService.login(request.toEntity());
 
         HttpHeaders headers = new HttpHeaders();
 
-        String refreshToken = token.get("refreshToken").toString();
-        token.remove("refreshToken");
+        String refreshToken = tokens.getRefreshToken();
         headers.add("Set-Cookie", "refreshToken=" + refreshToken
                         + "; Max-Age=604800; Path=/; Secure; HttpOnly");
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(token);
+                .body(tokens.getAccessToken());
     }
 
     @Auth

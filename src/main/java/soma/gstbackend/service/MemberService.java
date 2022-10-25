@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soma.gstbackend.domain.Member;
+import soma.gstbackend.dto.token.TokenDTO;
 import soma.gstbackend.exception.ErrorCode;
 import soma.gstbackend.exception.MemberException;
 import soma.gstbackend.repository.MemberRepository;
@@ -24,7 +25,7 @@ public class MemberService {
 
     private final JwtUtil jwtUtil;
 
-    public Map<String, Object> join(Member member) throws Exception {
+    public TokenDTO join(Member member) throws Exception {
         // account 중복 체크
         //if(memberRepository.findByAccount(member.getAccount()) != null) {
         if(checkAccount(member.getAccount())) {
@@ -63,7 +64,7 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> login(Member member) throws Exception {
+    public TokenDTO login(Member member) throws Exception {
         Optional<Member> userData = memberRepository.findByEmail(member.getEmail());
         if(userData.isEmpty()) {
             throw new MemberException(ErrorCode.User_Invalid_Request);
