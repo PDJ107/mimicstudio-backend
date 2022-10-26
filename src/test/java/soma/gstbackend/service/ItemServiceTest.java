@@ -29,7 +29,7 @@ public class ItemServiceTest {
     private Member getTestMember(String account, String password, String email) throws Exception {
         Member testMember = Member.builder()
                 .account(account).password(password).email(email).role(Role.GUEST).build();
-        Map<String, Object> tokens = memberService.join(testMember);
+        memberService.join(testMember);
         return testMember;
     }
 

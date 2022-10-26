@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import soma.gstbackend.annotation.Auth;
 import soma.gstbackend.dto.member.*;
 import soma.gstbackend.dto.token.TokenDTO;
+import soma.gstbackend.dto.token.TokenInfoDTO;
 import soma.gstbackend.service.MemberService;
 import soma.gstbackend.util.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,13 +28,12 @@ public class MemberController {
 
         HttpHeaders headers = new HttpHeaders();
 
-        String refreshToken = tokens.getRefreshToken();
-        headers.add("Set-Cookie", "refreshToken=" + refreshToken
+        headers.add("Set-Cookie", "refreshToken=" + tokens.getRefreshToken()
                 + "; Max-Age=604800; Path=/; Secure; HttpOnly");
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(tokens.getAccessToken());
+                .body(tokens);
     }
 
     @PostMapping("/login")
@@ -50,35 +48,24 @@ public class MemberController {
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(tokens.getAccessToken());
+                .body(tokens);
     }
 
     @Auth
     @PutMapping
     public ResponseEntity modifyInfo(HttpServletRequest request, @RequestBody @Valid MemberModifyRequest memberModifyRequest) throws Exception {
-        Long id = jwtUtil.getIdFromToken(request.getHeader("Authorization"));
-        memberService.modify(id, memberModifyRequest.toEntity());
+        //Long id = jwtUtil.getInfoFromToken(request.getHeader("Authorization"));
+        TokenInfoDTO tokenInfo = jwtUtil.getInfoFromToken(request.getHeader("Authorization"));
+        memberService.modify(tokenInfo.getId(), memberModifyRequest.toEntity());
         return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/refresh")
-    public ResponseEntity tokenRefresh(@CookieValue String refreshToken) throws Exception {
-
-        String token = "Bearer " + refreshToken;
-        jwtUtil.validateRefreshToken(token);
-
-        Long memberId = jwtUtil.getIdFromToken(token);
-
-        Map<String, Object> responseToken = new HashMap<>();
-        responseToken.put("accessToken", jwtUtil.getAccessToken(memberId, 1));
-        return ResponseEntity.ok().body(responseToken);
     }
 
     @Auth
     @GetMapping("/info")
     public ResponseEntity myInfo(HttpServletRequest request) throws Exception {
-        Long id = jwtUtil.getIdFromToken(request.getHeader("Authorization"));
-        MemberResponse response = MemberResponse.from(memberService.getInfo(id));
+        //Long id = jwtUtil.getIdFromToken(request.getHeader("Authorization"));
+        TokenInfoDTO tokenInfo = jwtUtil.getInfoFromToken(request.getHeader("Authorization"));
+        MemberResponse response = MemberResponse.from(memberService.getInfo(tokenInfo.getId()));
         return ResponseEntity.ok().body(response);
     }
 

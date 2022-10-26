@@ -27,15 +27,18 @@ public class SecurityConfig {
         http
                 .httpBasic().disable()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
                 .and()
                     .authorizeRequests()
                     .antMatchers("/**").permitAll()
-                    .anyRequest().authenticated()
+                    //.anyRequest().authenticated()
                 .and()
                     .logout().logoutSuccessUrl("/")
                 .and()
-                    .oauth2Login().userInfoEndpoint().userService(oAuthService);
+                    .oauth2Login()
+                        .defaultSuccessUrl("/auth/login")
+                        .userInfoEndpoint().userService(oAuthService);
+
         return http.build();
     }
 }

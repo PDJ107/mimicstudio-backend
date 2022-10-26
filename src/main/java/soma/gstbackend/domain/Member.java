@@ -22,7 +22,7 @@ public class Member extends CustomEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private Role role = Role.GUEST;
 
     private String account;
     private String password;

@@ -7,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import soma.gstbackend.domain.Member;
 import soma.gstbackend.domain.Role;
+import soma.gstbackend.dto.token.TokenDTO;
+import soma.gstbackend.dto.token.TokenInfoDTO;
 import soma.gstbackend.util.JwtUtil;
 
 import java.util.Map;
@@ -47,7 +49,7 @@ class MemberServiceTest {
                 .account(testAccount).email(testEmail).password("12345678").role(Role.GUEST).build();
 
         // when
-        Map<String, Object> tokens =  memberService.join(testMember);
+        memberService.join(testMember);
 
         // then
         assertTrue(memberService.findMember(testMember.getId()).equals(testMember));
@@ -94,9 +96,10 @@ class MemberServiceTest {
                 .account(testAccount).email(testEmail).phoneNumber("010-1234-5678").password("12345678").role(Role.GUEST).build();
 
         // when
-        Map<String, Object> tokens = memberService.join(testMember);
-        Long memberId = jwtUtil.getIdFromToken("Bearer " + tokens.get("accessToken").toString());
-        Member memberInfo = memberService.getInfo(memberId);
+        TokenDTO tokens = memberService.join(testMember);
+        //Long memberId = jwtUtil.getIdFromToken("Bearer " + tokens.getAccessToken());
+        TokenInfoDTO tokenInfo = jwtUtil.getInfoFromToken("Bearer " + tokens.getAccessToken());
+        Member memberInfo = memberService.getInfo(tokenInfo.getId());
 
         // then
         assertTrue(memberInfo.getAccount() == testMember.getAccount());
@@ -112,7 +115,7 @@ class MemberServiceTest {
                 .account(testAccount).email(testEmail).phoneNumber("010-1234-5678").password("12345678").role(Role.GUEST).build();
 
         // when
-        Map<String, Object> tokens = memberService.join(testMember);
+        memberService.join(testMember);
         Member member = memberService.findMember(testMember.getId());
 
         // then
@@ -127,7 +130,7 @@ class MemberServiceTest {
                 .account(testAccount).email(testEmail).phoneNumber("010-1234-5678").password("12345678").role(Role.GUEST).build();
 
         // when
-        Map<String, Object> tokens = memberService.join(testMember);
+        memberService.join(testMember);
         Member member = memberService.findMember(testMember.getId());
         memberService.removeMember(testMember.getId());
         Member removedMember = memberService.findMember(testMember.getId());
@@ -146,7 +149,7 @@ class MemberServiceTest {
 
         // when
         Boolean result = memberService.checkEmail(testEmail);
-        Map<String, Object> tokens = memberService.join(testMember);
+        memberService.join(testMember);
         Boolean result2 = memberService.checkEmail(testEmail);
 
         // then
@@ -163,7 +166,7 @@ class MemberServiceTest {
 
         // when
         Boolean result = memberService.checkAccount(testAccount);
-        Map<String, Object> tokens = memberService.join(testMember);
+        memberService.join(testMember);
         Boolean result2 = memberService.checkAccount(testAccount);
 
         // then

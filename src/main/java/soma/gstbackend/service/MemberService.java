@@ -42,7 +42,7 @@ public class MemberService {
         member.setPassword(password);
 
         memberRepository.save(member);
-        return jwtUtil.getTokens(member.getId());
+        return jwtUtil.getTokens(member.getId(), member.getRole().getKey());
     }
 
     public void modify(Long id, Member memberInfo) {
@@ -76,7 +76,7 @@ public class MemberService {
             throw new MemberException(ErrorCode.User_Invalid_Request);
         }
 
-        return jwtUtil.getTokens(user.getId());
+        return jwtUtil.getTokens(user.getId(), user.getRole().getKey());
     }
 
     @Transactional(readOnly = true)

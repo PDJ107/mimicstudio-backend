@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import soma.gstbackend.dto.token.TokenDTO;
+import soma.gstbackend.dto.token.TokenInfoDTO;
 import soma.gstbackend.exception.AuthException;
 import soma.gstbackend.exception.ErrorCode;
 
@@ -45,21 +46,27 @@ public class JwtUtil {
         return calendar.getTime();
     }
 
-    public String getAccessToken(Long memberId, int expireHour) {
+    public String getAccessToken(Long memberId, String role, int expireHour) {
+
+        Claims claims = Jwts.claims()
+                .setIssuedAt(new Date())
+                .setExpiration(getExpireDate(expireHour));
+
+        claims.put("id", memberId);
+        claims.put("role", role);
 
         String token = Jwts.builder().
                 setHeader(getHeader()).
-                setClaims(getPayload(memberId)).
-                setExpiration(getExpireDate(expireHour)).
+                setClaims(claims).
                 signWith(SignatureAlgorithm.HS256, SECRET_KEY.getBytes()).compact();
 
         return token;
     }
 
-    public TokenDTO getTokens(Long memberId) {
+    public TokenDTO getTokens(Long memberId, String role) {
 
-        String accessToken = getAccessToken(memberId, 1);
-        String refreshToken = getAccessToken(memberId, 24);
+        String accessToken = getAccessToken(memberId, role, 1);
+        String refreshToken = getAccessToken(memberId, role, 24);
 
         return new TokenDTO(accessToken, refreshToken);
     }
@@ -73,7 +80,7 @@ public class JwtUtil {
         token = token.substring(7); // "Bearer " 제거
         System.out.println(token);
         try {
-            Claims claims = Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(token).getBody();
+            Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(token).getBody();
         } catch (ExpiredJwtException e1){
             throw new AuthException(ErrorCode.Expired_Token);
         } catch(Throwable e2){
@@ -87,10 +94,10 @@ public class JwtUtil {
         // refresh validate logic...
     }
 
-    public Long getIdFromToken(String token) throws Exception {
+    public TokenInfoDTO getInfoFromToken(String token) throws Exception {
         validateToken(token);
         token = token.substring(7); // "Bearer " 제거
         Claims claims = Jwts.parser().setSigningKey(SECRET_KEY.getBytes()).parseClaimsJws(token).getBody();
-        return claims.get("id", Long.class);
+        return new TokenInfoDTO(claims.get("id", Long.class), claims.get("role", String.class));
     }
 }
