@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "auth_token")
 @Getter @Builder
+@AllArgsConstructor
 public class AuthToken {
     @Id
     @Column(name = "member_id")

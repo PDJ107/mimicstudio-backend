@@ -29,6 +29,9 @@ public enum ErrorCode {
 
     // AWS
     SQS_Transfer_Failed("AWS_01", "SQS 메시지 전송 실패", HttpStatus.BAD_GATEWAY),
+
+    // Auth
+    Unauthorized_Request("AUTH_01", "허용되지 않은 API입니다. 로그인 해주세요.", HttpStatus.UNAUTHORIZED)
     ;
     private String code;
     private String message;

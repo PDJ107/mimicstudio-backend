@@ -199,7 +199,7 @@ class ItemControllerTest {
 
         // when
         ResultActions result = this.mockMvc.perform(
-                get("/3d-items")
+                post("/3d-items/search")
                         .content(objectMapper.writeValueAsString(search))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -227,7 +227,7 @@ class ItemControllerTest {
         given(itemService.findItems(any(), any()))
                 .willReturn(new PageImpl(items.subList(0, 3), pageable1, items.size()));
         ResultActions result1 = this.mockMvc.perform(
-                get("/3d-items?page=0&size=3")
+                post("/3d-items/search?page=0&size=3")
                         .content(objectMapper.writeValueAsString(search))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -236,7 +236,7 @@ class ItemControllerTest {
         given(itemService.findItems(any(), any()))
                 .willReturn(new PageImpl(items.subList(3, 5), pageable2, items.size()));
         ResultActions result2 = this.mockMvc.perform(
-                get("/3d-items?page=1&size=3")
+                post("/3d-items/search?page=1&size=3")
                         .content(objectMapper.writeValueAsString(search))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)

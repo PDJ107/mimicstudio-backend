@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import soma.gstbackend.config.entrypoint.CustomAuthenticationEntryPoint;
 import soma.gstbackend.filter.JwtTokenFilter;
 import soma.gstbackend.service.OAuthService;
 import soma.gstbackend.util.JwtUtil;
@@ -20,6 +21,7 @@ import soma.gstbackend.util.JwtUtil;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final OAuthService oAuthService;
     private final JwtUtil jwtUtil;
 
@@ -36,9 +38,9 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/**").permitAll()
-                    //.antMatchers("/auth").permitAll()
-                    //.anyRequest().authenticated()
+                    //.antMatchers("/**").permitAll()
+                    .antMatchers("/auth", "/members/login", "/members/signup").permitAll()
+                    .anyRequest().authenticated()
                 .and()
                     .logout().logoutSuccessUrl("/")
                 .and()
@@ -46,7 +48,8 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/auth/login")
                         .userInfoEndpoint().userService(oAuthService);
         http
-                .addFilterBefore(new JwtTokenFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtTokenFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
 
         return http.build();
     }

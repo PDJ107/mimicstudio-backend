@@ -12,6 +12,7 @@ import soma.gstbackend.util.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -66,12 +67,12 @@ public class MemberController {
     }
 
     @PostMapping("/check-email")
-    public ResponseEntity checkEmail(@RequestBody String email) throws Exception {
-        return ResponseEntity.ok().body(new MemberCheckResponse(memberService.checkEmail(email)));
+    public ResponseEntity checkEmail(@RequestBody Map<String, String> requestMap) throws Exception {
+        return ResponseEntity.ok().body(new MemberCheckResponse(memberService.checkEmail(requestMap.get("email"))));
     }
 
     @PostMapping("/check-account")
-    public ResponseEntity checkAccount(@RequestBody String account) throws Exception {
-        return ResponseEntity.ok().body(new MemberCheckResponse(memberService.checkAccount(account)));
+    public ResponseEntity checkAccount(@RequestBody Map<String, String> requestMap) throws Exception {
+        return ResponseEntity.ok().body(new MemberCheckResponse(memberService.checkAccount(requestMap.get("account"))));
     }
 }

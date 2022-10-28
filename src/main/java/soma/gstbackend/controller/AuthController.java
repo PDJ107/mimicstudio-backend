@@ -23,7 +23,15 @@ public class AuthController {
 
     @GetMapping("/login")
     public ResponseEntity oAuthlogin(@AuthenticationPrincipal OAuth2User oAuth2User) {
-        return ResponseEntity.ok().body(oAuthService.login(oAuth2User));
+        TokenDTO tokens = oAuthService.login(oAuth2User);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Set-Cookie", "refreshToken=" + tokens.getRefreshToken()
+                + "; Max-Age=604800; Path=/; Secure; HttpOnly");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(new AccessTokenDTO(tokens.getAccessToken()));
     }
 
     @GetMapping("/silent-login")

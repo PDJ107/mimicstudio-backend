@@ -95,8 +95,8 @@ class MemberServiceTest {
         // when
         TokenDTO tokens = memberService.join(testMember);
         //Long memberId = jwtUtil.getIdFromToken("Bearer " + tokens.getAccessToken());
-        TokenInfoDTO tokenInfo = jwtUtil.getInfoFromToken("Bearer " + tokens.getAccessToken());
-        Member memberInfo = memberService.getInfo(tokenInfo.getId());
+        Long id = jwtUtil.getIdFromToken("Bearer " + tokens.getAccessToken());
+        Member memberInfo = memberService.getInfo(id);
 
         // then
         assertTrue(memberInfo.getAccount() == testMember.getAccount());

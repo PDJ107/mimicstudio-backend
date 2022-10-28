@@ -55,7 +55,7 @@ public class ItemController {
         return ResponseEntity.ok().body(new ItemResponse().from(item));
     }
 
-    @GetMapping
+    @PostMapping("/search")
     public ResponseEntity<PageResponse> search(
             @RequestBody(required = false) ItemSearch search,
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,

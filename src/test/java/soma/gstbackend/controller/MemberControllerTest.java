@@ -87,8 +87,7 @@ class MemberControllerTest {
                                 headerWithName("Set-Cookie").description("리프레쉬 토큰 쿠키로 등록")
                         ),
                         responseFields(
-                                fieldWithPath("accessToken").description("액세스 토큰"),
-                                fieldWithPath("refreshToken").description("리프레쉬 토큰")
+                                fieldWithPath("accessToken").description("액세스 토큰")
                         )
                 ));
     }
@@ -130,8 +129,7 @@ class MemberControllerTest {
                                 headerWithName("Set-Cookie").description("리프레쉬 토큰 쿠키로 등록")
                         ),
                         responseFields(
-                                fieldWithPath("accessToken").description("액세스 토큰"),
-                                fieldWithPath("refreshToken").description("리프레쉬 토큰")
+                                fieldWithPath("accessToken").description("액세스 토큰")
                         )
                 ));
     }
