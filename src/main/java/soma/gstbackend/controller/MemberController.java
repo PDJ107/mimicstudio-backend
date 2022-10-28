@@ -3,9 +3,10 @@ package soma.gstbackend.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import soma.gstbackend.annotation.Auth;
 import soma.gstbackend.dto.member.*;
+import soma.gstbackend.dto.token.AccessTokenDTO;
 import soma.gstbackend.dto.token.TokenDTO;
 import soma.gstbackend.dto.token.TokenInfoDTO;
 import soma.gstbackend.service.MemberService;
@@ -33,7 +34,7 @@ public class MemberController {
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(tokens);
+                .body(new AccessTokenDTO(tokens.getAccessToken()));
     }
 
     @PostMapping("/login")
@@ -42,16 +43,14 @@ public class MemberController {
 
         HttpHeaders headers = new HttpHeaders();
 
-        String refreshToken = tokens.getRefreshToken();
-        headers.add("Set-Cookie", "refreshToken=" + refreshToken
+        headers.add("Set-Cookie", "refreshToken=" + tokens.getRefreshToken()
                         + "; Max-Age=604800; Path=/; Secure; HttpOnly");
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(tokens);
+                .body(new AccessTokenDTO(tokens.getAccessToken()));
     }
 
-    @Auth
     @PutMapping
     public ResponseEntity modifyInfo(HttpServletRequest request, @RequestBody @Valid MemberModifyRequest memberModifyRequest) throws Exception {
         //Long id = jwtUtil.getInfoFromToken(request.getHeader("Authorization"));
@@ -60,7 +59,6 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    @Auth
     @GetMapping("/info")
     public ResponseEntity myInfo(HttpServletRequest request) throws Exception {
         //Long id = jwtUtil.getIdFromToken(request.getHeader("Authorization"));

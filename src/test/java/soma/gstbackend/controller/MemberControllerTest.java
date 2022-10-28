@@ -240,7 +240,7 @@ class MemberControllerTest {
 
 
         doNothing().when(jwtUtil).validateRefreshToken(any());
-        given(jwtUtil.getAccessToken(any(), any(), anyInt()))
+        given(jwtUtil.getAccessToken(any(), any()))
                 .willReturn(testAccessToken);
 
         Cookie cookie = new Cookie(

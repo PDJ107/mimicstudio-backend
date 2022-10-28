@@ -1,12 +1,16 @@
 package soma.gstbackend.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
-import soma.gstbackend.annotation.Auth;
+import soma.gstbackend.domain.Member;
+import soma.gstbackend.dto.token.AccessTokenDTO;
+import soma.gstbackend.dto.token.TokenDTO;
 import soma.gstbackend.dto.token.TokenInfoDTO;
+import soma.gstbackend.service.MemberService;
 import soma.gstbackend.service.OAuthService;
 import soma.gstbackend.util.JwtUtil;
 
@@ -18,6 +22,7 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
     private final OAuthService oAuthService;
+    private final MemberService memberService;
     private final JwtUtil jwtUtil;
 
     @GetMapping("/login")
@@ -25,16 +30,47 @@ public class AuthController {
         return ResponseEntity.ok().body(oAuthService.login(oAuth2User));
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity tokenRefresh(@CookieValue String refreshToken) throws Exception {
+    @GetMapping("/silent-login")
+    public ResponseEntity silentLogin(@CookieValue String refreshToken) throws Exception {
+        String token = "Bearer " + refreshToken;
+        jwtUtil.validateRefreshToken(token);
+
+        Member member = memberService.getInfo(jwtUtil.getInfoFromToken(refreshToken).getId());
+        TokenDTO tokens = jwtUtil.getTokens(member.getId(), member.getRole().getKey());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Set-Cookie", "refreshToken=" + tokens.getRefreshToken()
+                + "; Max-Age=604800; Path=/; Secure; HttpOnly");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(new AccessTokenDTO(tokens.getAccessToken()));
+    }
+
+    @GetMapping("/token/access")
+    public ResponseEntity getAccessToken(@CookieValue String refreshToken) throws Exception {
 
         String token = "Bearer " + refreshToken;
         jwtUtil.validateRefreshToken(token);
 
         TokenInfoDTO tokenInfo = jwtUtil.getInfoFromToken(token);
+        return ResponseEntity.ok().body(new AccessTokenDTO(jwtUtil.getAccessToken(tokenInfo.getId(), tokenInfo.getRole())));
+    }
 
-        Map<String, Object> responseToken = new HashMap<>();
-        responseToken.put("accessToken", jwtUtil.getAccessToken(tokenInfo.getId(), tokenInfo.getRole(), 1)); //
-        return ResponseEntity.ok().body(responseToken);
+    @GetMapping("/token/refresh")
+    public ResponseEntity getRefreshToken(@CookieValue String refreshToken) throws Exception {
+        String token = "Bearer " + refreshToken;
+        jwtUtil.validateRefreshToken(token);
+
+        Member member = memberService.getInfo(jwtUtil.getInfoFromToken(refreshToken).getId());
+        TokenDTO tokens = jwtUtil.getTokens(member.getId(), member.getRole().getKey());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Set-Cookie", "refreshToken=" + tokens.getRefreshToken()
+                + "; Max-Age=604800; Path=/; Secure; HttpOnly");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .build();
     }
 }

@@ -23,6 +23,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/3d-items")
 public class ItemController {
 
     private final ItemService itemService;
@@ -30,7 +31,7 @@ public class ItemController {
     private final MemberService memberService;
     private final MessageProcessor messageProcessor;
 
-    @PostMapping("/3d-items")
+    @PostMapping
     public ResponseEntity create(@RequestBody @Valid ItemRequest request) throws Exception {
 
         Category category = categoryService.findCategory(request.categoryId);
@@ -48,13 +49,13 @@ public class ItemController {
         return ResponseEntity.accepted().build();
     }
 
-    @GetMapping("/3d-items/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ItemResponse> read(@PathVariable Long id) throws Exception {
         Item item = itemService.findItem(id);
         return ResponseEntity.ok().body(new ItemResponse().from(item));
     }
 
-    @GetMapping("/3d-items")
+    @GetMapping
     public ResponseEntity<PageResponse> search(
             @RequestBody(required = false) ItemSearch search,
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
@@ -64,7 +65,7 @@ public class ItemController {
         return ResponseEntity.ok().body(ItemResponse.fromPage(itemPage));
     }
 
-    @DeleteMapping("/3d-items/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity remove(@PathVariable Long id) throws Exception {
         itemService.removeItem(id);
         return ResponseEntity.noContent().build();

@@ -20,6 +20,7 @@ public class Member extends CustomEntity {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Item> items = new ArrayList<>();
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role = Role.GUEST;

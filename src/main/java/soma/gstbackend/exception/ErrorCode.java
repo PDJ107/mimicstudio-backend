@@ -21,6 +21,7 @@ public enum ErrorCode {
     Invalid_Token_Bearer("TOKEN_04", "토큰이 Bearer로 시작하지 않습니다.", HttpStatus.UNAUTHORIZED),
     Invalid_Token_User_Id("TOKEN_05", "토큰의 User Id에 해당하는 유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     Logged_Out_Token("TOKEN_06", "로그아웃된 토큰입니다.", HttpStatus.UNAUTHORIZED),
+    Logged_Out_Refresh_Token("TOKEN_07", "로그아웃된 리프레쉬 토큰입니다.", HttpStatus.UNAUTHORIZED),
 
     Item_Not_Found("ITEM_01", "존재하지 않는 3D 아이템 입니다.", HttpStatus.NOT_FOUND),
 
