@@ -8,8 +8,12 @@ COPY src src
 RUN chmod +x ./gradlew
 RUN ./gradlew build
 
-FROM adoptopenjdk/openjdk11:alpine-jre
+FROM openjdk:11-jre
+
+ENV TZ=Asia/Seoul
+RUN apt-get install -y tzdata
+
 COPY --from=builder build/libs/*-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
-ENTRYPOINT [" java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
