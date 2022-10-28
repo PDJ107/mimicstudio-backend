@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .and()
                     .authorizeRequests()
                     //.antMatchers("/**").permitAll()
-                    .antMatchers("/auth", "/members/login", "/members/signup").permitAll()
+                    .antMatchers("/auth/**", "/members/login", "/members/signup").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .logout().logoutSuccessUrl("/")

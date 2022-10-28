@@ -36,8 +36,13 @@ public class ItemService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Item> findItems(ItemSearch search, Pageable pageable) {
-        return itemRepository.findAll(search, pageable);
+    public Page<Item> findItems(Long member_id, ItemSearch search, Pageable pageable) {
+        return itemRepository.findAll(member_id, search, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Item> findPublicItems(ItemSearch search, Pageable pageable) {
+        return itemRepository.findPublicAll(search, pageable);
     }
 
     public void removeItem(Long itemId) throws Exception {

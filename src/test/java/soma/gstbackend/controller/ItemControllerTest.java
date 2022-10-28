@@ -20,6 +20,7 @@ import soma.gstbackend.domain.*;
 import soma.gstbackend.service.CategoryService;
 import soma.gstbackend.service.ItemService;
 import soma.gstbackend.service.MemberService;
+import soma.gstbackend.util.JwtUtil;
 import soma.gstbackend.util.MessageProcessor;
 
 import java.time.LocalDateTime;
@@ -48,6 +49,7 @@ class ItemControllerTest {
     @MockBean MemberService memberService;
     @MockBean CategoryService categoryService;
     @MockBean MessageProcessor messageProcessor;
+    @MockBean JwtUtil jwtUtil;
 
     @Test
     @DisplayName("3D 아이템 생성")
@@ -61,6 +63,8 @@ class ItemControllerTest {
                 .willReturn(category);
         given(memberService.findMember(45L))
                 .willReturn(testMember);
+        given(jwtUtil.getIdFromToken(any()))
+                .willReturn(45L);
 
         // when
         ItemRequest request = new ItemRequest("/0/20220812123456", false, 0L, "testTitle", "testDescript");
@@ -176,6 +180,7 @@ class ItemControllerTest {
                         .updatedAt(LocalDateTime.of(2022, 8, 12, 12, 34, 56))
                         .title("testTitle" + i)
                         .descript("testDescript" + i)
+                        .isPublic(true)
                         .build()
             );
         }
@@ -194,12 +199,12 @@ class ItemControllerTest {
         ItemSearch search = new ItemSearch(null, null);
         Pageable pageable = PageRequest.of(0, 10);
 
-        given(itemService.findItems(any(), any()))
+        given(itemService.findPublicItems(any(), any()))
                 .willReturn(new PageImpl(items, pageable, items.size()));
 
         // when
         ResultActions result = this.mockMvc.perform(
-                post("/3d-items/search")
+                post("/3d-items/list/public")
                         .content(objectMapper.writeValueAsString(search))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -224,19 +229,19 @@ class ItemControllerTest {
 
         // when
 
-        given(itemService.findItems(any(), any()))
+        given(itemService.findPublicItems(any(), any()))
                 .willReturn(new PageImpl(items.subList(0, 3), pageable1, items.size()));
         ResultActions result1 = this.mockMvc.perform(
-                post("/3d-items/search?page=0&size=3")
+                post("/3d-items/list/public?page=0&size=3")
                         .content(objectMapper.writeValueAsString(search))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
         );
 
-        given(itemService.findItems(any(), any()))
+        given(itemService.findPublicItems(any(), any()))
                 .willReturn(new PageImpl(items.subList(3, 5), pageable2, items.size()));
         ResultActions result2 = this.mockMvc.perform(
-                post("/3d-items/search?page=1&size=3")
+                post("/3d-items/list/public?page=1&size=3")
                         .content(objectMapper.writeValueAsString(search))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)

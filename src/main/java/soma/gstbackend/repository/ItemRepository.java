@@ -60,7 +60,37 @@ public class ItemRepository {
         return em.find(Item.class, id);
     }
 
-    public Page<Item> findAll(ItemSearch search, Pageable pageable) {
+    public Page<Item> findAll(Long member_id, ItemSearch search, Pageable pageable) {
+        QItem item = QItem.item;
+        QMember member = QMember.member;
+
+        List<Item> result =  query.select(item)
+                .join(item.member, member)
+                .from(item)
+                .where(
+                        member.id.eq(member_id),
+                        titleLike(search.getItemTitle()),
+                        categoryEq(search.getCategoryName()),
+                        item.isDeleted.eq(false)
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Item> countQuery = query.select(item)
+                .join(item.member, member)
+                .from(item)
+                .where(
+                        member.id.eq(member_id),
+                        titleLike(search.getItemTitle()),
+                        categoryEq(search.getCategoryName()),
+                        item.isDeleted.eq(false)
+                );
+
+        return PageableExecutionUtils.getPage(result, pageable, () -> countQuery.fetch().size());
+    }
+
+    public Page<Item> findPublicAll(ItemSearch search, Pageable pageable) {
 
         QItem item = QItem.item;
         //QMember member = QMember.member;
@@ -71,6 +101,7 @@ public class ItemRepository {
                 .where(
                         titleLike(search.getItemTitle()),
                         categoryEq(search.getCategoryName()),
+                        item.isPublic.eq(true),
                         item.isDeleted.eq(false)
                 )
                 .offset(pageable.getOffset())
@@ -83,6 +114,7 @@ public class ItemRepository {
                 .where(
                         titleLike(search.getItemTitle()),
                         categoryEq(search.getCategoryName()),
+                        item.isPublic.eq(true),
                         item.isDeleted.eq(false)
                 );
 

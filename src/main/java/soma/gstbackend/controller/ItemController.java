@@ -15,10 +15,12 @@ import soma.gstbackend.dto.page.PageResponse;
 import soma.gstbackend.service.CategoryService;
 import soma.gstbackend.service.ItemService;
 import soma.gstbackend.service.MemberService;
+import soma.gstbackend.util.JwtUtil;
 import soma.gstbackend.util.form.ItemMessageForm;
 import soma.gstbackend.util.form.MessageForm;
 import soma.gstbackend.util.MessageProcessor;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -30,14 +32,17 @@ public class ItemController {
     private final CategoryService categoryService;
     private final MemberService memberService;
     private final MessageProcessor messageProcessor;
+    private final JwtUtil jwtUtil;
 
     @PostMapping
-    public ResponseEntity create(@RequestBody @Valid ItemRequest request) throws Exception {
+    public ResponseEntity create(HttpServletRequest request, @RequestBody @Valid ItemRequest itemRequest) throws Exception {
 
-        Category category = categoryService.findCategory(request.categoryId);
+        Category category = categoryService.findCategory(itemRequest.categoryId);
+
+        Long member_id = jwtUtil.getIdFromToken(request.getHeader("Authorization"));
         Member member = memberService.findMember(45L); // test member id - 45L
 
-        Item item = request.toEntity(member, category);
+        Item item = itemRequest.toEntity(member, category);
 
         // 아이템 등록
         itemService.join(item);
@@ -55,13 +60,25 @@ public class ItemController {
         return ResponseEntity.ok().body(new ItemResponse().from(item));
     }
 
-    @PostMapping("/search")
-    public ResponseEntity<PageResponse> search(
+    @PostMapping("/list")
+    public ResponseEntity<PageResponse> getList(
+            HttpServletRequest request,
             @RequestBody(required = false) ItemSearch search,
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "size", required = false, defaultValue = "10") int size
             ) {
-        Page<Item> itemPage = itemService.findItems(search, PageRequest.of(page, size));
+        Long member_id = jwtUtil.getIdFromToken(request.getHeader("Authorization"));
+        Page<Item> itemPage = itemService.findItems(member_id, search, PageRequest.of(page, size));
+        return ResponseEntity.ok().body(ItemResponse.fromPage(itemPage));
+    }
+
+    @PostMapping("/list/public")
+    public ResponseEntity<PageResponse> getPublicList(
+            @RequestBody(required = false) ItemSearch search,
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size
+            ) {
+        Page<Item> itemPage = itemService.findPublicItems(search, PageRequest.of(page, size));
         return ResponseEntity.ok().body(ItemResponse.fromPage(itemPage));
     }
 

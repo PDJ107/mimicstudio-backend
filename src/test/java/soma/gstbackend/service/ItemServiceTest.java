@@ -88,18 +88,18 @@ public class ItemServiceTest {
         ItemSearch search = ItemSearch.builder().build();
         Pageable pageable = PageRequest.of(0, 10);
 
-        Page<Item> currItems = itemService.findItems(search, pageable);
+        Page<Item> currItems = itemService.findPublicItems(search, pageable);
         long currItemNum = currItems.getTotalElements();
         int lastPage = currItems.getTotalPages() - 1;
 
         //String s3key = testMember.getId() + "/" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        Item testItem = getTestItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", false);
-        Item testItem2 = getTestItem(testMember, testCategory, ItemStatus.generating, "/0/20220805123456", false);
-        Item testItem3 = getTestItem(testMember, testCategory, ItemStatus.enqueue, "/0/20220805123456", false);
+        Item testItem = getTestItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", true);
+        Item testItem2 = getTestItem(testMember, testCategory, ItemStatus.generating, "/0/20220805123456", true);
+        Item testItem3 = getTestItem(testMember, testCategory, ItemStatus.enqueue, "/0/20220805123456", true);
 
         // when
         pageable = PageRequest.of(0, (int)currItemNum + 5);
-        List<Item> items = itemService.findItems(search, pageable).getContent();
+        List<Item> items = itemService.findPublicItems(search, pageable).getContent();
 
         // then
         assertEquals(items.size() - currItemNum, 3);
@@ -118,9 +118,9 @@ public class ItemServiceTest {
         Member testMember = getTestMember("abcd", "12345678", "test@gamil.com");
         Category testCategory = getTestCategory(99999L, "test-category");
         //String s3key = testMember.getId() + "/" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        Item testItem = getTestItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", false);
-        Item testItem2 = getTestItem(testMember, testCategory, ItemStatus.generating, "/0/20220805123456", false);
-        Item testItem3 = getTestItem(testMember, testCategory, ItemStatus.enqueue, "/0/20220805123456", false);
+        Item testItem = getTestItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", true);
+        Item testItem2 = getTestItem(testMember, testCategory, ItemStatus.generating, "/0/20220805123456", true);
+        Item testItem3 = getTestItem(testMember, testCategory, ItemStatus.enqueue, "/0/20220805123456", true);
 
         ItemSearch search = ItemSearch.builder().build();
         Pageable pageable = PageRequest.of(0, 10);
@@ -128,7 +128,7 @@ public class ItemServiceTest {
         // when
         itemService.removeItem(testItem.getId());
         itemService.removeItem(testItem2.getId());
-        List<Item> items = itemService.findItems(search, pageable).getContent();
+        List<Item> items = itemService.findPublicItems(search, pageable).getContent();
 
         // then
         assertFalse(items.contains(testItem));
