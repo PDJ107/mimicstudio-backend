@@ -95,12 +95,10 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean checkEmail(String email) {
-        return memberRepository.findByEmail(email).isPresent();
-    }
+    public Boolean checkEmail(String email) { return memberRepository.findByEmail(email).isPresent(); }
 
     @Transactional(readOnly = true)
     public Boolean checkAccount(String account) {
-        return memberRepository.findByAccount(account) != null;
+        return memberRepository.findByAccount(account).isPresent();
     }
 }

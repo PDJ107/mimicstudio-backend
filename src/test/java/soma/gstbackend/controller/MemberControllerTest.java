@@ -19,7 +19,6 @@ import soma.gstbackend.dto.member.LoginDTO;
 import soma.gstbackend.dto.member.MemberModifyRequest;
 import soma.gstbackend.dto.member.MemberRequest;
 import soma.gstbackend.dto.token.TokenDTO;
-import soma.gstbackend.dto.token.TokenInfoDTO;
 import soma.gstbackend.service.MemberService;
 import soma.gstbackend.util.JwtUtil;
 
@@ -28,7 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
@@ -206,8 +204,8 @@ class MemberControllerTest {
         MemberModifyRequest request = new MemberModifyRequest("test-account", "010-1234-5678", "test@test.com");
 
         doNothing().when(memberService).modify(any(), any());
-        given(jwtUtil.getInfoFromToken(any()))
-                .willReturn(new TokenInfoDTO(0L, Role.GUEST.getKey()));
+        given(jwtUtil.getIdFromToken(any()))
+                .willReturn(0L);
 
         // when
         ResultActions result = this.mockMvc.perform(
@@ -276,8 +274,8 @@ class MemberControllerTest {
 
         given(memberService.getInfo(any()))
                 .willReturn(testMember);
-        given(jwtUtil.getInfoFromToken(any()))
-                .willReturn(new TokenInfoDTO(0L, Role.GUEST.getKey()));
+        given(jwtUtil.getIdFromToken(any()))
+                .willReturn(0L);
 
         //when
         ResultActions result = this.mockMvc.perform(

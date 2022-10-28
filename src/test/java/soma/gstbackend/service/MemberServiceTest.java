@@ -8,10 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import soma.gstbackend.domain.Member;
 import soma.gstbackend.domain.Role;
 import soma.gstbackend.dto.token.TokenDTO;
-import soma.gstbackend.dto.token.TokenInfoDTO;
 import soma.gstbackend.util.JwtUtil;
-
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -9,13 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import soma.gstbackend.domain.Member;
 import soma.gstbackend.dto.token.AccessTokenDTO;
 import soma.gstbackend.dto.token.TokenDTO;
-import soma.gstbackend.dto.token.TokenInfoDTO;
 import soma.gstbackend.service.MemberService;
 import soma.gstbackend.service.OAuthService;
 import soma.gstbackend.util.JwtUtil;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +22,7 @@ public class AuthController {
     private final JwtUtil jwtUtil;
 
     @GetMapping("/login")
-    public ResponseEntity login(@AuthenticationPrincipal OAuth2User oAuth2User) {
+    public ResponseEntity oAuthlogin(@AuthenticationPrincipal OAuth2User oAuth2User) {
         return ResponseEntity.ok().body(oAuthService.login(oAuth2User));
     }
 
@@ -35,7 +31,7 @@ public class AuthController {
         String token = "Bearer " + refreshToken;
         jwtUtil.validateRefreshToken(token);
 
-        Member member = memberService.getInfo(jwtUtil.getInfoFromToken(refreshToken).getId());
+        Member member = memberService.getInfo(jwtUtil.getIdFromToken(refreshToken));
         TokenDTO tokens = jwtUtil.getTokens(member.getId(), member.getRole().getKey());
 
         HttpHeaders headers = new HttpHeaders();
@@ -53,8 +49,9 @@ public class AuthController {
         String token = "Bearer " + refreshToken;
         jwtUtil.validateRefreshToken(token);
 
-        TokenInfoDTO tokenInfo = jwtUtil.getInfoFromToken(token);
-        return ResponseEntity.ok().body(new AccessTokenDTO(jwtUtil.getAccessToken(tokenInfo.getId(), tokenInfo.getRole())));
+        Long id = jwtUtil.getIdFromToken(token);
+        Member member = memberService.findMember(id);
+        return ResponseEntity.ok().body(new AccessTokenDTO(jwtUtil.getAccessToken(id, member.getRole().getKey())));
     }
 
     @GetMapping("/token/refresh")
@@ -62,7 +59,7 @@ public class AuthController {
         String token = "Bearer " + refreshToken;
         jwtUtil.validateRefreshToken(token);
 
-        Member member = memberService.getInfo(jwtUtil.getInfoFromToken(refreshToken).getId());
+        Member member = memberService.getInfo(jwtUtil.getIdFromToken(refreshToken));
         TokenDTO tokens = jwtUtil.getTokens(member.getId(), member.getRole().getKey());
 
         HttpHeaders headers = new HttpHeaders();

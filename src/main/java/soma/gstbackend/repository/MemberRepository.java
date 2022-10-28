@@ -36,14 +36,11 @@ public class MemberRepository {
         return em.find(Member.class, id).isDeleted() == true;
     }
 
-    public Member findByAccount(String account) {
-        try {
-            return em.createQuery("select m from Member m where m.account = :account and m.isDeleted = false", Member.class)
-                    .setParameter("account", account)
-                    .getSingleResult();
-        } catch(Exception e) {
-            return null;
-        }
+    public Optional<Member> findByAccount(String account) {
+        List<Member> members = em.createQuery("select m from Member m where m.account = :account and m.isDeleted = false", Member.class)
+                .setParameter("account", account)
+                .getResultList();
+        return members.stream().findAny();
     }
 
     public Optional<Member> findByEmail(String email) {
