@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class AuthToken {
     @Id
     @Column(name = "member_id")
-    Long id;
+    Long memberId;
 
     String refreshToken;
 

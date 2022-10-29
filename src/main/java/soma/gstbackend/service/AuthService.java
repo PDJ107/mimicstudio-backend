@@ -17,7 +17,7 @@ public class AuthService {
     public AuthToken findToken(Long memberId) { return authRepository.findToken(memberId); }
 
     public void saveOrUpdate(AuthToken authToken) {
-        AuthToken tokenFromDB = findToken(authToken.getId());
+        AuthToken tokenFromDB = findToken(authToken.getMemberId());
         if(tokenFromDB == null) authRepository.save(authToken);
         else {
             tokenFromDB.setRefreshToken(authToken.getRefreshToken());

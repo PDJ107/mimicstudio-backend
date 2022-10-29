@@ -84,7 +84,7 @@ public class JwtUtil {
                 setClaims(claims).
                 signWith(SignatureAlgorithm.HS256, SECRET_KEY.getBytes()).compact();
 
-        authService.saveOrUpdate(AuthToken.builder().id(memberId).refreshToken(token).build());
+        authService.saveOrUpdate(AuthToken.builder().memberId(memberId).refreshToken(token).build());
 
         return token;
     }

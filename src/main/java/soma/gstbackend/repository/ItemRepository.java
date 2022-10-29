@@ -11,14 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
-import soma.gstbackend.domain.Item;
-import soma.gstbackend.domain.ItemSearch;
-import soma.gstbackend.domain.QItem;
-import soma.gstbackend.domain.QMember;
+import soma.gstbackend.domain.*;
 
 import javax.persistence.EntityManager;
 import java.sql.Driver;
 import java.util.List;
+import java.util.Optional;
 
 import static soma.gstbackend.domain.QItem.item;
 import static soma.gstbackend.domain.QMember.member;
@@ -127,5 +125,16 @@ public class ItemRepository {
 
     public Boolean isDeleted(Long id) {
         return em.find(Item.class, id).isDeleted() == true;
+    }
+
+    public Optional<ApplyCoin> findApply(Long memberId) {
+        return em.createQuery("select a from ApplyCoin a where a.memberId = :memberId", ApplyCoin.class)
+                .setParameter("memberId", memberId)
+                .getResultList()
+                .stream().findAny();
+    }
+
+    public void saveApply(ApplyCoin apply) {
+        em.persist(apply);
     }
 }

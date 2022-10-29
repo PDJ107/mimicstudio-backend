@@ -5,12 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import soma.gstbackend.domain.ItemSearch;
+import soma.gstbackend.domain.*;
+import soma.gstbackend.dto.item.ApplyRequest;
 import soma.gstbackend.dto.item.ItemRequest;
 import soma.gstbackend.dto.item.ItemResponse;
-import soma.gstbackend.domain.Category;
-import soma.gstbackend.domain.Item;
-import soma.gstbackend.domain.Member;
 import soma.gstbackend.dto.page.PageResponse;
 import soma.gstbackend.service.CategoryService;
 import soma.gstbackend.service.ItemService;
@@ -40,7 +38,7 @@ public class ItemController {
         Category category = categoryService.findCategory(itemRequest.categoryId);
 
         Long member_id = jwtUtil.getIdFromToken(request.getHeader("Authorization"));
-        Member member = memberService.findMember(45L); // test member id - 45L
+        Member member = memberService.findMember(member_id);
 
         Item item = itemRequest.toEntity(member, category);
 
@@ -86,5 +84,14 @@ public class ItemController {
     public ResponseEntity remove(@PathVariable Long id) throws Exception {
         itemService.removeItem(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/coin")
+
+    public ResponseEntity apply(HttpServletRequest request, @RequestBody @Valid ApplyRequest applyRequest) {
+
+        Long memberId = jwtUtil.getIdFromToken(request.getHeader("Authorization"));
+        itemService.applyCoin(applyRequest.toEntity(memberId));
+        return ResponseEntity.accepted().build();
     }
 }

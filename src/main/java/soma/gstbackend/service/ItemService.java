@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import soma.gstbackend.domain.ApplyCoin;
 import soma.gstbackend.domain.Item;
 import soma.gstbackend.domain.ItemSearch;
 import soma.gstbackend.exception.ErrorCode;
@@ -13,6 +14,7 @@ import soma.gstbackend.repository.ItemRepository;
 import soma.gstbackend.util.MessageProcessor;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,5 +53,15 @@ public class ItemService {
             throw new ItemException(ErrorCode.Item_Not_Found);
         }
         itemRepository.remove(itemId);
+    }
+
+    public void applyCoin(ApplyCoin apply) {
+        Optional<ApplyCoin> applyFromDB = itemRepository.findApply(apply.getMemberId());
+        if(applyFromDB.isPresent()) {
+            applyFromDB.get().update(apply.getDescription());
+        }
+        else {
+            itemRepository.saveApply(apply);
+        }
     }
 }
