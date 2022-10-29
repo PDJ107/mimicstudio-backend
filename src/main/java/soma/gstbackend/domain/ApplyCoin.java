@@ -20,7 +20,7 @@ public class ApplyCoin extends CustomEntity {
 
     protected ApplyCoin() {}
 
-    public void update(String description) {
+    public void update(String descript) {
         this.descript = descript;
     }
 }
