@@ -16,11 +16,11 @@ public class ApplyCoin extends CustomEntity {
     @Id @Column(name = "member_id")
     private Long memberId;
 
-    private String description;
+    private String descript;
 
     protected ApplyCoin() {}
 
     public void update(String description) {
-        this.description = description;
+        this.descript = descript;
     }
 }

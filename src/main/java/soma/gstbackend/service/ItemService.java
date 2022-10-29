@@ -58,7 +58,7 @@ public class ItemService {
     public void applyCoin(ApplyCoin apply) {
         Optional<ApplyCoin> applyFromDB = itemRepository.findApply(apply.getMemberId());
         if(applyFromDB.isPresent()) {
-            applyFromDB.get().update(apply.getDescription());
+            applyFromDB.get().update(apply.getDescript());
         }
         else {
             itemRepository.saveApply(apply);
