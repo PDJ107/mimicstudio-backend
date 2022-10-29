@@ -13,6 +13,9 @@ import soma.gstbackend.service.MemberService;
 import soma.gstbackend.service.OAuthService;
 import soma.gstbackend.util.JwtUtil;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -32,6 +35,11 @@ public class AuthController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(new AccessTokenDTO(tokens.getAccessToken()));
+    }
+
+    @GetMapping("/google")
+    public void googleLogin(HttpServletResponse httpServletResponse) throws IOException {
+        httpServletResponse.sendRedirect("http://localhost:8080/oauth2/authorization/google");
     }
 
     @GetMapping("/silent-login")
