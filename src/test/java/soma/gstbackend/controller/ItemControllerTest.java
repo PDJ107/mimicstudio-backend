@@ -67,7 +67,7 @@ class ItemControllerTest {
                 .willReturn(45L);
 
         // when
-        ItemRequest request = new ItemRequest("/0/20220812123456", false, 0L, "testTitle", "testDescript");
+        ItemRequest request = new ItemRequest("/0/20220812123456", false, 0L, "testTitle", "testDescript", "타입");
         ResultActions result = this.mockMvc.perform(
                 post("/3d-items/")
                         .content(objectMapper.writeValueAsString(request))
@@ -85,7 +85,8 @@ class ItemControllerTest {
                                 fieldWithPath("isPublic").description("3D 아이템 공개 여부"),
                                 fieldWithPath("categoryId").description("현재 DB 상에 존재하는 Category ID"),
                                 fieldWithPath("title").description("3D 아이템 제목"),
-                                fieldWithPath("descript").description("3D 아이템 설명")
+                                fieldWithPath("descript").description("3D 아이템 설명"),
+                                fieldWithPath("type").description("3D 아이템 타입")
                         )
                 ));
     }

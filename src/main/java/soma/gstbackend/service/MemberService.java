@@ -54,9 +54,9 @@ public class MemberService {
         }
 
         // account 중복 체크
-        if(!member.getAccount().equals(memberInfo.getAccount()) && checkAccount(memberInfo.getAccount())) {
-            throw new MemberException(ErrorCode.Account_Already_Exists);
-        }
+//        if(!member.getAccount().equals(memberInfo.getAccount()) && checkAccount(memberInfo.getAccount())) {
+//            throw new MemberException(ErrorCode.Account_Already_Exists);
+//        }
 
         member.setAccount(memberInfo.getAccount());
         member.setEmail(memberInfo.getEmail());

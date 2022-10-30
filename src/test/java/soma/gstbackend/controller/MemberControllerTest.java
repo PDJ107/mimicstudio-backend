@@ -277,7 +277,7 @@ class MemberControllerTest {
 
         //when
         ResultActions result = this.mockMvc.perform(
-                get("/members/info")
+                get("/members/me")
                         .header("Authorization", testToken)
         );
 
@@ -292,7 +292,6 @@ class MemberControllerTest {
                         ),
                         responseFields(
                                 fieldWithPath("account").description("계정 이름"),
-                                fieldWithPath("phoneNumber").description("전화번호"),
                                 fieldWithPath("email").description("이메일")
                         )
                 ));

@@ -25,8 +25,11 @@ public class ItemRequest {
     @NotNull(message = "descript가 없습니다.")
     public final String descript;
 
+    @NotNull(message = "type이 없습니다.")
+    public final String type;
+
     public Item toEntity(Member member, Category category) {
-        Item item = Item.createItem(member, category, ItemStatus.enqueue, s3Key, isPublic, title, descript);
+        Item item = Item.createItem(member, category, ItemStatus.enqueue, s3Key, isPublic, title, descript, type);
         return item;
     }
 }
