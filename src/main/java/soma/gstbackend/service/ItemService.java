@@ -31,7 +31,7 @@ public class ItemService {
     @Transactional(readOnly = true)
     public Item findItem(Long itemId) throws Exception {
         Item item = itemRepository.findOne(itemId);
-        if(item == null) {
+        if(item == null || itemRepository.isDeleted(itemId)) {
             throw new ItemException(ErrorCode.Item_Not_Found);
         }
         return item;
@@ -49,7 +49,7 @@ public class ItemService {
 
     public void removeItem(Long itemId) throws Exception {
         Item item = itemRepository.findOne(itemId);
-        if(item == null) {
+        if(item == null || itemRepository.isDeleted(itemId)) {
             throw new ItemException(ErrorCode.Item_Not_Found);
         }
         itemRepository.remove(itemId);

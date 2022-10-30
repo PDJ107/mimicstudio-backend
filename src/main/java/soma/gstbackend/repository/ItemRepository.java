@@ -39,7 +39,7 @@ public class ItemRepository {
         if(!StringUtils.hasText(itemTitle)) {
             return null;
         }
-        return item.title.eq(itemTitle);
+        return item.title.contains(itemTitle);
     }
 
     private BooleanExpression categoryEq(String categoryName) {
@@ -60,26 +60,26 @@ public class ItemRepository {
 
     public Page<Item> findAll(Long member_id, ItemSearch search, Pageable pageable) {
         QItem item = QItem.item;
-        QMember member = QMember.member;
+        //QMember member = QMember.member;
 
         List<Item> result =  query.select(item)
-                .join(item.member, member)
+                //.leftJoin(item.member, member)
                 .from(item)
                 .where(
-                        member.id.eq(member_id),
+                        item.member.id.eq(member_id),
                         titleLike(search.getItemTitle()),
                         categoryEq(search.getCategoryName()),
                         item.isDeleted.eq(false)
                 )
+                .orderBy(item.updatedAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Item> countQuery = query.select(item)
-                .join(item.member, member)
                 .from(item)
                 .where(
-                        member.id.eq(member_id),
+                        item.member.id.eq(member_id),
                         titleLike(search.getItemTitle()),
                         categoryEq(search.getCategoryName()),
                         item.isDeleted.eq(false)
@@ -102,6 +102,7 @@ public class ItemRepository {
                         item.isPublic.eq(true),
                         item.isDeleted.eq(false)
                 )
+                .orderBy(item.updatedAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
