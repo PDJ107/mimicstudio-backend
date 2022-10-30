@@ -28,9 +28,9 @@ public class MemberService {
     public TokenDTO join(Member member) throws Exception {
         // account 중복 체크
         //if(memberRepository.findByAccount(member.getAccount()) != null) {
-        if(checkAccount(member.getAccount())) {
-            throw new MemberException(ErrorCode.Account_Already_Exists);
-        }
+//        if(checkAccount(member.getAccount())) {
+//            throw new MemberException(ErrorCode.Account_Already_Exists);
+//        }
 
         // email 중복 체크
         if(checkEmail(member.getEmail())) {
