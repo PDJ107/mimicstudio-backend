@@ -1,8 +1,10 @@
 package soma.gstbackend.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.ForwardedHeaderFilter;
 import soma.gstbackend.config.entrypoint.CustomAuthenticationEntryPoint;
 import soma.gstbackend.filter.JwtTokenFilter;
 import soma.gstbackend.service.OAuthService;
@@ -53,4 +56,15 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+//    @Bean
+//    FilterRegistrationBean<ForwardedHeaderFilter> forwardedHeaderFilter() {
+//
+//        final FilterRegistrationBean<ForwardedHeaderFilter> filterRegistrationBean = new FilterRegistrationBean<ForwardedHeaderFilter>();
+//
+//        filterRegistrationBean.setFilter(new ForwardedHeaderFilter());
+//        filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+//
+//        return filterRegistrationBean;
+//    }
 }

@@ -37,11 +37,6 @@ public class AuthController {
                 .body(new AccessTokenDTO(tokens.getAccessToken()));
     }
 
-    @GetMapping("/google")
-    public void googleLogin(HttpServletResponse httpServletResponse) throws IOException {
-        httpServletResponse.sendRedirect("http://localhost:8080/oauth2/authorization/google");
-    }
-
     @GetMapping("/silent-login")
     public ResponseEntity silentLogin(@CookieValue String refreshToken) throws Exception {
         String token = "Bearer " + refreshToken;
