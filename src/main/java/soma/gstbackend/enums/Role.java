@@ -1,4 +1,4 @@
-package soma.gstbackend.domain;
+package soma.gstbackend.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

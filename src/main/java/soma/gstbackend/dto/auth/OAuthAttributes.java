@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import soma.gstbackend.domain.Member;
-import soma.gstbackend.domain.Role;
+import soma.gstbackend.enums.Role;
 
 import java.util.Map;
 

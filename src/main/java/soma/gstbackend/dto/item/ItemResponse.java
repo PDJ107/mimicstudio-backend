@@ -2,9 +2,9 @@ package soma.gstbackend.dto.item;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import soma.gstbackend.domain.*;
 import soma.gstbackend.dto.page.PageResponse;
+import soma.gstbackend.enums.ItemStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;

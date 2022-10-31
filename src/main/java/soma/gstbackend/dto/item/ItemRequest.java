@@ -3,7 +3,7 @@ package soma.gstbackend.dto.item;
 import lombok.AllArgsConstructor;
 import soma.gstbackend.domain.Category;
 import soma.gstbackend.domain.Item;
-import soma.gstbackend.domain.ItemStatus;
+import soma.gstbackend.enums.ItemStatus;
 import soma.gstbackend.domain.Member;
 
 import javax.validation.constraints.NotNull;

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import soma.gstbackend.domain.Member;
-import soma.gstbackend.domain.Role;
+import soma.gstbackend.enums.Role;
 import soma.gstbackend.dto.token.TokenDTO;
 import soma.gstbackend.util.JwtUtil;
 

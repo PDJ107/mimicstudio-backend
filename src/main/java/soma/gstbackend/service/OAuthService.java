@@ -9,14 +9,12 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import soma.gstbackend.domain.Member;
-import soma.gstbackend.domain.Role;
+import soma.gstbackend.enums.Role;
 import soma.gstbackend.dto.auth.OAuthAttributes;
 import soma.gstbackend.dto.token.TokenDTO;
 import soma.gstbackend.repository.MemberRepository;
-import soma.gstbackend.dto.auth.SessionUser;
 import soma.gstbackend.util.JwtUtil;
 
-import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.Collections;
 

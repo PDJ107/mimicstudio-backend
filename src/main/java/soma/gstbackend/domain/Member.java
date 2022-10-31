@@ -3,6 +3,7 @@ package soma.gstbackend.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
+import soma.gstbackend.enums.Role;
 
 import javax.persistence.*;
 import java.util.ArrayList;
