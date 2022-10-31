@@ -52,7 +52,7 @@ public class ItemServiceTest {
         Member testMember = getTestMember("abcd", "12345678", "test@gamil.com");
         Category testCategory = getTestCategory(99999L, "test-category");
         //String s3key = testMember.getId() + "/" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        Item item = Item.createItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", false, "testTitle", "testDescript", "타입");
+        Item item = Item.createItem(testMember, testCategory, ItemStatus.complete, "/0/20220801123456", false, "testTitle", "testDescript", "타입");
 
         // when
         itemService.join(item);
@@ -69,7 +69,7 @@ public class ItemServiceTest {
         Member testMember = getTestMember("abcd", "12345678", "test@gamil.com");
         Category testCategory = getTestCategory(99999L, "test-category");
         //String s3key = testMember.getId() + "/" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        Item testItem = getTestItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", false);
+        Item testItem = getTestItem(testMember, testCategory, ItemStatus.complete, "/0/20220801123456", false);
 
         // when
         Item item = itemService.findItem(testItem.getId());
@@ -93,7 +93,7 @@ public class ItemServiceTest {
         int lastPage = currItems.getTotalPages() - 1;
 
         //String s3key = testMember.getId() + "/" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        Item testItem = getTestItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", true);
+        Item testItem = getTestItem(testMember, testCategory, ItemStatus.complete, "/0/20220801123456", true);
         Item testItem2 = getTestItem(testMember, testCategory, ItemStatus.generating, "/0/20220805123456", true);
         Item testItem3 = getTestItem(testMember, testCategory, ItemStatus.enqueue, "/0/20220805123456", true);
 
@@ -118,7 +118,7 @@ public class ItemServiceTest {
         Member testMember = getTestMember("abcd", "12345678", "test@gamil.com");
         Category testCategory = getTestCategory(99999L, "test-category");
         //String s3key = testMember.getId() + "/" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        Item testItem = getTestItem(testMember, testCategory, ItemStatus.generated, "/0/20220801123456", true);
+        Item testItem = getTestItem(testMember, testCategory, ItemStatus.complete, "/0/20220801123456", true);
         Item testItem2 = getTestItem(testMember, testCategory, ItemStatus.generating, "/0/20220805123456", true);
         Item testItem3 = getTestItem(testMember, testCategory, ItemStatus.enqueue, "/0/20220805123456", true);
 

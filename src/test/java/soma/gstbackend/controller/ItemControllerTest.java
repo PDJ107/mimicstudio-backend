@@ -176,7 +176,7 @@ class ItemControllerTest {
         for(long i = 0; i < count; ++i) {
             items.add(
                 Item.builder()
-                        .id(i).category(category).member(member).status(ItemStatus.generated).isPublic(false)
+                        .id(i).category(category).member(member).status(ItemStatus.complete).isPublic(false)
                         .createdAt(LocalDateTime.of(2022, 8, 12, 12, 34, 56))
                         .updatedAt(LocalDateTime.of(2022, 8, 12, 12, 34, 56))
                         .title("testTitle" + i)
