@@ -21,6 +21,7 @@ public class ItemResponse {
     public Boolean isPublic;
     public String title;
     public String descript;
+    private String type;
     public LocalDateTime createdAt;
     public LocalDateTime updatedAt;
 
@@ -36,6 +37,7 @@ public class ItemResponse {
                 item.getViews(),
                 item.getIsPublic(),
                 item.getTitle(),
+                item.getType(),
                 item.getDescript(),
                 item.getCreatedAt(),
                 item.getUpdatedAt()
