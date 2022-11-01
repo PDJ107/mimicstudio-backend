@@ -129,6 +129,7 @@ class ItemControllerTest {
                                 fieldWithPath("isPublic").description("3D 아이템 공개 여부"),
                                 fieldWithPath("title").description("3D 아이템 제목"),
                                 fieldWithPath("descript").description("3D 아이템 설명"),
+                                fieldWithPath("type").description("3D 아이템 타입"),
                                 fieldWithPath("createdAt").description("생성일시"),
                                 fieldWithPath("updatedAt").description("수정일시")
                         )
@@ -152,6 +153,7 @@ class ItemControllerTest {
                         fieldWithPath("contents[].isPublic").description("3D 아이템 공개 여부"),
                         fieldWithPath("contents[].title").description("3D 아이템 제목"),
                         fieldWithPath("contents[].descript").description("3D 아이템 설명"),
+                        fieldWithPath("contents[].type").description("3D 아이템 타입"),
                         fieldWithPath("contents[].createdAt").description("생성일시"),
                         fieldWithPath("contents[].updatedAt").description("수정일시"),
                         fieldWithPath("pageable.sort.empty").description("정렬 설정 여부"),
