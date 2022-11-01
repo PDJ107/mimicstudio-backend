@@ -87,10 +87,8 @@ public class ItemController {
     }
 
     @PostMapping("/coin")
-    public ResponseEntity apply(HttpServletRequest request, @RequestBody @Valid ApplyRequest applyRequest) {
-
-        Long memberId = jwtUtil.getIdFromToken(request.getHeader("Authorization"));
-        itemService.applyCoin(applyRequest.toEntity(memberId));
+    public ResponseEntity apply(@RequestBody @Valid ApplyRequest applyRequest) {
+        itemService.applyCoin(applyRequest.toEntity());
         return ResponseEntity.accepted().build();
     }
 }

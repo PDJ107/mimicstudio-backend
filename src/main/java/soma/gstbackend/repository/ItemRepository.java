@@ -128,9 +128,9 @@ public class ItemRepository {
         return em.find(Item.class, id).isDeleted() == true;
     }
 
-    public Optional<ApplyCoin> findApply(Long memberId) {
-        return em.createQuery("select a from ApplyCoin a where a.memberId = :memberId", ApplyCoin.class)
-                .setParameter("memberId", memberId)
+    public Optional<ApplyCoin> findApplyByEmail(String email) {
+        return em.createQuery("select a from ApplyCoin a where a.email = :email", ApplyCoin.class)
+                .setParameter("email", email)
                 .getResultList()
                 .stream().findAny();
     }

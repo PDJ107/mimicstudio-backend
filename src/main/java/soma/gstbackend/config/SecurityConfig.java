@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .and()
                     .authorizeRequests()
                     .antMatchers("/**").permitAll()
-                    //.antMatchers("/auth/**", "/members/login", "/members/signup").permitAll()
+                    //.antMatchers("/auth/**", "/members/login", "/members/signup", "/3d-items/coin").permitAll()
                     //.anyRequest().authenticated()
                 .and()
                     .logout().logoutSuccessUrl("/")

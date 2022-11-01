@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import soma.gstbackend.domain.*;
+import soma.gstbackend.dto.item.ApplyRequest;
 import soma.gstbackend.enums.ItemStatus;
 import soma.gstbackend.enums.Role;
 
@@ -135,5 +136,18 @@ public class ItemServiceTest {
         assertFalse(items.contains(testItem));
         assertFalse(items.contains(testItem2));
         assertTrue(items.contains(testItem3));
+    }
+
+    @Test
+    @DisplayName("코인 신청 등록")
+    public void applyCoin() throws Exception {
+        // given
+        ApplyRequest request = new ApplyRequest("test@test.com", "일반 사용자", "상품 소개 용도", "피규어", null);
+        Member testMember = getTestMember("abcd", "12345678", "test@gamil.com");
+        // when
+        itemService.applyCoin(request.toEntity());
+
+        // then
+
     }
 }

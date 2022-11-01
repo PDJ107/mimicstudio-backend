@@ -13,11 +13,30 @@ import javax.validation.constraints.Size;
 @Getter
 public class ApplyRequest {
 
-    @NotNull(message = "descript이 없습니다.")
-    @Size(max = 200, message = "최대 길이는 200 입니다.")
-    private String descript;
+    @NotNull(message = "email이 없습니다.")
+    @Size(max = 100, message = "최대 길이는 100 입니다.")
+    private String email;
 
-    public ApplyCoin toEntity(Long memberId) {
-        return new ApplyCoin(memberId, descript);
+    @NotNull(message = "userType이 없습니다.")
+    @Size(max = 200, message = "최대 길이는 200 입니다.")
+    private String userType;
+
+    @NotNull(message = "purpose가 없습니다.")
+    @Size(max = 200, message = "최대 길이는 200 입니다.")
+    private String purpose;
+
+    @NotNull(message = "productDescript가 없습니다.")
+    @Size(max = 200, message = "최대 길이는 200 입니다.")
+    private String productDescript;
+
+    @NotNull(message = "productUrl이 없습니다.")
+    @Size(max = 200, message = "최대 길이는 200 입니다.")
+    private String productUrl;
+
+    public ApplyCoin toEntity() {
+
+        return new ApplyCoin(
+                email, userType, purpose, productDescript, productUrl
+        );
     }
 }
