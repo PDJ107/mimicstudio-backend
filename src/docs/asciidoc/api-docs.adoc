@@ -173,3 +173,10 @@ operation::item-pagination2[snippets='http-request,http-response']
 
 operation::item-remove[snippets='http-request,http-response']
 
+[[resources_items_apply_coin]]
+=== 아이템 코인 신청
+
+아이템을 생성하기 위한 코인을 신청합니다.
+
+operation::item-coin-apply[snippets='request-fields,http-request,http-response']
+
