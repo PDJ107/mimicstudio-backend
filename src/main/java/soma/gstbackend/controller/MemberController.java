@@ -2,6 +2,7 @@ package soma.gstbackend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soma.gstbackend.dto.member.*;
@@ -11,6 +12,7 @@ import soma.gstbackend.service.MemberService;
 import soma.gstbackend.util.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Map;
 
@@ -23,30 +25,48 @@ public class MemberController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/signup")
-    public ResponseEntity signUp(@RequestBody @Valid MemberRequest request) throws Exception {
+    public ResponseEntity signUp(@RequestBody @Valid MemberRequest request, HttpServletResponse response) throws Exception {
         TokenDTO tokens = memberService.join(request.toEntity());
 
-        HttpHeaders headers = new HttpHeaders();
+//        HttpHeaders headers = new HttpHeaders();
+//
+//        headers.add("Set-Cookie", "refreshToken=" + tokens.getRefreshToken()
+//                + "; Max-Age=604800; Path=/; Secure; HttpOnly");
 
-        headers.add("Set-Cookie", "refreshToken=" + tokens.getRefreshToken()
-                + "; Max-Age=604800; Path=/; Secure; HttpOnly");
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", tokens.getRefreshToken())
+                .path("/")
+                .secure(true)
+                .httpOnly(true)
+                .sameSite("None")
+                .maxAge(604800)
+                .build();
+
+        response.addHeader("Set-Cookie", refreshTokenCookie.toString());
 
         return ResponseEntity.ok()
-                .headers(headers)
                 .body(new AccessTokenDTO(tokens.getAccessToken()));
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid LoginDTO request) throws Exception {
+    public ResponseEntity login(@RequestBody @Valid LoginDTO request, HttpServletResponse response) throws Exception {
         TokenDTO tokens = memberService.login(request.toEntity());
 
-        HttpHeaders headers = new HttpHeaders();
+//        HttpHeaders headers = new HttpHeaders();
+//
+//        headers.add("Set-Cookie", "refreshToken=" + tokens.getRefreshToken()
+//                        + "; Max-Age=604800; Path=/; Secure; HttpOnly");
 
-        headers.add("Set-Cookie", "refreshToken=" + tokens.getRefreshToken()
-                        + "; Max-Age=604800; Path=/; Secure; HttpOnly");
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", tokens.getRefreshToken())
+                .path("/")
+                .secure(true)
+                .httpOnly(true)
+                .sameSite("None")
+                .maxAge(604800)
+                .build();
+
+        response.addHeader("Set-Cookie", refreshTokenCookie.toString());
 
         return ResponseEntity.ok()
-                .headers(headers)
                 .body(new AccessTokenDTO(tokens.getAccessToken()));
     }
 

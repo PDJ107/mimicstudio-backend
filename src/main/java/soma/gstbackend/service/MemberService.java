@@ -76,6 +76,9 @@ public class MemberService {
             throw new MemberException(ErrorCode.User_Invalid_Request);
         }
 
+        System.out.println(user);
+        System.out.println(user.getRole());
+
         return jwtUtil.getTokens(user.getId(), user.getRole().getKey());
     }
 

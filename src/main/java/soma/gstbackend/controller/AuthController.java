@@ -2,6 +2,7 @@ package soma.gstbackend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -25,32 +26,50 @@ public class AuthController {
     private final JwtUtil jwtUtil;
 
     @GetMapping("/login")
-    public ResponseEntity oAuthlogin(@AuthenticationPrincipal OAuth2User oAuth2User) {
+    public ResponseEntity oAuthlogin(@AuthenticationPrincipal OAuth2User oAuth2User, HttpServletResponse response) {
         TokenDTO tokens = oAuthService.login(oAuth2User);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Set-Cookie", "refreshToken=" + tokens.getRefreshToken()
-                + "; Max-Age=604800; Path=/; Secure; HttpOnly");
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Set-Cookie", "refreshToken=" + tokens.getRefreshToken()
+//                + "; Max-Age=604800; Path=/; Secure; HttpOnly");
+
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", tokens.getRefreshToken())
+                .path("/")
+                .secure(true)
+                .httpOnly(true)
+                .sameSite("None")
+                .maxAge(604800)
+                .build();
+
+        response.addHeader("Set-Cookie", refreshTokenCookie.toString());
 
         return ResponseEntity.ok()
-                .headers(headers)
                 .body(new AccessTokenDTO(tokens.getAccessToken()));
     }
 
     @GetMapping("/silent-login")
-    public ResponseEntity silentLogin(@CookieValue String refreshToken) throws Exception {
+    public ResponseEntity silentLogin(@CookieValue String refreshToken, HttpServletResponse response) throws Exception {
         String token = "Bearer " + refreshToken;
         jwtUtil.validateRefreshToken(token);
 
         Member member = memberService.getInfo(jwtUtil.getIdFromToken(refreshToken));
         TokenDTO tokens = jwtUtil.getTokens(member.getId(), member.getRole().getKey());
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Set-Cookie", "refreshToken=" + tokens.getRefreshToken()
-                + "; Max-Age=604800; Path=/; Secure; HttpOnly");
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Set-Cookie", "refreshToken=" + tokens.getRefreshToken()
+//                + "; Max-Age=604800; Path=/; Secure; HttpOnly");
+
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", tokens.getRefreshToken())
+                .path("/")
+                .secure(true)
+                .httpOnly(true)
+                .sameSite("None")
+                .maxAge(604800)
+                .build();
+
+        response.addHeader("Set-Cookie", refreshTokenCookie.toString());
 
         return ResponseEntity.ok()
-                .headers(headers)
                 .body(new AccessTokenDTO(tokens.getAccessToken()));
     }
 
@@ -66,19 +85,28 @@ public class AuthController {
     }
 
     @GetMapping("/token/refresh")
-    public ResponseEntity getRefreshToken(@CookieValue String refreshToken) throws Exception {
+    public ResponseEntity getRefreshToken(@CookieValue String refreshToken, HttpServletResponse response) throws Exception {
         String token = "Bearer " + refreshToken;
         jwtUtil.validateRefreshToken(token);
 
         Member member = memberService.getInfo(jwtUtil.getIdFromToken(refreshToken));
         TokenDTO tokens = jwtUtil.getTokens(member.getId(), member.getRole().getKey());
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Set-Cookie", "refreshToken=" + tokens.getRefreshToken()
-                + "; Max-Age=604800; Path=/; Secure; HttpOnly");
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Set-Cookie", "refreshToken=" + tokens.getRefreshToken()
+//                + "; Max-Age=604800; Path=/; Secure; HttpOnly");
+
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", tokens.getRefreshToken())
+                .path("/")
+                .secure(true)
+                .httpOnly(true)
+                .sameSite("None")
+                .maxAge(604800)
+                .build();
+
+        response.addHeader("Set-Cookie", refreshTokenCookie.toString());
 
         return ResponseEntity.ok()
-                .headers(headers)
                 .build();
     }
 }
