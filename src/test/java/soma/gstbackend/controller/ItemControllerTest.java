@@ -15,6 +15,7 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import soma.gstbackend.dto.item.ApplyRequest;
 import soma.gstbackend.dto.item.ItemRequest;
 import soma.gstbackend.domain.*;
 import soma.gstbackend.enums.ItemStatus;
@@ -30,6 +31,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -272,5 +274,37 @@ class ItemControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse()
                 ));
+    }
+
+    @Test
+    @DisplayName("코인 신청")
+    public void applyCoin() throws Exception {
+        // given
+        ApplyRequest request = new ApplyRequest("test@test.com", "일반 사용자", "상품 소개 용도", "피규어", "");
+        doNothing()
+                .when(itemService).applyCoin(any());
+
+        // when
+        ResultActions result = this.mockMvc.perform(
+                post("/3d-items/coin", 0L)
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        result.andExpect(status().isAccepted())
+                .andDo(document("item-coin-apply",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestFields(
+                                fieldWithPath("email").description("신청 이메일"),
+                                fieldWithPath("userType").description("사용자 유형"),
+                                fieldWithPath("purpose").description("사용 목적"),
+                                fieldWithPath("productDescript").description("사용할 물품 설명"),
+                                fieldWithPath("productUrl").description("상품 판매 페이지 url")
+                        )
+                ));
+
     }
 }

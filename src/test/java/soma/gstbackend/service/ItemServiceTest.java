@@ -142,7 +142,7 @@ public class ItemServiceTest {
     @DisplayName("코인 신청 등록")
     public void applyCoin() throws Exception {
         // given
-        ApplyRequest request = new ApplyRequest("test@test.com", "일반 사용자", "상품 소개 용도", "피규어", null);
+        ApplyRequest request = new ApplyRequest("test@test.com", "일반 사용자", "상품 소개 용도", "피규어", "");
         Member testMember = getTestMember("abcd", "12345678", "test@gamil.com");
         // when
         itemService.applyCoin(request.toEntity());
