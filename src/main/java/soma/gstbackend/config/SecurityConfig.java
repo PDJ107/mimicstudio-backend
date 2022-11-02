@@ -53,6 +53,10 @@ public class SecurityConfig {
         http
                 .addFilterBefore(new JwtTokenFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
+        http
+                .headers()
+                .xssProtection()
+                .and().contentSecurityPolicy("script-src 'self'");
 
         return http.build();
     }
