@@ -29,7 +29,7 @@ public class ItemRequest {
     public final String type;
 
     public Item toEntity(Member member, Category category) {
-        Item item = Item.createItem(member, category, ItemStatus.enqueue, s3Key, isPublic, title, descript, type);
+        Item item = Item.createItem(member, category, ItemStatus.ready, s3Key, isPublic, title, descript, type);
         return item;
     }
 }
