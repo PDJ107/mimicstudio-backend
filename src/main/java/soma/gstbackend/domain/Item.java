@@ -59,6 +59,10 @@ public class Item extends CustomEntity {
         category.getItems().add(this);
     }
 
+    public void setStatus(ItemStatus status) {
+        this.status = status;
+    }
+
     public static Item createItem(Member member, Category category, ItemStatus status, String s3Key, Boolean isPublic, String title, String descript, String type) {
         Item item = new Item();
         item.setMember(member);

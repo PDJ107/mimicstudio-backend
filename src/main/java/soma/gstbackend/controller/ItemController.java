@@ -10,6 +10,7 @@ import soma.gstbackend.dto.item.ApplyRequest;
 import soma.gstbackend.dto.item.ItemRequest;
 import soma.gstbackend.dto.item.ItemResponse;
 import soma.gstbackend.dto.page.PageResponse;
+import soma.gstbackend.enums.ItemStatus;
 import soma.gstbackend.service.CategoryService;
 import soma.gstbackend.service.ItemService;
 import soma.gstbackend.service.MemberService;
@@ -45,11 +46,27 @@ public class ItemController {
         // 아이템 등록
         itemService.join(item);
 
+        return ResponseEntity.accepted().build();
+    }
+
+    @PostMapping("/check-item")
+    public ResponseEntity checkItem(@RequestBody Long member_id, @RequestBody Long item_id) throws Exception {
+        itemService.validateItem(member_id, item_id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/queue")
+    public ResponseEntity enqueueItem(@RequestBody Long item_id) throws Exception {
+
+        // change item status
+        Item item = itemService.findItem(item_id);
+        item.setStatus(ItemStatus.enqueue);
+
         // SQS 메시지 전송
         //MessageForm messageForm = new ItemMessageForm(item.getId(), item.getS3Key());
         //messageProcessor.send(messageForm);
 
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import soma.gstbackend.domain.ApplyCoin;
 import soma.gstbackend.domain.Item;
 import soma.gstbackend.domain.ItemSearch;
+import soma.gstbackend.enums.ItemStatus;
 import soma.gstbackend.exception.ErrorCode;
 import soma.gstbackend.exception.ItemException;
 import soma.gstbackend.repository.ItemRepository;
@@ -53,6 +54,16 @@ public class ItemService {
             throw new ItemException(ErrorCode.Item_Not_Found);
         }
         itemRepository.remove(itemId);
+    }
+
+    public void validateItem(Long memberId, Long itemId) throws Exception {
+        Item item = itemRepository.findOne(itemId);
+        if(!item.getMember().getId().equals(memberId)) {
+            throw new IllegalArgumentException("유효한 memberId, itemId가 아닙니다.");
+        }
+        if(!item.getStatus().equals(ItemStatus.ready)) {
+            throw new IllegalArgumentException("아이템이 ready 상태가 아닙니다.");
+        }
     }
 
     public void applyCoin(ApplyCoin apply) {
