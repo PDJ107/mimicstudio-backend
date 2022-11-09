@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soma.gstbackend.domain.*;
 import soma.gstbackend.dto.item.ApplyRequest;
+import soma.gstbackend.dto.item.ItemQueueRequest;
 import soma.gstbackend.dto.item.ItemRequest;
 import soma.gstbackend.dto.item.ItemResponse;
 import soma.gstbackend.dto.page.PageResponse;
@@ -49,21 +50,21 @@ public class ItemController {
         return ResponseEntity.accepted().build();
     }
 
-    @PostMapping("/check-item")
-    public ResponseEntity checkItem(@RequestBody Long member_id, @RequestBody Long item_id) throws Exception {
+    @GetMapping("/check-item")
+    public ResponseEntity checkItem(@RequestParam("member_id") Long member_id, @RequestParam("item_id") Long item_id) throws Exception {
+        System.out.println(member_id + " " + item_id);
         itemService.validateItem(member_id, item_id);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/queue")
-    public ResponseEntity enqueueItem(@RequestBody Long item_id) throws Exception {
+    public ResponseEntity enqueueItem(@RequestBody @Valid ItemQueueRequest request) throws Exception {
 
-        // change item status
-        Item item = itemService.findItem(item_id);
-        item.setStatus(ItemStatus.enqueue);
+        // update item info
+        itemService.enqueue(request.getItemId(), request.getS3Key());
 
         // SQS 메시지 전송
-        //MessageForm messageForm = new ItemMessageForm(item.getId(), item.getS3Key());
+        //MessageForm messageForm = new ItemMessageForm(request.getId(), request.getS3Key());
         //messageProcessor.send(messageForm);
 
         return ResponseEntity.ok().build();

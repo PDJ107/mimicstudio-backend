@@ -10,8 +10,6 @@ import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 public class ItemRequest {
-    @NotNull(message = "s3 key 값이 Null 입니다.")
-    public final String s3Key;
 
     @NotNull(message = "Public 아이템 여부가 Null 입니다.")
     public final Boolean isPublic;
@@ -29,7 +27,7 @@ public class ItemRequest {
     public final String type;
 
     public Item toEntity(Member member, Category category) {
-        Item item = Item.createItem(member, category, ItemStatus.ready, s3Key, isPublic, title, descript, type);
+        Item item = Item.createItem(member, category, ItemStatus.ready, "", isPublic, title, descript, type);
         return item;
     }
 }

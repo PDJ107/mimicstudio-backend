@@ -58,12 +58,20 @@ public class ItemService {
 
     public void validateItem(Long memberId, Long itemId) throws Exception {
         Item item = itemRepository.findOne(itemId);
+        if(item == null) {
+            throw new IllegalArgumentException("없는 아이템 입니다.");
+        }
         if(!item.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("유효한 memberId, itemId가 아닙니다.");
         }
         if(!item.getStatus().equals(ItemStatus.ready)) {
             throw new IllegalArgumentException("아이템이 ready 상태가 아닙니다.");
         }
+    }
+
+    public void enqueue(Long itemId, String s3Key) throws Exception {
+        Item item = findItem(itemId);
+        item.enqueue(s3Key);
     }
 
     public void applyCoin(ApplyCoin apply) {
