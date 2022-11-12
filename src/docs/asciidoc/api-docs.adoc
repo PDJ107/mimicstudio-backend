@@ -145,7 +145,7 @@ operation::members-myinfo[snippets='request-headers,http-request,response-fields
 
 `POST` 요청을 사용해 새로운 3D 아이템을 등록하고 모델링을 시작합니다.
 
-operation::item-create[snippets='request-fields,http-request,http-response']
+operation::item-create[snippets='request-fields,http-request,response-fields,http-response']
 
 === 3D 아이템 조회 (One)
 

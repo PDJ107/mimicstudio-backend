@@ -1,15 +1,13 @@
 package soma.gstbackend.controller;
 
+import com.amazonaws.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soma.gstbackend.domain.*;
-import soma.gstbackend.dto.item.ApplyRequest;
-import soma.gstbackend.dto.item.ItemQueueRequest;
-import soma.gstbackend.dto.item.ItemRequest;
-import soma.gstbackend.dto.item.ItemResponse;
+import soma.gstbackend.dto.item.*;
 import soma.gstbackend.dto.page.PageResponse;
 import soma.gstbackend.enums.ItemStatus;
 import soma.gstbackend.service.CategoryService;
@@ -47,7 +45,7 @@ public class ItemController {
         // 아이템 등록
         itemService.join(item);
 
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.accepted().body(ItemResponse.from(item));
     }
 
     @GetMapping("/check-item")
@@ -68,6 +66,11 @@ public class ItemController {
         //messageProcessor.send(messageForm);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/status")
+    public ResponseEntity updateState(@RequestBody @Valid ItemStatusRequest request) {
+
     }
 
     @GetMapping("/{id}")
@@ -102,6 +105,12 @@ public class ItemController {
     public ResponseEntity remove(@PathVariable Long id) throws Exception {
         itemService.removeItem(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity update(@PathVariable Long id, @RequestBody ItemModifyRequest request) {
+        Item item = itemService.patchItem(id, request.toEntity());
+        return ResponseEntity.ok().body(ItemResponse.from(item));
     }
 
     @PostMapping("/coin")

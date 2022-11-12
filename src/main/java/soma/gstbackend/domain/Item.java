@@ -59,6 +59,26 @@ public class Item extends CustomEntity {
         category.getItems().add(this);
     }
 
+    public void setStatus(ItemStatus status) {
+        this.status = status;
+    }
+
+    public void setPublic(Boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescript(String descript) {
+        this.descript = descript;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public void enqueue(String s3Key) {
         this.status = ItemStatus.enqueue;
         this.s3Key = s3Key;

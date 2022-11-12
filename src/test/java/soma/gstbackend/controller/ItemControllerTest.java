@@ -89,6 +89,19 @@ class ItemControllerTest {
                                 fieldWithPath("title").description("3D 아이템 제목"),
                                 fieldWithPath("descript").description("3D 아이템 설명"),
                                 fieldWithPath("type").description("3D 아이템 타입")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("3D 아이템 ID"),
+                                fieldWithPath("member_id").description("회원 ID"),
+                                fieldWithPath("status").description("3D 아이템의 생성 상태"),
+                                fieldWithPath("categoryName").description("3D 아이템이 속한 카테고리 이름"),
+                                fieldWithPath("views").description("현재 3D 아이템의 뷰"),
+                                fieldWithPath("isPublic").description("3D 아이템 공개 여부"),
+                                fieldWithPath("title").description("3D 아이템 제목"),
+                                fieldWithPath("descript").description("3D 아이템 설명"),
+                                fieldWithPath("type").description("3D 아이템 타입"),
+                                fieldWithPath("createdAt").description("생성일시"),
+                                fieldWithPath("updatedAt").description("수정일시")
                         )
                 ));
     }
