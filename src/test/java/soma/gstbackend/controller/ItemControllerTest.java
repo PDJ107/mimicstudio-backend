@@ -353,7 +353,7 @@ class ItemControllerTest {
     @DisplayName("아이템 상태 업데이트")
     public void updateStatus() throws Exception {
         // given
-        ItemStatusRequest request = new ItemStatusRequest(0L, ItemStatus.complete);
+        ItemStatusRequest request = new ItemStatusRequest(ItemStatus.complete);
 
         Category category = Category.builder().id(0L).name("Test-Category").build();
         Member member = Member.builder().id(123L).build();
@@ -379,7 +379,6 @@ class ItemControllerTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
-                                fieldWithPath("itemId").description("상태를 변경할 아이템 ID"),
                                 fieldWithPath("status").description("3D 아이템의 생성 상태")
                         ),
                         responseFields(
