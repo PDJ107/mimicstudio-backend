@@ -16,8 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import soma.gstbackend.dto.item.ApplyRequest;
+import soma.gstbackend.dto.item.ItemModifyRequest;
 import soma.gstbackend.dto.item.ItemRequest;
 import soma.gstbackend.domain.*;
+import soma.gstbackend.dto.item.ItemStatusRequest;
 import soma.gstbackend.enums.ItemStatus;
 import soma.gstbackend.service.CategoryService;
 import soma.gstbackend.service.ItemService;
@@ -188,18 +190,22 @@ class ItemControllerTest {
         ));
     }
 
+    private Item generateItem(long i, Category category, Member member) {
+        return Item.builder()
+                .id(i).category(category).member(member).status(ItemStatus.complete).isPublic(false)
+                .createdAt(LocalDateTime.of(2022, 8, 12, 12, 34, 56))
+                .updatedAt(LocalDateTime.of(2022, 8, 12, 12, 34, 56))
+                .title("testTitle" + i)
+                .descript("testDescript" + i)
+                .isPublic(true)
+                .build();
+    }
+
     private List<Item> generateItemList(long count, Category category, Member member) {
         List<Item> items = new ArrayList<>();
         for(long i = 0; i < count; ++i) {
             items.add(
-                Item.builder()
-                        .id(i).category(category).member(member).status(ItemStatus.complete).isPublic(false)
-                        .createdAt(LocalDateTime.of(2022, 8, 12, 12, 34, 56))
-                        .updatedAt(LocalDateTime.of(2022, 8, 12, 12, 34, 56))
-                        .title("testTitle" + i)
-                        .descript("testDescript" + i)
-                        .isPublic(true)
-                        .build()
+                generateItem(i, category, member)
             );
         }
         return items;
@@ -274,6 +280,7 @@ class ItemControllerTest {
     @DisplayName("3D 아이템 삭제")
     void remove() throws Exception {
         // given
+        doNothing().when(itemService).removeItem(any());
 
         // when
         ResultActions result = this.mockMvc.perform(
@@ -285,6 +292,109 @@ class ItemControllerTest {
                 .andDo(document("item-remove",
                         getDocumentRequest(),
                         getDocumentResponse()
+                ));
+    }
+
+    @Test
+    @DisplayName("3D 아이템 수정")
+    public void update() throws Exception {
+        // given
+        ItemModifyRequest request = new ItemModifyRequest(false, null, null, "modifyType", ItemStatus.complete);
+
+        Category category = Category.builder().id(0L).name("Test-Category").build();
+        Member member = Member.builder().id(123L).build();
+
+        Item item = generateItem(0, category, member);
+
+        item.setPublic(request.getIsPublic());
+        item.setType(request.getType());
+        item.setStatus(request.getStatus());
+
+        given(itemService.patchItem(any(), any()))
+                .willReturn(item);
+
+        // when
+        ResultActions result = this.mockMvc.perform(
+                patch("/3d-items/{id}", 0L)
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(document("item-update",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestFields(
+                                fieldWithPath("isPublic").description("3D 아이템 공개 여부"),
+                                fieldWithPath("title").description("3D 아이템 제목"),
+                                fieldWithPath("descript").description("3D 아이템 설명"),
+                                fieldWithPath("type").description("3D 아이템 타입"),
+                                fieldWithPath("status").description("3D 아이템의 생성 상태")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("3D 아이템 ID"),
+                                fieldWithPath("member_id").description("회원 ID"),
+                                fieldWithPath("status").description("3D 아이템의 생성 상태"),
+                                fieldWithPath("categoryName").description("3D 아이템이 속한 카테고리 이름"),
+                                fieldWithPath("views").description("현재 3D 아이템의 뷰"),
+                                fieldWithPath("isPublic").description("3D 아이템 공개 여부"),
+                                fieldWithPath("title").description("3D 아이템 제목"),
+                                fieldWithPath("descript").description("3D 아이템 설명"),
+                                fieldWithPath("type").description("3D 아이템 타입"),
+                                fieldWithPath("createdAt").description("생성일시"),
+                                fieldWithPath("updatedAt").description("수정일시")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("아이템 상태 업데이트")
+    public void updateStatus() throws Exception {
+        // given
+        ItemStatusRequest request = new ItemStatusRequest(0L, ItemStatus.complete);
+
+        Category category = Category.builder().id(0L).name("Test-Category").build();
+        Member member = Member.builder().id(123L).build();
+
+        Item item = generateItem(0, category, member);
+
+        item.setStatus(request.getStatus());
+
+        given(itemService.patchItem(any(), any()))
+                .willReturn(item);
+
+        // when
+        ResultActions result = this.mockMvc.perform(
+                put("/3d-items/{id}/status", 0L)
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(document("item-status-update",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestFields(
+                                fieldWithPath("itemId").description("상태를 변경할 아이템 ID"),
+                                fieldWithPath("status").description("3D 아이템의 생성 상태")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("3D 아이템 ID"),
+                                fieldWithPath("member_id").description("회원 ID"),
+                                fieldWithPath("status").description("3D 아이템의 생성 상태"),
+                                fieldWithPath("categoryName").description("3D 아이템이 속한 카테고리 이름"),
+                                fieldWithPath("views").description("현재 3D 아이템의 뷰"),
+                                fieldWithPath("isPublic").description("3D 아이템 공개 여부"),
+                                fieldWithPath("title").description("3D 아이템 제목"),
+                                fieldWithPath("descript").description("3D 아이템 설명"),
+                                fieldWithPath("type").description("3D 아이템 타입"),
+                                fieldWithPath("createdAt").description("생성일시"),
+                                fieldWithPath("updatedAt").description("수정일시")
+                        )
                 ));
     }
 

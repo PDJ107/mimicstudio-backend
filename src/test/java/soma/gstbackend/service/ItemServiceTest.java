@@ -150,4 +150,18 @@ public class ItemServiceTest {
         // then
 
     }
+
+    @Nested
+    @DisplayName("아이템 업데이트")
+    @Disabled
+    class ItemUpdateTest {
+
+    }
+
+    @Nested
+    @DisplayName("아이템 상태 업데이트")
+    @Disabled
+    class ItemStatusUpdateTest {
+
+    }
 }

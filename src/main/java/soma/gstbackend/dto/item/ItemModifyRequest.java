@@ -17,7 +17,6 @@ public class ItemModifyRequest {
     ItemStatus status;
 
     public Item toEntity() {
-        Item item = Item.createItem(null, null, status, "", isPublic, title, descript, type);
-        return item;
+        return Item.builder().status(status).isPublic(isPublic).title(title).descript(descript).type(type).build();
     }
 }
