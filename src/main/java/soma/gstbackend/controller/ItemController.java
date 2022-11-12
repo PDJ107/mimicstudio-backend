@@ -68,9 +68,10 @@ public class ItemController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/status")
-    public ResponseEntity updateState(@RequestBody @Valid ItemStatusRequest request) {
-
+    @PatchMapping("{id}/status")
+    public ResponseEntity updateState(@PathVariable Long id, @RequestBody @Valid ItemStatusRequest request) {
+        Item item = itemService.patchItem(id, Item.builder().status(request.getStatus()).build());
+        return ResponseEntity.ok().body(item);
     }
 
     @GetMapping("/{id}")
