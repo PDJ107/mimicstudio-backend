@@ -62,8 +62,8 @@ public class ItemController {
         itemService.enqueue(request.getItemId(), request.getS3Key());
 
         // SQS 메시지 전송
-        //MessageForm messageForm = new ItemMessageForm(request.getId(), request.getS3Key());
-        //messageProcessor.send(messageForm);
+        MessageForm messageForm = new ItemMessageForm(request.getItemId(), request.getS3Key());
+        messageProcessor.send(messageForm);
 
         return ResponseEntity.ok().build();
     }
