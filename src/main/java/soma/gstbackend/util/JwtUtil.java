@@ -28,8 +28,8 @@ public class JwtUtil {
 
     private final AuthService authService;
 
-    private int accessExpiredHour = 1;
-    private int refreshExpiredHour = 24;
+    private int accessExpiredHour = 24 * 7;
+    private int refreshExpiredHour = 24 * 30;
 
     private Map<String, Object> getHeader() {
         Map<String, Object> headers = new HashMap<>();
