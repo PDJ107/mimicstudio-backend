@@ -95,6 +95,7 @@ class ItemControllerTest {
                         responseFields(
                                 fieldWithPath("id").description("3D 아이템 ID"),
                                 fieldWithPath("member_id").description("회원 ID"),
+                                fieldWithPath("account").description("계정 이름"),
                                 fieldWithPath("status").description("3D 아이템의 생성 상태"),
                                 fieldWithPath("categoryName").description("3D 아이템이 속한 카테고리 이름"),
                                 fieldWithPath("views").description("현재 3D 아이템의 뷰"),
@@ -139,6 +140,7 @@ class ItemControllerTest {
                         responseFields(
                                 fieldWithPath("id").description("3D 아이템 ID"),
                                 fieldWithPath("member_id").description("회원 ID"),
+                                fieldWithPath("account").description("계정 이름"),
                                 fieldWithPath("status").description("3D 아이템의 생성 상태"),
                                 fieldWithPath("categoryName").description("3D 아이템이 속한 카테고리 이름"),
                                 fieldWithPath("views").description("현재 3D 아이템의 뷰"),
@@ -163,6 +165,7 @@ class ItemControllerTest {
                 responseFields(
                         fieldWithPath("contents[].id").description("3D 아이템의 ID"),
                         fieldWithPath("contents[].member_id").description("회원 ID"),
+                        fieldWithPath("contents[].account").description("계정 이름"),
                         fieldWithPath("contents[].status").description("3D 아이템의 생성 상태"),
                         fieldWithPath("contents[].categoryName").description("3D 아이템이 속한 카테고리 이름"),
                         fieldWithPath("contents[].views").description("현재 3D 아이템의 뷰"),
@@ -336,6 +339,7 @@ class ItemControllerTest {
                         responseFields(
                                 fieldWithPath("id").description("3D 아이템 ID"),
                                 fieldWithPath("member_id").description("회원 ID"),
+                                fieldWithPath("account").description("계정 이름"),
                                 fieldWithPath("status").description("3D 아이템의 생성 상태"),
                                 fieldWithPath("categoryName").description("3D 아이템이 속한 카테고리 이름"),
                                 fieldWithPath("views").description("현재 3D 아이템의 뷰"),
@@ -384,6 +388,7 @@ class ItemControllerTest {
                         responseFields(
                                 fieldWithPath("id").description("3D 아이템 ID"),
                                 fieldWithPath("member_id").description("회원 ID"),
+                                fieldWithPath("account").description("계정 이름"),
                                 fieldWithPath("status").description("3D 아이템의 생성 상태"),
                                 fieldWithPath("categoryName").description("3D 아이템이 속한 카테고리 이름"),
                                 fieldWithPath("views").description("현재 3D 아이템의 뷰"),

@@ -15,6 +15,7 @@ public class ItemResponse {
 
     public Long id;
     public Long member_id;
+    public String account;
     public ItemStatus status;
     public String categoryName;
     public List<View> views;
@@ -32,6 +33,7 @@ public class ItemResponse {
         return new ItemResponse(
                 item.getId(),
                 item.getMember().getId(),
+                item.getMember().getAccount(),
                 item.getStatus(),
                 item.getCategory().getName(),
                 item.getViews(),
