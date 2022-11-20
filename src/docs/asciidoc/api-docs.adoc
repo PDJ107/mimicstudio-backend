@@ -1,4 +1,4 @@
-= 미믹스튜디오 API Guide
+= 미믹스튜디오 API Guide #1
 박동주;
 :doctype: book
 :icons: font
