@@ -10,8 +10,8 @@
 
 #### 🙋🏻‍♂️ 멤버 구성
  - 박동주: 백엔드
- - [장혁순]()(팀장): AI
- - [윤준수](): 프론트엔드
+ - 장혁순(팀장): AI
+ - 윤준수: 프론트엔드
 
 #### 🖥️ 개발 환경
  - Develop Platform: `Mac OS`, `Intellij`, `Pycharm`
@@ -22,9 +22,14 @@
  - 제작한 3D 아이템을 관리할 수 있는 대시보드 제공
  - 아이템 공유 및 뷰 제공
 
-#### 🏢 서비스 아키텍처
-<img alt="모듈 구상도" src="img/1. 서비스 아키텍처-1.png">
-<img alt="서비스 구상도" src="img/2. 서비스 아키텍처-2.png">
+#### 🏢 다이어그램
+<img alt="클라우드 아키텍처" src="img/1. 클라우드 아키텍처.png" width="100%">
+<img alt="로그인 시퀀스" src="img/2. 로그인 시퀀스.png">
+<img alt="아이템 생성 시퀀스" src="img/3. 아이템 생성 시퀀스.png">
+
+#### API 문서
+<img alt="API 문서" src="img/6. API 문서.png" width="100%">
 
 #### 📱 서비스 화면
-<img alt="서비스 화면" src="img/3. APP.png">
+<img alt="서비스 화면" src="img/4. 서비스 화면.png" width="100%">
+<img alt="생성 아이템 비교" src="img/5. 아이템 비교.png" width="100%">
